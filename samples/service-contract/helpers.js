@@ -148,7 +148,7 @@ function displayDataTable(data) {
                         
                         // Add click event listener to each row for redirection
                         tableRow.addEventListener('click', () => {
-                          window.location.href = `details.html?id=${row.id}`; // Replace "id" with your unique identifier
+                          window.location.href = `details.html?id=${row.equipment.externalId}`; // Replace "id" with your unique identifier
                         });
                         
                         table.appendChild(tableRow);
