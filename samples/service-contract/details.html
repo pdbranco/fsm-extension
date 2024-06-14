@@ -57,15 +57,9 @@
            */
           initializeRefreshTokenStrategy(shellSdk, auth);
 
-          // Add a listener expecting activityID
-          //shellSdk.onViewState('activityID', async activityID => {
-
-          //  updateUI(`Loading ...`);
-
-           // let equipment = await getServiceContract(cloudHost, account, company, activityID);
-           //getEquipments(cloudHost, account, company);
-            //updateUI(equipment.externalId);
-          //});
+          id = getParameters()
+          getEquipmentDetails(cloudHost, account, company,id);
+            
         });
       //}
     </script>

@@ -38,9 +38,6 @@ function getServiceContract(cloudHost, account, company, activity_id) {
 
   return new Promise(resolve => {
 
-    // Fetch Activity object
-   
-    
     fetch(`https://${cloudHost}/api/data/v4/Activity/${activity_id}?dtos=Activity.37&account=${account}&company=${company}`, {
       headers
       })
@@ -59,26 +56,6 @@ function getServiceContract(cloudHost, account, company, activity_id) {
                     // Assuming you have your data in an array named 'myData'
                     displayDataTable(json.data);
                     resolve();
-
-
-
-
-
-
-
-                //const serviceContractEquipment = json.data.find(contract => contract.serviceContractEquipment.equipment === activity.equipment);
-                /*if (!serviceContractEquipment) {
-                  resolve(null);
-                } else {
-                  fetch(`https://${cloudHost}/api/data/v4/ServiceContract/${serviceContractEquipment.serviceContractEquipment.serviceContract}?dtos=ServiceContract.13&account=${account}&company=${company}`, {
-                    headers
-                    })
-                      .then(response => response.json())
-                      .then(function(json) {
-                        resolve(json.data[0]);
-                      });
-                }*/
-
               });
 
         });
@@ -119,6 +96,34 @@ function getEquipments(cloudHost, account, company) {
   
 }
 
+function getEquipmentDetails(cloudHost, account, company, id) {
+  
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Client-ID': 'fsm-extension-sample',
+    'X-Client-Version': '1.0.0',
+    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+  };
+
+  return new Promise(resolve => {
+
+          // Fetch all ServiceContractEquipment
+          fetch(`https://${cloudHost}/api/data/v4/Equipment/externalid/${id}?dtos=Equipment.22&account=${account}&company=${company}`, {
+            headers
+            })
+              .then(response => response.json())
+              .then(function(json) {
+                    // Assuming you have your data in an array named 'myData'
+                    displayDataTable(json.data);
+                    resolve();
+
+              });
+
+        });
+
+  
+}
+
 function displayDataTable(data) {
                       // Create the table element
                       const table = document.createElement('table');
@@ -151,5 +156,12 @@ function displayDataTable(data) {
                       
                       // Add the table to the document body
                       document.body.appendChild(table);
+}
+
+var id = function getParameters() {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const id = urlParams.get('id')
+  return(id)
 }
 
