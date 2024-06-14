@@ -54,7 +54,7 @@ https://us.coresuite.com/api/query/v1?&dtos=Equipment.24
             })
               .then(response => response.json())
               .then(function(json) {
-                    resolve(json.data[0]);
+                    resolve(json.data[0].Name);
                 //const serviceContractEquipment = json.data.find(contract => contract.serviceContractEquipment.equipment === activity.equipment);
                 /*if (!serviceContractEquipment) {
                   resolve(null);
