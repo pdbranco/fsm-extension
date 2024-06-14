@@ -39,7 +39,7 @@ function getServiceContract(cloudHost, account, company, activity_id) {
   return new Promise(resolve => {
 
     // Fetch Activity object
-https://us.coresuite.com/api/query/v1?&dtos=Equipment.24
+   
     
     fetch(`https://${cloudHost}/api/data/v4/Activity/${activity_id}?dtos=Activity.37&account=${account}&company=${company}`, {
       headers
@@ -54,7 +54,18 @@ https://us.coresuite.com/api/query/v1?&dtos=Equipment.24
             })
               .then(response => response.json())
               .then(function(json) {
-                    resolve(json.data[0].equipment);
+                    //resolve(json.data[0].equipment);
+
+                    // Assuming you have your data in an array named 'myData'
+                    displayDataTable(json.data);
+                    resolve();
+
+
+
+
+
+
+
                 //const serviceContractEquipment = json.data.find(contract => contract.serviceContractEquipment.equipment === activity.equipment);
                 /*if (!serviceContractEquipment) {
                   resolve(null);
@@ -73,5 +84,39 @@ https://us.coresuite.com/api/query/v1?&dtos=Equipment.24
         });
 
   });
+}
+
+function displayDataTable(data) {
+                      // Create the table element
+                      const table = document.createElement('table');
+                      
+                      // Create table header row
+                      const headerRow = document.createElement('tr');
+                      for (const key in data[0]) {
+                        const headerCell = document.createElement('th');
+                        headerCell.textContent = key;
+                        headerRow.appendChild(headerCell);
+                      }
+                      table.appendChild(headerRow);
+                    
+                      // Loop through data and create table rows
+                      for (const row of data) {
+                        const tableRow = document.createElement('tr');
+                        for (const value in row) {
+                          const cell = document.createElement('td');
+                          cell.textContent = row[value];
+                          tableRow.appendChild(cell);
+                        }
+                        
+                        // Add click event listener to each row for redirection
+                        tableRow.addEventListener('click', () => {
+                          window.location.href = `details.html?id=${row.id}`; // Replace "id" with your unique identifier
+                        });
+                        
+                        table.appendChild(tableRow);
+                      }
+                      
+                      // Add the table to the document body
+                      document.body.appendChild(table);
 }
 
