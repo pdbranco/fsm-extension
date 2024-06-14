@@ -165,7 +165,7 @@ function getParameters() {
   return(id)
 }
 
-function populateDropdown(crewHQS) {
+function populateDropdown() {
 
   const crewHQS = ['Apple', 'Banana', 'Orange', 'Mango'];
 
