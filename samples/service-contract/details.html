@@ -12,6 +12,49 @@
       <body>
         <h1>CrewHQ</h1>
         <select id="crewHQDropdown"></select>
+
+        <form>
+            <label for="start_datetime">Start Date & Time:</label>
+            <input type="datetime-local" id="start_datetime" name="start_datetime"><br>
+        
+            <label for="end_datetime">End Date & Time:</label>
+            <input type="datetime-local" id="end_datetime" name="end_datetime"><br>
+        
+            <label for="quantity">Days to Push Work Forward:</label>
+            <input type="number" id="quantity" name="quantity"><br>
+        
+            <label for="options1">Activity Status Affected:</label>
+            <select id="options1" name="options1[]" multiple>
+              <option value="option1">Option 1</option>
+              <option value="option2">Option 2</option>
+              <option value="option3">Option 3</option>
+            </select><br>
+        
+            <label for="description">CrewHQ Affected:</label>
+            <textarea id="description" name="description" rows="3"></textarea><br>
+
+            <label for="options2">MAT Code(s) Affected:</label>
+            <select id="options2" name="options2[]" multiple>
+              <option value="valueA">Value A</option>
+              <option value="valueB">Value B</option>
+              <option value="valueC">Value C</option>
+            </select><br>
+        
+            
+        
+            <label for="flag1">Major Storm?:</label>
+            <input type="checkbox" id="flag1" name="flag1" value="true">
+            <label for="flag1">Checked</label><br>
+        
+            <label for="flag2">Unassign Instead of Pushing:</label>
+            <input type="checkbox" id="flag2" name="flag2" value="true">
+            <label for="flag2">Checked</label><br>
+        
+            <button type="submit">Submit</button>
+          </form>
+
+
+
       </body>
     </div>
     <script src="https://unpkg.com/fsm-shell"></script>
