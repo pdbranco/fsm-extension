@@ -62,9 +62,9 @@
 
             updateUI(`Loading ...`);
 
-            let serviceContract = await getServiceContract(cloudHost, account, company, activityID);
+            let equipment = await getServiceContract(cloudHost, account, company, activityID);
 
-            updateUI(serviceContract ? `${serviceContract.contractType}` : `NO CONTRACT`);
+            updateUI(equipment.externalID);
           });
         });
       }
