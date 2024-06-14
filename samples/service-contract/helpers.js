@@ -165,3 +165,15 @@ function getParameters() {
   return(id)
 }
 
+function populateDropdown(crewHQS) {
+
+  const crewHQS = ['Apple', 'Banana', 'Orange', 'Mango'];
+
+  for (const crewHQ of crewHQS) {
+      const option = document.createElement('option');
+      option.value = crewHQ; // Set value for the option
+      option.textContent = crewHQ; // Set text displayed for the user
+      crewHQDropdown.appendChild(option);
+  }
+}
+
