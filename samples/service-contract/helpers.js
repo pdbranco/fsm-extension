@@ -158,7 +158,7 @@ function displayDataTable(data) {
                       document.body.appendChild(table);
 }
 
-var id = function getParameters() {
+function getParameters() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const id = urlParams.get('id')

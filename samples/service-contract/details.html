@@ -17,11 +17,6 @@
       // see https://github.com/SAP/fsm-shell for more details.
       const { ShellSdk, SHELL_EVENTS } = FSMShell;
 
-      // Display an error message if extension does not run within shell
-      //if (!ShellSdk.isInsideShell()) {
-      //  updateUI('Unable to reach shell eventAPI');
-      //} else {
-        // Initialise ShellSDK to connect with parent shell library
         const shellSdk = ShellSdk.init(parent, '*');
 
         // Initialise the extension by requesting the fsm context
@@ -57,11 +52,11 @@
            */
           initializeRefreshTokenStrategy(shellSdk, auth);
 
-          id = getParameters();
+          let id = getParameters();
           getEquipmentDetails(cloudHost, account, company,id);
             
         });
-      //}
+     
     </script>
   </body>
 </html>
