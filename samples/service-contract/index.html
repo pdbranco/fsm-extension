@@ -18,9 +18,9 @@
       const { ShellSdk, SHELL_EVENTS } = FSMShell;
 
       // Display an error message if extension does not run within shell
-      if (!ShellSdk.isInsideShell()) {
-        updateUI('Unable to reach shell eventAPI');
-      } else {
+      //if (!ShellSdk.isInsideShell()) {
+      //  updateUI('Unable to reach shell eventAPI');
+      //} else {
         // Initialise ShellSDK to connect with parent shell library
         const shellSdk = ShellSdk.init(parent, '*');
 
@@ -58,16 +58,16 @@
           initializeRefreshTokenStrategy(shellSdk, auth);
 
           // Add a listener expecting activityID
-          shellSdk.onViewState('activityID', async activityID => {
+          //shellSdk.onViewState('activityID', async activityID => {
 
-            updateUI(`Loading ...`);
+          //  updateUI(`Loading ...`);
 
-            let equipment = await getServiceContract(cloudHost, account, company, activityID);
-
+           // let equipment = await getServiceContract(cloudHost, account, company, activityID);
+           getEquipments(cloudHost, account, company);
             //updateUI(equipment.externalId);
-          });
+          //});
         });
-      }
+      //}
     </script>
   </body>
 </html>

@@ -86,6 +86,39 @@ function getServiceContract(cloudHost, account, company, activity_id) {
   });
 }
 
+function getEquipments(cloudHost, account, company) {
+  
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Client-ID': 'fsm-extension-sample',
+    'X-Client-Version': '1.0.0',
+    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+  };
+
+  return new Promise(resolve => {
+
+    // Fetch Equipments object
+   
+  
+          // Fetch all ServiceContractEquipment
+          fetch(`https://${cloudHost}/api/data/v4/Equipment?dtos=Equipment.22&account=${account}&company=${company}`, {
+            headers
+            })
+              .then(response => response.json())
+              .then(function(json) {
+                    // Assuming you have your data in an array named 'myData'
+                    displayDataTable(json.data);
+                    resolve();
+
+
+
+              });
+
+        });
+
+  
+}
+
 function displayDataTable(data) {
                       // Create the table element
                       const table = document.createElement('table');
