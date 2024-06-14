@@ -104,7 +104,7 @@ function displayDataTable(data) {
                         const tableRow = document.createElement('tr');
                         for (const value in row) {
                           const cell = document.createElement('td');
-                          cell.textContent = row[value];
+                          cell.textContent = row[value].name;
                           tableRow.appendChild(cell);
                         }
                         
