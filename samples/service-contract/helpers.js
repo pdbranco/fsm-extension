@@ -57,7 +57,7 @@ function getServiceContract(cloudHost, account, company, activity_id) {
                     //resolve(json.data[0].equipment);
 
                     // Assuming you have your data in an array named 'myData'
-                    displayDataTable(json.data.equipment.externalId);
+                    displayDataTable(json.data);
                     resolve();
 
 
