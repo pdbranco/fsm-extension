@@ -113,8 +113,8 @@ function getEquipmentDetails(cloudHost, account, company, id) {
             })
               .then(response => response.json())
               .then(function(json) {
-                    // Assuming you have your data in an array named 'myData'
-                    displayDataTable(json.data);
+                    updateUI(json.data[0].equipment.name);
+                    updateUI(json.data[0].equipment.code);
                     resolve();
 
               });
