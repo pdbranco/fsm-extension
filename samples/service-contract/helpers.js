@@ -64,7 +64,7 @@ https://us.coresuite.com/api/query/v1?&dtos=Equipment.24
                     })
                       .then(response => response.json())
                       .then(function(json) {
-                        resolve(json.data);
+                        resolve(json.data[0]);
                       });
                 }*/
 
