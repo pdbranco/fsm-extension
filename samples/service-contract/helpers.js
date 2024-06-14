@@ -108,7 +108,7 @@ function getEquipmentDetails(cloudHost, account, company, id) {
   return new Promise(resolve => {
 
           // Fetch all ServiceContractEquipment
-          fetch(`https://${cloudHost}/api/data/v4/Equipment/externalid/${id}?dtos=Equipment.22&account=${account}&company=${company}`, {
+          fetch(`https://${cloudHost}/api/data/v4/Equipment/externalId/${id}?dtos=Equipment.22&account=${account}&company=${company}`, {
             headers
             })
               .then(response => response.json())
