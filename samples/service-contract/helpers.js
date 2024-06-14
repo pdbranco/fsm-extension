@@ -39,6 +39,8 @@ function getServiceContract(cloudHost, account, company, activity_id) {
   return new Promise(resolve => {
 
     // Fetch Activity object
+https://us.coresuite.com/api/query/v1?&dtos=Equipment.24
+    
     fetch(`https://${cloudHost}/api/data/v4/Activity/${activity_id}?dtos=Activity.37&account=${account}&company=${company}`, {
       headers
       })
@@ -47,14 +49,14 @@ function getServiceContract(cloudHost, account, company, activity_id) {
 
           const activity = json.data[0].activity;
           // Fetch all ServiceContractEquipment
-          fetch(`https://${cloudHost}/api/data/v4/ServiceContractEquipment?dtos=ServiceContractEquipment.12&account=${account}&company=${company}`, {
+          fetch(`https://${cloudHost}/api/data/v4/Equipment?dtos=Equipment.22&account=${account}&company=${company}`, {
             headers
             })
               .then(response => response.json())
               .then(function(json) {
-
-                const serviceContractEquipment = json.data.find(contract => contract.serviceContractEquipment.equipment === activity.equipment);
-                if (!serviceContractEquipment) {
+                    resolve(json.data);
+                //const serviceContractEquipment = json.data.find(contract => contract.serviceContractEquipment.equipment === activity.equipment);
+                /*if (!serviceContractEquipment) {
                   resolve(null);
                 } else {
                   fetch(`https://${cloudHost}/api/data/v4/ServiceContract/${serviceContractEquipment.serviceContractEquipment.serviceContract}?dtos=ServiceContract.13&account=${account}&company=${company}`, {
@@ -62,9 +64,9 @@ function getServiceContract(cloudHost, account, company, activity_id) {
                     })
                       .then(response => response.json())
                       .then(function(json) {
-                        resolve(json.data[0].serviceContract);
+                        resolve(json.data);
                       });
-                }
+                }*/
 
               });
 
