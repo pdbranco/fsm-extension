@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Service contract available</title>
+    <title>PUSH EVENT</title>
     <link href="https://unpkg.com/fundamental-styles@latest/dist/fundamental-styles.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
   </head>
@@ -23,7 +23,7 @@
 
         // Initialise the extension by requesting the fsm context
         shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_CONTEXT, {
-          clientIdentifier: 'service-contract',
+          clientIdentifier: 'push-event',
           auth: {
             response_type: 'token'  // request a user token within the context
           }
