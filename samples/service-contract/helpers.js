@@ -63,6 +63,7 @@ function getServiceContract(cloudHost, account, company, activity_id) {
   });
 }
 
+// GET ALL EQUIPMENTS
 function getEquipments(cloudHost, account, company) {
   
   const headers = {
@@ -96,6 +97,8 @@ function getEquipments(cloudHost, account, company) {
   
 }
 
+
+// GET EQUIPMENT DETAILS
 function getEquipmentDetails(cloudHost, account, company, id) {
   
   const headers = {
@@ -114,7 +117,7 @@ function getEquipmentDetails(cloudHost, account, company, id) {
               .then(response => response.json())
               .then(function(json) {
                     updateUI(json.data[0].equipment.name);
-                    updateUI(json.data[0].equipment.code);
+                    
                     resolve();
 
               });
@@ -124,6 +127,7 @@ function getEquipmentDetails(cloudHost, account, company, id) {
   
 }
 
+//FAZER PATCH
 function submitPushEvent(cloudHost, account, company) {
   
   const headers = {
@@ -153,7 +157,7 @@ function submitPushEvent(cloudHost, account, company) {
   
 }
 
-
+// BUILD TABLE 
 function displayDataTable(data) {
                       // Create the table element
                       const table = document.createElement('table')
@@ -189,6 +193,8 @@ function displayDataTable(data) {
                       document.body.appendChild(table);
 }
 
+
+// GET URL PARAMETERS
 function getParameters() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -196,6 +202,7 @@ function getParameters() {
   return(id)
 }
 
+// POPULATE DROPDOWN
 function populateDropdown() {
 
   const crewHQS = ['Apple', 'Banana', 'Orange', 'Mango'];
