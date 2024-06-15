@@ -156,7 +156,8 @@ function submitPushEvent(cloudHost, account, company) {
 
 function displayDataTable(data) {
                       // Create the table element
-                      const table = document.createElement('table');
+                      const table = document.createElement('table')
+                      table.setAttribute("id","itemList");
                       
                       // Create table header row
                       const headerRow = document.createElement('tr');
