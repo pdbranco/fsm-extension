@@ -160,13 +160,13 @@ function displayDataTable(data) {
                       table.setAttribute("id","itemList");
                       
                       // Create table header row
-                      const headerRow = document.createElement('tr');
+                      /*const headerRow = document.createElement('tr');
                       for (const key in data[0]) {
                         const headerCell = document.createElement('th');
                         headerCell.textContent = key;
                         headerRow.appendChild(headerCell);
                       }
-                      table.appendChild(headerRow);
+                      table.appendChild(headerRow);*/
                     
                       // Loop through data and create table rows
                       for (const row of data) {
