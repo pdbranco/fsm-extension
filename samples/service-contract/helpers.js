@@ -207,5 +207,17 @@ function populateDropdown() {
   }
 }
 
+// Function to filter table rows based on search term
+function filterTable() {
+  const searchTerm = searchInput.value.toLowerCase();
+  const tableRows = tableBody.querySelectorAll('tr');
+  for (const row of tableRows) {
+    const nameCell = row.children[0].textContent.toLowerCase();
+    const descriptionCell = row.children[1].textContent.toLowerCase();
+    const shouldShowRow = nameCell.includes(searchTerm) || descriptionCell.includes(searchTerm);
+    row.style.display = shouldShowRow ? '' : 'none';
+  }
+}
+
 
 

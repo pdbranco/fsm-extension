@@ -8,7 +8,7 @@
   </head>
   <body>
     <button id="createNewPushEvent">Create New Push Event</button>
-
+    <input type="text" id="searchInput" placeholder="Search Push Events">
     <script src="https://unpkg.com/fsm-shell"></script>
     <script src="helpers.js"></script>
     <script>
@@ -63,8 +63,13 @@
 
            // let equipment = await getServiceContract(cloudHost, account, company, activityID);
            getEquipments(cloudHost, account, company);
-           const createNewPushEventButton = document.getElementById('createNewPushEvent');
 
+
+           //Filter Table
+           const searchInput = document.getElementById('searchInput');
+           searchInput.addEventListener('keyup', filterTable); // Filter on every keyup
+
+           const createNewPushEventButton = document.getElementById('createNewPushEvent');
            createNewPushEventButton.addEventListener('click', function() {
               // Redirect to the details page for creating a new item
               window.location.href = "details.html?id=new"; // Replace with your actual details page URL
