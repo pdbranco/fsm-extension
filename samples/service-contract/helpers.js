@@ -124,7 +124,7 @@ function getEquipmentDetails(cloudHost, account, company, id) {
   
 }
 
-function submitPushEvent(cloudHost, account, company, id) {
+function submitPushEvent(cloudHost, account, company) {
   
   const headers = {
     'Content-Type': 'application/json',
@@ -152,52 +152,6 @@ function submitPushEvent(cloudHost, account, company, id) {
 
   
 }
-
-function submitPatchRequest(url, data, callback) {
-  const xhr = new XMLHttpRequest();
-
-  xhr.open('PATCH', url, true); // Open connection with PATCH method
-  xhr.setRequestHeader('Content-Type', 'application/json'); // Set content type for JSON data
-
-  xhr.onload = function() {
-    if (xhr.status === 200) {
-      if (callback) {
-        callback(null, JSON.parse(xhr.responseText)); // Call callback with successful response (parsed JSON)
-      }
-    } else {
-      if (callback) {
-        callback(new Error(`PATCH request failed with status: ${xhr.status}`)); // Call callback with error object
-      } else {
-        console.error(`PATCH request failed with status: ${xhr.status}`); // Log error message
-      }
-    }
-  };
-
-  xhr.onerror = function() {
-    if (callback) {
-      callback(new Error('Network error')); // Call callback with network error
-    } else {
-      console.error('Network error'); // Log network error message
-    }
-  };
-
-  xhr.send(JSON.stringify(data)); // Send the data as JSON string
-}
-
-// Example usage:
-const url = 'https://your-api.com/resources/123'; // Replace with your API endpoint
-const data = { name: 'Updated Name', description: 'New Description' }; // Modify data object
-
-submitPatchRequest(url, data, function(error, response) {
-  if (error) {
-    console.error('Error:', error);
-    // Handle error (e.g., display error message to user)
-  } else {
-    console.log('Success:', response);
-    // Handle successful response (e.g., update UI with new data)
-  }
-});
-
 
 
 function displayDataTable(data) {
