@@ -210,6 +210,10 @@ function populateDropdown() {
 
 // Function to filter table rows based on search term
 function filterTable() {
+
+  const tableBody = document.getElementById('itemList');
+  const searchInput = document.getElementById('searchInput');
+
   const searchTerm = searchInput.value.toLowerCase();
   const tableRows = tableBody.querySelectorAll('tr');
   for (const row of tableRows) {
