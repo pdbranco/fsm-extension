@@ -230,5 +230,48 @@ function filterTable() {
   }
 }
 
+//GET OBJECT PUSHEVENTS
+function getPushEvents(cloudHost, account, company) {
+  
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Client-ID': 'fsm-extension-sample',
+    'X-Client-Version': '1.0.0',
+    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+  };
+
+  return new Promise(resolve => {
+
+          fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
+            headers
+            })
+              .then(response => response.json())
+              .then(function(json) {
+                    displayDataTable(json.data);
+                    resolve();
+              });
+        });
+}
+
+//CREATE TABLE
+function displayDataTableBranco(data) {
+	// Create the table element
+	const table = document.createElement('table')
+	table.setAttribute("id","itemList");
+	
+	// Loop through data and create table rows
+	for (const row of data) {
+		const tableRow = document.createElement('tr');
+		for (const value in row) {
+			const cell = document.createElement('td');
+			cell.textContent = row[value].udfValues[0].value;
+			tableRow.appendChild(cell);
+	}
+	
+	table.appendChild(tableRow);
+	}
+	
+	document.body.appendChild(table);
+}
 
 
