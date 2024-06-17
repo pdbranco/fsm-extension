@@ -1,4 +1,4 @@
-// 
+// Teste Branco
 // Update html dom with provided string value
 //
 const updateUI = (text) =>
