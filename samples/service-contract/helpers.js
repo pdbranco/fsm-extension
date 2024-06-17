@@ -243,7 +243,9 @@ function getPushEvents(cloudHost, account, company) {
   return new Promise(resolve => {
 
           fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
-            headers
+            method: 'POST',
+            headers,
+            body: JSON.stringify({"query":"select pe.udfValues from UdoValue pe join UdoMeta ud on ud.id = pe.meta where ud.name = 'PushEvent'"}),
             })
               .then(response => response.json())
               .then(function(json) {
