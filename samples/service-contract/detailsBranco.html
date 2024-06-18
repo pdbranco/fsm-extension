@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Service contract available</title>
+    <title>Push Event</title>
     <link href="https://unpkg.com/fundamental-styles@latest/dist/fundamental-styles.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
   </head>
@@ -10,10 +10,10 @@
     <div>
       <h2 class="fd-title fd-title--h2" id="info">DETAILS</h2>
       <body>
-        <h1>CrewHQ</h1>
-        <select id="crewHQDropdown"></select>
-
         <form>
+            <label for="name">Name:</label>
+            <textarea id="name" name="name" rows="1"></textarea><br>
+          
             <label for="start_datetime">Start Date & Time:</label>
             <input type="datetime-local" id="start_datetime" name="start_datetime"><br>
         
@@ -25,12 +25,12 @@
         
             <label for="options1">Activity Status Affected:</label>
             <select id="options1" name="options1[]" multiple>
-              <option value="scheduled">Scheduled</option>
-              <option value="dispatched">Dispatched</option>
-              <option value="inprogress">In Progress</option>
-              <option value="enroute">Enroute</option>
-              <option value="onsite">Onsite</option>
-              <option value="hold">Hold/Suspended</option>
+              <option value="scheduled">Assigned</option>
+              <option value="dispatched">Hold/Suspended</option>
+              <option value="inprogress">Scheduled</option>
+              <option value="enroute">Onsite</option>
+              <option value="onsite">In Progress</option>
+              <option value="hold">Enroute</option>
             </select><br>
         
             <label for="description">CrewHQ Affected:</label>
@@ -38,25 +38,26 @@
 
             <label for="options2">MAT Code(s) Affected:</label>
             <select id="options2" name="options2[]" multiple>
-              <option value="valueA">Value A</option>
-              <option value="valueB">Value B</option>
-              <option value="valueC">Value C</option>
+              <option value="ACC">ACC</option>
+              <option value="ACU">ACU</option>
+              <option value="RIO">RIO</option>
+              <option value="WRU">WRU</option>
+              <option value="ACM">ACM</option>
+              <option value="NSO">NSO</option>
+              <option value="RIU">RIU</option>
             </select><br>
         
             <label for="flag1">Major Storm?:</label>
-            <input type="checkbox" id="flag1" name="flag1" value="true">
+            <input type="checkbox" id="MajorFlag" name="flag1" value="true">
             <br>
         
             <label for="flag2">Unassign Instead of Pushing:</label>
-            <input type="checkbox" id="flag2" name="flag2" value="true">
+            <input type="checkbox" id="UnassignFlag" name="flag2" value="true">
             <br>
         
             <button type="submit">Submit</button>
             <button type="button" onclick="window.history.back()">Cancel</button>
           </form>
-
-
-
       </body>
     </div>
     <script src="https://unpkg.com/fsm-shell"></script>
@@ -116,14 +117,15 @@
         event.preventDefault();
 
         // Access form data (modify based on your field names)
+        const name = document = document.getElementById('name').value;
         const startDateTime = document.getElementById('start_datetime').value;
         const endDateTime = document.getElementById('end_datetime').value;
         const quantity = document.getElementById('quantity').value;
         const options1Selected = Array.from(document.getElementById('options1').selectedOptions).map(option => option.value); // Get selected values from multiselect
         const options2Selected = Array.from(document.getElementById('options2').selectedOptions).map(option => option.value);
         const description = document.getElementById('description').value;
-        const flag1Checked = document.getElementById('flag1').checked;
-        const flag2Checked = document.getElementById('flag2').checked;
+        const flag1Checked = document.getElementById('MajorFlag').checked;
+        const flag2Checked = document.getElementById('UnassignFlag').checked;
 
   // Process form data (replace with your logic)
   console.log("Start Date & Time:", startDateTime);
