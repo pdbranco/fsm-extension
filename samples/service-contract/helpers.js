@@ -465,38 +465,24 @@ function submitPushEventBranco2(cloudHost, account, company, id, document) {
     };
 
     return new Promise((resolve, reject) => {
-        if (id) {
-            // Perform PATCH request if ID exists
-            fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?dtos=UdoValue.10&account=${account}&company=${company}&forceUpdate=true`, {
-                method: 'PATCH',
-                headers,
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
-            .then(json => {
-                alert("Form updated successfully!");
-                resolve(json);
-            })
-            .catch(error => {
-                console.error('Error updating form:', error);
-                reject(error);
-            });
-        } else {
-            // Perform POST request if ID does not exist
-            fetch(`https://${cloudHost}/api/data/v4/UdoValue?dtos=UdoValue.10&account=${account}&company=${company}`, {
-                method: 'POST',
-                headers,
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
-            .then(json => {
-                alert("Form submitted successfully!");
-                resolve(json);
-            })
-            .catch(error => {
-                console.error('Error submitting form:', error);
-                reject(error);
-            });
-        }
+        const url = id === 'new' ? 
+            `https://${cloudHost}/api/data/v4/UdoValue?dtos=UdoValue.10&account=${account}&company=${company}` : 
+            `https://${cloudHost}/api/data/v4/UdoValue/${id}?dtos=UdoValue.10&account=${account}&company=${company}&forceUpdate=true`;
+        const method = id === 'new' ? 'POST' : 'PATCH';
+
+        fetch(url, {
+            method,
+            headers,
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(json => {
+            alert(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
+            resolve(json); // Resolve the promise with the server response
+        })
+        .catch(error => {
+            console.error(`Error ${id === 'new' ? 'submitting' : 'updating'} form:`, error);
+            reject(error); // Reject the promise with the error
+        });
     });
 }
