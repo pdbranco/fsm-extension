@@ -329,9 +329,59 @@ async function getPushEventDetails2(cloudHost, account, company, id) {
     }
 
     const json = await response.json();
-    updateUI(json.data[0].pe.udfValues[0].value);
+    // CALL THE FUNCTION TO FILL IN THE FORM
+    prefillForm(json);
+    //updateUI(json.data[0].pe.udfValues[0].value);
+	
   } catch (error) {
     console.error('Failed to fetch push event details:', error);
   }
 }
 
+// FUNCTION TO PRE-FILL THE FORM
+function prefillForm(data) {
+    const form = document.getElementById('myForm');
+    const values = data.data[0].pe.udfValues;
+
+    values.forEach(item => {
+        switch (item.name) {
+            case 'pushEvent_Name':
+                form.elements['name'].value = item.value;
+                break;
+            case 'pushEvent_StartTime':
+                form.elements['start_datetime'].value = item.value.substring(0, 16); // Remove the 'Z' for compatibility
+                break;
+            case 'pushEvent_EndTime':
+                form.elements['end_datetime'].value = item.value.substring(0, 16); // Remove the 'Z' for compatibility
+                break;
+            case 'pushEvent_PushInterval':
+                form.elements['quantity'].value = item.value;
+                break;
+            case 'pushEvent_Status':
+                const options1 = Array.from(form.elements['options1[]'].options);
+                options1.forEach(option => {
+                    if (option.text === item.value) {
+                        option.selected = true;
+                    }
+                });
+                break;
+            case 'pushEvent_CrewHQ':
+                form.elements['description'].value = item.value;
+                break;
+            case 'pushEvent_WorkType':
+                const options2 = Array.from(form.elements['options2[]'].options);
+                options2.forEach(option => {
+                    if (option.value === item.value) {
+                        option.selected = true;
+                    }
+                });
+                break;
+            case 'pushEvent_MajorStorm':
+                form.elements['MajorFlag'].checked = item.value === 'true';
+                break;
+            case 'pushEvent_Unassign':
+                form.elements['UnassignFlag'].checked = item.value === 'true';
+                break;
+        }
+    });
+}
