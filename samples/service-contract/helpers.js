@@ -385,3 +385,38 @@ function prefillForm(data) {
         }
     });
 }
+
+//UPDATE PUSH EVENT
+function submitPushEventBranco(cloudHost, account, company, id) {
+  
+	const headers = {
+	'Content-Type': 'application/json',
+	'X-Client-ID': 'fsm-extension-sample',
+	'X-Client-Version': '1.0.0',
+	'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+	};
+  
+	const name = document.getElementById('name').value;
+	const startDateTime = document.getElementById('start_datetime').value;
+	const endDateTime = document.getElementById('end_datetime').value;
+	const quantity = document.getElementById('quantity').value;
+	const options1Selected = Array.from(document.getElementById('options1').selectedOptions).map(option => option.value);
+	const options2Selected = Array.from(document.getElementById('options2').selectedOptions).map(option => option.value);
+	const description = document.getElementById('description').value;
+	const flag1Checked = document.getElementById('MajorFlag').checked;
+	const flag2Checked = document.getElementById('UnassignFlag').checked;
+
+	return new Promise(resolve => {
+	// Patch PushEvent
+	fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?dtos=UdoValue.10&account=${account}&company=${company}&forceUpdate=true`, {
+		method: 'PATCH',
+		headers,
+		body: JSON.stringify({ name: 'agorafoi' }),
+		})
+		.then(response => response.json())
+		.then(function(json) {
+				alert("Form submitted successfully!"); 
+				resolve();
+		});
+	});
+}
