@@ -101,15 +101,9 @@
            * the time left in seconds.
            */
           initializeRefreshTokenStrategy(shellSdk, auth);
-
           var id = getParameters();
 
-          //getCrewHQ(cloudHost, account, company);
-
           getPushEventDetails(cloudHost, account, company,id);
-        
-          populateDropdown();
-
           const form = document.querySelector('form'); // Get the form element
 
     form.addEventListener('submit', function(event) {
