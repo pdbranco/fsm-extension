@@ -387,7 +387,7 @@ function prefillForm(data) {
 }
 
 //UPDATE PUSH EVENT
-function submitPushEventBranco(cloudHost, account, company, id) {
+function submitPushEventBranco(cloudHost, account, company, id, document) {
   
 	const headers = {
 	'Content-Type': 'application/json',
