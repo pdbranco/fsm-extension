@@ -307,4 +307,31 @@ function getPushEventDetails(cloudHost, account, company, id) {
         });
 }
 
+// GET PUSHEVENT DETAILS ASSYNC
+async function getPushEventDetails2(cloudHost, account, company, id) {
+  
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Client-ID': 'fsm-extension-sample',
+    'X-Client-Version': '1.0.0',
+    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+  };
+
+  try {
+    const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoValue.10`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({"query": `select pe.id, pe.udfValues from UdoValue pe where pe.id = '${id}'`})
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    const json = await response.json();
+    updateUI(json.data[0].pe.udfValues[0].value);
+  } catch (error) {
+    console.error('Failed to fetch push event details:', error);
+  }
+}
 
