@@ -269,6 +269,11 @@ function displayDataTableBranco(data) {
 			cell.textContent = row[value].udfValues[0].value;
 			tableRow.appendChild(cell);
 	}
+
+	// Add click event listener to each row for redirection
+    	tableRow.addEventListener('click', () => {
+      	window.location.href = `detailsBranco.html?id=${row.pe.id}`; // Replace "id" with your unique identifier
+    	});
 	
 	table.appendChild(tableRow);
 	}
