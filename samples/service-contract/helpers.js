@@ -301,7 +301,7 @@ function getPushEventDetails(cloudHost, account, company, id) {
             })
               .then(response => response.json())
               .then(function(json) {
-                    updateUI(json.data[0].equipment.name);
+                    updateUI(json.data[0].pe.udfValues[0].value);
                     
                     resolve();
               });
