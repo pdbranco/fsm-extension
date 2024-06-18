@@ -103,27 +103,24 @@
           initializeRefreshTokenStrategy(shellSdk, auth);
           var id = getParameters();
 
-          getPushEventDetails2(cloudHost, account, company,id);
+          getPushEventDetails2(cloudHost, account, company, id);
           const form = document.querySelector('form'); // Get the form element
 
           form.addEventListener('submit', function(event) {
                // Prevent default form submission behavior
               event.preventDefault();
-      
-              // Access form data (modify based on your field names)
-              const name = document = document.getElementById('name').value;
-              const startDateTime = document.getElementById('start_datetime').value;
-              const endDateTime = document.getElementById('end_datetime').value;
-              const quantity = document.getElementById('quantity').value;
-              const options1Selected = Array.from(document.getElementById('options1').selectedOptions).map(option => option.value); // Get selected values from multiselect
-              const options2Selected = Array.from(document.getElementById('options2').selectedOptions).map(option => option.value);
-              const description = document.getElementById('description').value;
-              const flag1Checked = document.getElementById('MajorFlag').checked;
-              const flag2Checked = document.getElementById('UnassignFlag').checked;
-      
-              // Example: Display a confirmation message
-              alert("Form submitted successfully!");
-              // submitPushEvent(cloudHost, account, company);
+            
+              //const name = document.getElementById('name').value;
+              //const startDateTime = document.getElementById('start_datetime').value;
+              //const endDateTime = document.getElementById('end_datetime').value;
+              //const quantity = document.getElementById('quantity').value;
+              //const options1Selected = Array.from(document.getElementById('options1').selectedOptions).map(option => option.value); // Get selected values from multiselect
+              //const options2Selected = Array.from(document.getElementById('options2').selectedOptions).map(option => option.value);
+              //const description = document.getElementById('description').value;
+              //const flag1Checked = document.getElementById('MajorFlag').checked;
+              //const flag2Checked = document.getElementById('UnassignFlag').checked;
+            
+              submitPushEventBranco(cloudHost, account, company, id, document);
       
           });          
     });
