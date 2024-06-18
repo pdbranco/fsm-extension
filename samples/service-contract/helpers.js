@@ -296,7 +296,7 @@ function getPushEventDetails(cloudHost, account, company, id) {
           fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoValue.10`, {
             method: 'POST',
             headers,
-            body: JSON.stringify({"query":"select pe.id, pe.udfValues from UdoValue pe where pe.id = '${id}'"}),
+            body: JSON.stringify({"query":"select pe.id, pe.udfValues from UdoValue pe where pe.id = 'E28C10AC5A5842E08160D8758D979A8C'"})
             })
               .then(response => response.json())
               .then(function(json) {
