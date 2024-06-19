@@ -270,7 +270,7 @@ function displayDataTableBranco(data) {
 	// Loop through data and create table rows
 	for (const row of data) {
 		const tableRow = document.createElement('tr');
-		for (const value in row) {
+		for (const value in row.pe) {
 			const cell = document.createElement('td');
 			cell.textContent = row[value].udfValues[0].value;
 			tableRow.appendChild(cell);
