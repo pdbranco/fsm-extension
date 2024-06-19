@@ -268,12 +268,27 @@ function displayDataTableBranco(data) {
 	table.setAttribute("id","itemList");
 	
 	// Loop through data and create table rows
-	for (const row of data) {
-		const tableRow = document.createElement('tr');
-		for (const value in row.pe) {
-			const cell = document.createElement('td');
-			cell.textContent = row.pe.udfValues[0].value;
-			tableRow.appendChild(cell);
+	// for (const row of data) {
+	//	const tableRow = document.createElement('tr');
+	//	for (const value in row.pe) {
+	//		const cell = document.createElement('td');
+	//		cell.textContent = row.pe.udfValues[0].value;
+	//		tableRow.appendChild(cell);
+
+	data.forEach(obj => {
+    		if (obj.hasOwnProperty('pe')) {
+        		const peValues = obj.pe.udfValues;
+        		const tableRow = document.createElement('tr');
+
+        		peValues.forEach(udfValue => {
+            			const cell = document.createElement('td');
+            			cell.textContent = udfValue.value;
+            			tableRow.appendChild(cell);
+        		});
+        		table.appendChild(tableRow);
+    		}
+	});
+
 	}
 
 	// Add click event listener to each row for redirection
