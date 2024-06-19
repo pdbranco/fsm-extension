@@ -102,8 +102,10 @@
            */
           initializeRefreshTokenStrategy(shellSdk, auth);
           var id = getParameters();
-
-          getPushEventDetails2(cloudHost, account, company, id);
+          
+          if(id != 'new')
+            getPushEventDetails2(cloudHost, account, company, id);
+          
           const form = document.querySelector('form'); // Get the form element
 
           form.addEventListener('submit', function(event) {
