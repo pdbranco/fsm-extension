@@ -252,7 +252,7 @@ function getPushEvents(cloudHost, account, company) {
             })
               .then(response => response.json())
               .then(function(json) {
-                    displayDataTableBranco(json.data);
+                    displayDataTableBranco2(json.data);
                     resolve();
               });
         });
