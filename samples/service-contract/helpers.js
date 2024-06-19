@@ -291,6 +291,8 @@ function displayDataTableBranco(data) {
 function displayDataTableBranco2(data) {
     if (data.length === 0) return;
 
+    idMeta = data[0].ud.id;
+
     // Create the table element
     const table = document.createElement('table');
     table.setAttribute("id", "itemList");
@@ -300,19 +302,20 @@ function displayDataTableBranco2(data) {
         const row = item.pe; // Accessing 'pe' object from each item in 'data'
         const tableRow = document.createElement('tr');
 
-        // Loop through 'udfValues' array to create cells
-        for (const udfValue of row.udfValues) {
+	// Find the udfValue with name 'pushEvent_Name'
+        const udfNameValue = row.udfValues.find(value => value.name === 'pushEvent_Name');
+
+        if (udfNameValue) {
+            // Create cell for 'pushEvent_Name' value
             const cell = document.createElement('td');
-            cell.textContent = udfValue.value;
+            cell.textContent = udfNameValue.value;
             tableRow.appendChild(cell);
+
+            // Add click event listener to each row for redirection
+            tableRow.addEventListener('click', () => {window.location.href = `detailsBranco.html?id=${row.id}`;});
+
+            table.appendChild(tableRow);
         }
-
-        // Add click event listener to each row for redirection
-        tableRow.addEventListener('click', () => {
-            window.location.href = `detailsBranco.html?id=${row.id}`;
-        });
-
-        table.appendChild(tableRow);
     }
 
     document.body.appendChild(table);
