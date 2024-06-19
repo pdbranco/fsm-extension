@@ -1,6 +1,3 @@
-// Variable that will be populated with the ID of the custom object (PushEvent)
-let idMeta; 
-
 //
 // Update html dom with provided string value
 //
@@ -290,8 +287,8 @@ function displayDataTableBranco(data) {
 //CREATE TABLE
 function displayDataTableBranco2(data) {
     if (data.length === 0) return;
-
-    idMeta = data[0].ud.id;
+	
+    sessionStorage.setItem('idMeta', data[0].ud.id);
 
     // Create the table element
     const table = document.createElement('table');
@@ -492,7 +489,7 @@ function submitPushEventBranco2(cloudHost, account, company, id, document) {
     const flagUnassign = document.getElementById('UnassignFlag').checked;
 
     const data = {
-	"meta": `${idMeta}`,
+	"meta": `${sessionStorage.getItem('idMeta')}`,
         "udfValues": [
             {"meta": {"externalId": "pushEvent_Name"}, "value": `${name}`},
             {"meta": {"externalId": "pushEvent_StartTime"}, "value": `${startDateTime}`},
