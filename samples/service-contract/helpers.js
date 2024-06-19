@@ -272,7 +272,7 @@ function displayDataTableBranco(data) {
 		const tableRow = document.createElement('tr');
 		for (const value in row.pe) {
 			const cell = document.createElement('td');
-			cell.textContent = row[pe].udfValues[0].value;
+			cell.textContent = row.pe.udfValues[0].value;
 			tableRow.appendChild(cell);
 	}
 
