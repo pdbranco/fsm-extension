@@ -540,7 +540,8 @@ function populateSelect(selectId, options) {
     }
 }
 
-function populateComboBox(data) {
+function populateComboBox(response) {
+    const data = response.data;
     data.forEach(item => {
         const { selectionKeyValues, externalId } = item.meta;
 
