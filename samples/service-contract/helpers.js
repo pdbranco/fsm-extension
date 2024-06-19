@@ -525,3 +525,59 @@ function submitPushEventBranco2(cloudHost, account, company, id, document) {
         });
     });
 }
+
+function populateSelect(selectId, options) {
+    const selectElement = document.getElementById(selectId);
+    selectElement.innerHTML = ''; // Clear any existing options
+
+    for (const key in options) {
+        if (options.hasOwnProperty(key)) {
+            const option = document.createElement('option');
+            option.value = key;
+            option.text = options[key];
+            selectElement.appendChild(option);
+        }
+    }
+}
+
+function populateComboBox(data) {
+    data.forEach(item => {
+        const { selectionKeyValues, externalId } = item.meta;
+
+        if (externalId === 'pushEvent_Status') {
+            populateSelect('options1', selectionKeyValues);
+        } else if (externalId === 'pushEvent_WorkType') {
+            populateSelect('options2', selectionKeyValues);
+        }
+    });
+}
+
+// GET OPTIONS MATCODE AND ACTIVITY STATUS ASSYNC
+async function getOptionMatCodeAndStatus(cloudHost, account, company) {
+  
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Client-ID': 'fsm-extension-sample',
+    'X-Client-Version': '1.0.0',
+    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+  };
+
+  try {
+    const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdfMeta.20`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({"query":"select meta.externalId, meta.selectionKeyValues from UdfMeta meta where meta.externalId in ('pushEvent_Status','pushEvent_WorkType')"})
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    const json = await response.json();
+    // CALL THE FUNCTION TO FILL IN THE COMBOBOX
+    populateComboBox(json);
+	
+  } catch (error) {
+    console.error('Failed to fetch push event details:', error);
+  }
+}
