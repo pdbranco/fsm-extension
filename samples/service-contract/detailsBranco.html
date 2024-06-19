@@ -24,28 +24,13 @@
             <input type="number" id="quantity" name="quantity"><br>
         
             <label for="options1">Activity Status Affected:</label>
-            <select id="options1" name="options1[]" multiple>
-              <option value="scheduled">Assigned</option>
-              <option value="dispatched">Hold/Suspended</option>
-              <option value="inprogress">Scheduled</option>
-              <option value="enroute">Onsite</option>
-              <option value="onsite">In Progress</option>
-              <option value="hold">Enroute</option>
-            </select><br>
+            <select id="options1" name="options1[]" multiple></select><br>
         
             <label for="description">CrewHQ Affected:</label>
             <textarea id="description" name="description" rows="3"></textarea><br>
 
             <label for="options2">MAT Code(s) Affected:</label>
-            <select id="options2" name="options2[]" multiple>
-              <option value="ACC">ACC</option>
-              <option value="ACU">ACU</option>
-              <option value="RIO">RIO</option>
-              <option value="WRU">WRU</option>
-              <option value="ACM">ACM</option>
-              <option value="NSO">NSO</option>
-              <option value="RIU">RIU</option>
-            </select><br>
+            <select id="options2" name="options2[]" multiple></select><br>
         
             <label for="flag1">Major Storm?:</label>
             <input type="checkbox" id="MajorFlag" name="flag1" value="true">
@@ -101,8 +86,10 @@
            * the time left in seconds.
            */
           initializeRefreshTokenStrategy(shellSdk, auth);
-          var id = getParameters();
+
+          getOptionMatCodeAndStatus(cloudHost, account, company);
           
+          var id = getParameters();          
           if(id != 'new')
             getPushEventDetails2(cloudHost, account, company, id);
           
@@ -111,17 +98,7 @@
           form.addEventListener('submit', function(event) {
                // Prevent default form submission behavior
               event.preventDefault();
-            
-              //const name = document.getElementById('name').value;
-              //const startDateTime = document.getElementById('start_datetime').value;
-              //const endDateTime = document.getElementById('end_datetime').value;
-              //const quantity = document.getElementById('quantity').value;
-              //const options1Selected = Array.from(document.getElementById('options1').selectedOptions).map(option => option.value); // Get selected values from multiselect
-              //const options2Selected = Array.from(document.getElementById('options2').selectedOptions).map(option => option.value);
-              //const description = document.getElementById('description').value;
-              //const flag1Checked = document.getElementById('MajorFlag').checked;
-              //const flag2Checked = document.getElementById('UnassignFlag').checked;
-            
+              
               submitPushEventBranco2(cloudHost, account, company, id, document);
       
           });          
