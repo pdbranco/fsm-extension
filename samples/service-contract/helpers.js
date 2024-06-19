@@ -1,3 +1,7 @@
+// Variable that will be populated with the ID of the custom object (PushEvent)
+let idMeta; 
+
+//
 // Update html dom with provided string value
 //
 const updateUI = (text) =>
@@ -244,7 +248,7 @@ function getPushEvents(cloudHost, account, company) {
           fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
             method: 'POST',
             headers,
-            body: JSON.stringify({"query":"select pe.id, pe.udfValues from UdoValue pe join UdoMeta ud on ud.id = pe.meta where ud.name = 'PushEvent'"}),
+            body: JSON.stringify({"query":"select pe.id, pe.udfValues, ud.id from UdoValue pe join UdoMeta ud on ud.id = pe.meta where ud.name = 'PushEvent'"}),
             })
               .then(response => response.json())
               .then(function(json) {
@@ -254,8 +258,11 @@ function getPushEvents(cloudHost, account, company) {
         });
 }
 
+
 //CREATE TABLE
 function displayDataTableBranco(data) {
+	idMeta = data[0].ud.id;
+	
 	// Create the table element
 	const table = document.createElement('table')
 	table.setAttribute("id","itemList");
