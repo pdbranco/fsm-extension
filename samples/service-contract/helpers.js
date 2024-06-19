@@ -492,6 +492,7 @@ function submitPushEventBranco2(cloudHost, account, company, id, document) {
     const flagUnassign = document.getElementById('UnassignFlag').checked;
 
     const data = {
+	"meta": `${idMeta}`,
         "udfValues": [
             {"meta": {"externalId": "pushEvent_Name"}, "value": `${name}`},
             {"meta": {"externalId": "pushEvent_StartTime"}, "value": `${startDateTime}`},
