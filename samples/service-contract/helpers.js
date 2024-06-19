@@ -287,6 +287,37 @@ function displayDataTableBranco(data) {
 	document.body.appendChild(table);
 }
 
+//CREATE TABLE
+function displayDataTableBranco2(data) {
+    if (data.length === 0) return;
+
+    // Create the table element
+    const table = document.createElement('table');
+    table.setAttribute("id", "itemList");
+
+    // Loop through data and create table rows
+    for (const item of data) {
+        const row = item.pe; // Accessing 'pe' object from each item in 'data'
+        const tableRow = document.createElement('tr');
+
+        // Loop through 'udfValues' array to create cells
+        for (const udfValue of row.udfValues) {
+            const cell = document.createElement('td');
+            cell.textContent = udfValue.value;
+            tableRow.appendChild(cell);
+        }
+
+        // Add click event listener to each row for redirection
+        tableRow.addEventListener('click', () => {
+            window.location.href = `detailsBranco.html?id=${row.id}`;
+        });
+
+        table.appendChild(tableRow);
+    }
+
+    document.body.appendChild(table);
+}
+
 // GET PUSHEVENT DETAILS
 function getPushEventDetails(cloudHost, account, company, id) {
   
