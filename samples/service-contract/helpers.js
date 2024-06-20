@@ -370,7 +370,7 @@ function prefillForm(data) {
 		const selectedValues = item.value.split(',');
 		selectedValues.forEach(selectedValue => {	
 	                options1.forEach(option => {
-	                    if (option.text === item.value) {
+	                    if (option.text.trim() === selectedValue.trim()) {
 	                        option.selected = true;
 	                    }
 	                });
