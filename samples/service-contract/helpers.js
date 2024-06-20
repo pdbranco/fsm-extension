@@ -381,11 +381,14 @@ function prefillForm(data) {
                 break;
             case 'pushEvent_WorkType':
                 const options2 = Array.from(form.elements['options2[]'].options);
-                options2.forEach(option => {
-                    if (option.value === item.value) {
-                        option.selected = true;
-                    }
-                });
+		const selectedValues2 = item.value.split(',');
+		selectedValues2.forEach(selectedValue => {
+	                options2.forEach(option => {
+	                    if (option.text.trim() === selectedValue.trim()) {
+	                        option.selected = true;
+	                    }
+	                });
+		});
                 break;
             case 'pushEvent_MajorStorm':
                 form.elements['MajorFlag'].checked = item.value === 'true';
