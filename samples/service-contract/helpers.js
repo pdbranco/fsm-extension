@@ -582,3 +582,22 @@ async function getOptionMatCodeAndStatus(cloudHost, account, company) {
     console.error('Failed to fetch push event details:', error);
   }
 }
+
+// VALIDATION OF MANDATORY FIELDS
+function validateForm() {
+    if (!name) return 'Name is mandatory';
+    if (!startDateTime) return 'Start Date & Time is mandatory';
+    if (!endDateTime) return 'End Date & Time is mandatory';
+    if (!quantity) return 'Days to Push Work Forward is mandatory';
+    if (options1Selected.length === 0) return 'At least one option must be selected under Activity Status Affected';
+    if (options2Selected.length === 0) return 'At least one option must be selected under MAT Code(s) Affected';
+    if (!description) return 'CrewHQ Affected is mandatory';
+    return null;
+}
+
+// EXECUTE VALIDATION OF MANDATORY FIELDS
+const validationError = validateForm();
+if (validationError) {
+    alert(validationError); // Displays the error message
+    return; // Prevents form submission
+}
