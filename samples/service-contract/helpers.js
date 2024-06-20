@@ -425,52 +425,6 @@ function prefillForm(data) {
 }
 
 function submitPushEventBranco(cloudHost, account, company, id, document) {
-  
-	const headers = {
-		'Content-Type': 'application/json',
-		'X-Client-ID': 'fsm-extension-sample',
-		'X-Client-Version': '1.0.0',
-		'Authorization': `bearer ${sessionStorage.getItem('token')}`,
-	};
-  
-	const name = document.getElementById('name').value;
-	const startDateTime = document.getElementById('start_datetime').value;
-	const endDateTime = document.getElementById('end_datetime').value;
-	const quantity = document.getElementById('quantity').value;
-	const options1Selected = Array.from(document.getElementById('options1').selectedOptions).map(option => option.value);
-	const options2Selected = Array.from(document.getElementById('options2').selectedOptions).map(option => option.value);
-	const description = document.getElementById('description').value;
-	const flagMajor = document.getElementById('MajorFlag').checked;
-	const flagUnassign = document.getElementById('UnassignFlag').checked;
-
-	return new Promise(resolve => {
-		// Patch PushEvent
-		fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?dtos=UdoValue.10&account=${account}&company=${company}&forceUpdate=true`, {
-			method: 'PATCH',
-			headers,
-			body: JSON.stringify({
-				"udfValues": [
-					{"meta": {"externalId": "pushEvent_Name"}, "value": `${name}`},
-					{"meta": {"externalId": "pushEvent_StartTime"}, "value": `${startDateTime}`},
-					{"meta": {"externalId": "pushEvent_EndTime"}, "value": `${endDateTime}`},
-					{"meta": {"externalId": "pushEvent_PushInterval"}, "value": `${quantity}`},
-					{"meta": {"externalId": "pushEvent_Status"}, "value": `${options1Selected}`},
-					{"meta": {"externalId": "pushEvent_CrewHQ"}, "value": `${options2Selected}`},
-					{"meta": {"externalId": "pushEvent_WorkType"}, "value": `${description}`},
-					{"meta": {"externalId": "pushEvent_MajorStorm"}, "value": `${flagMajor}`},
-					{"meta": {"externalId": "pushEvent_Unassign"}, "value": `${flagUnassign}`}
-				]
-			}),
-		})
-		.then(response => response.json())
-		.then(function(json) {
-			alert("Form submitted successfully!"); 
-			resolve();
-		});
-	});
-}
-
-function submitPushEventBranco2(cloudHost, account, company, id, document) {
     const headers = {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-sample',
@@ -503,8 +457,8 @@ function submitPushEventBranco2(cloudHost, account, company, id, document) {
             {"meta": {"externalId": "pushEvent_EndTime"}, "value": `${endDateTime}`},
             {"meta": {"externalId": "pushEvent_PushInterval"}, "value": `${quantity}`},
             {"meta": {"externalId": "pushEvent_Status"}, "value": `${options1Selected}`},
-            {"meta": {"externalId": "pushEvent_CrewHQ"}, "value": `${description}`},
             {"meta": {"externalId": "pushEvent_WorkType"}, "value": `${options2Selected}`},
+	    {"meta": {"externalId": "pushEvent_CrewHQ"}, "value": `${description}`},
             {"meta": {"externalId": "pushEvent_MajorStorm"}, "value": `${flagMajor}`},
             {"meta": {"externalId": "pushEvent_Unassign"}, "value": `${flagUnassign}`}
         ]
