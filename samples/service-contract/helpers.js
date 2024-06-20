@@ -255,37 +255,8 @@ function getPushEvents(cloudHost, account, company) {
         });
 }
 
-
 //CREATE TABLE
 function displayDataTableBranco(data) {
-	idMeta = data[0].ud.id;
-	
-	// Create the table element
-	const table = document.createElement('table')
-	table.setAttribute("id","itemList");
-	
-	// Loop through data and create table rows
-	for (const row of data) {
-		const tableRow = document.createElement('tr');
-		for (const value in row.pe) {
-			const cell = document.createElement('td');
-			cell.textContent = row.pe.udfValues[0].value;
-			tableRow.appendChild(cell);
-	}
-
-	// Add click event listener to each row for redirection
-    	tableRow.addEventListener('click', () => {
-      	window.location.href = `detailsBranco.html?id=${row.pe.id}`; // Replace "id" with your unique identifier
-    	});
-	
-	table.appendChild(tableRow);
-	}
-	
-	document.body.appendChild(table);
-}
-
-//CREATE TABLE
-function displayDataTableBranco2(data) {
     if (data.length === 0) return;
 	
     sessionStorage.setItem('idMeta', data[0].ud.id);
@@ -314,7 +285,6 @@ function displayDataTableBranco2(data) {
             table.appendChild(tableRow);
         }
     }
-
     document.body.appendChild(table);
 }
 
@@ -479,6 +449,7 @@ function submitPushEventBranco(cloudHost, account, company, id, document) {
         .then(json => {
             alert(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
             resolve(json); // Resolve the promise with the server response
+	    history.back();
         })
         .catch(error => {
             console.error(`Error ${id === 'new' ? 'submitting' : 'updating'} form:`, error);
