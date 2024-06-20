@@ -489,7 +489,7 @@ function submitPushEventBranco2(cloudHost, account, company, id, document) {
     const flagUnassign = document.getElementById('UnassignFlag').checked;
 
     // EXECUTE VALIDATION OF MANDATORY FIELDS
-    const validationError = validateForm();
+    const validationError = validateForm(name, startDateTime, endDateTime, quantity, options1Selected, options2Selected, description);
     if (validationError) {
 	alert(validationError); // Displays the error message
 	return; // Prevents form submission
@@ -591,7 +591,7 @@ async function getOptionMatCodeAndStatus(cloudHost, account, company) {
 }
 
 // VALIDATION OF MANDATORY FIELDS
-function validateForm() {
+function validateForm(name, startDateTime, endDateTime, quantity, options1Selected, options2Selected, description) {
     if (!name) return 'Name is mandatory';
     if (!startDateTime) return 'Start Date & Time is mandatory';
     if (!endDateTime) return 'End Date & Time is mandatory';
