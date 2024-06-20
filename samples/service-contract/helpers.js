@@ -488,6 +488,13 @@ function submitPushEventBranco2(cloudHost, account, company, id, document) {
     const flagMajor = document.getElementById('MajorFlag').checked;
     const flagUnassign = document.getElementById('UnassignFlag').checked;
 
+    // EXECUTE VALIDATION OF MANDATORY FIELDS
+    const validationError = validateForm();
+    if (validationError) {
+	alert(validationError); // Displays the error message
+	return; // Prevents form submission
+    }
+
     const data = {
 	"meta": `${sessionStorage.getItem('idMeta')}`,
         "udfValues": [
@@ -593,11 +600,4 @@ function validateForm() {
     if (options2Selected.length === 0) return 'At least one option must be selected under MAT Code(s) Affected';
     if (!description) return 'CrewHQ Affected is mandatory';
     return null;
-}
-
-// EXECUTE VALIDATION OF MANDATORY FIELDS
-const validationError = validateForm();
-if (validationError) {
-    alert(validationError); // Displays the error message
-    return; // Prevents form submission
 }
