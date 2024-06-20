@@ -458,6 +458,72 @@ function submitPushEventBranco(cloudHost, account, company, id, document) {
     });
 }
 
+async function submitPushEventBrancoAsync(cloudHost, account, company, id, document) {
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-Client-ID': 'fsm-extension-sample',
+        'X-Client-Version': '1.0.0',
+        'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+    };
+	
+	const url = id === 'new' ? 
+	`https://${cloudHost}/api/data/v4/UdoValue?dtos=UdoValue.10&account=${account}&company=${company}` : 
+	`https://${cloudHost}/api/data/v4/UdoValue/${id}?dtos=UdoValue.10&account=${account}&company=${company}&forceUpdate=true`;
+	
+	const method = id === 'new' ? 'POST' : 'PATCH';
+
+    const name = document.getElementById('name').value;
+    const startDateTime = document.getElementById('start_datetime').value;
+    const endDateTime = document.getElementById('end_datetime').value;
+    const quantity = document.getElementById('quantity').value;
+    const options1Selected = Array.from(document.getElementById('options1').selectedOptions).map(option => option.value);
+    const options2Selected = Array.from(document.getElementById('options2').selectedOptions).map(option => option.value);
+    const description = document.getElementById('description').value;
+    const flagMajor = document.getElementById('MajorFlag').checked;
+    const flagUnassign = document.getElementById('UnassignFlag').checked;
+
+    // Execute validation of mandatory fields
+    const validationError = validateForm(name, startDateTime, endDateTime, quantity, options1Selected, options2Selected, description);
+    if (validationError) {
+		alert(validationError); // Displays the error message
+		return; // Prevents form submission
+    }
+
+    const data = {
+		"meta": `${sessionStorage.getItem('idMeta')}`,
+        "udfValues": [
+            {"meta": {"externalId": "pushEvent_Name"}, "value": `${name}`},
+            {"meta": {"externalId": "pushEvent_StartTime"}, "value": `${startDateTime}`},
+            {"meta": {"externalId": "pushEvent_EndTime"}, "value": `${endDateTime}`},
+            {"meta": {"externalId": "pushEvent_PushInterval"}, "value": `${quantity}`},
+            {"meta": {"externalId": "pushEvent_Status"}, "value": `${options1Selected}`},
+            {"meta": {"externalId": "pushEvent_WorkType"}, "value": `${options2Selected}`},
+			{"meta": {"externalId": "pushEvent_CrewHQ"}, "value": `${description}`},
+            {"meta": {"externalId": "pushEvent_MajorStorm"}, "value": `${flagMajor}`},
+            {"meta": {"externalId": "pushEvent_Unassign"}, "value": `${flagUnassign}`}
+        ]
+    };
+
+	try {
+		const response = await fetch(url, {
+            method,
+            headers,
+            body: JSON.stringify(data),
+        });
+
+		if (!response.ok) {
+		  throw new Error(`Error ${id === 'new' ? 'submitting' : 'updating'} form:`, error);
+		}
+
+		const json = await response.json();
+		alert(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
+		history.back();
+
+	  } catch (error) {
+		console.error('Failed to fetch push event details:', error);
+	  }
+}
+
 function populateSelect(selectId, options) {
     const selectElement = document.getElementById(selectId);
     selectElement.innerHTML = ''; // Clear any existing options
