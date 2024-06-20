@@ -367,11 +367,14 @@ function prefillForm(data) {
                 break;
             case 'pushEvent_Status':
                 const options1 = Array.from(form.elements['options1[]'].options);
-                options1.forEach(option => {
-                    if (option.text === item.value) {
-                        option.selected = true;
-                    }
-                });
+		const selectedValues = item.value.split(',');
+		selectedValues.forEach(selectedValue => {	
+	                options1.forEach(option => {
+	                    if (option.text === item.value) {
+	                        option.selected = true;
+	                    }
+	                });
+		});
                 break;
             case 'pushEvent_CrewHQ':
                 form.elements['description'].value = item.value;
