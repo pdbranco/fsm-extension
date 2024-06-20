@@ -503,8 +503,8 @@ function submitPushEventBranco2(cloudHost, account, company, id, document) {
             {"meta": {"externalId": "pushEvent_EndTime"}, "value": `${endDateTime}`},
             {"meta": {"externalId": "pushEvent_PushInterval"}, "value": `${quantity}`},
             {"meta": {"externalId": "pushEvent_Status"}, "value": `${options1Selected}`},
-            {"meta": {"externalId": "pushEvent_CrewHQ"}, "value": `${options2Selected}`},
-            {"meta": {"externalId": "pushEvent_WorkType"}, "value": `${description}`},
+            {"meta": {"externalId": "pushEvent_CrewHQ"}, "value": `${description}`},
+            {"meta": {"externalId": "pushEvent_WorkType"}, "value": `${options2Selected}`},
             {"meta": {"externalId": "pushEvent_MajorStorm"}, "value": `${flagMajor}`},
             {"meta": {"externalId": "pushEvent_Unassign"}, "value": `${flagUnassign}`}
         ]
