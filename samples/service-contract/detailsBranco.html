@@ -97,7 +97,7 @@
           const form = document.querySelector('form'); // Get the form element
 
           form.addEventListener('submit', function(event) {
-        	  const buttonId = event.target.id; // Gets the ID of the button
+        	  const buttonId = event.submitter.id; // Gets the ID of the button
           	event.preventDefault(); // Prevent default form submission behavior
               
           	if (buttonId === 'createOrUpdatePushEvent') {
