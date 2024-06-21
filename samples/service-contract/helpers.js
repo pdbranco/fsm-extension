@@ -619,6 +619,8 @@ async function deletePushEvent(cloudHost, account, company, id) {
     if (!response.ok) {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
+    
+    history.back();
 	
   } catch (error) {
     console.error('Failed to fetch push event details:', error);
