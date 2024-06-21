@@ -22,7 +22,6 @@ button {
  vertical-align: middle;
  white-space: nowrap;
  word-wrap: break-word;
- float: left;
 }
 
 button:hover {
@@ -62,7 +61,6 @@ button:-webkit-details-marker {
   align-items: center;
   position: relative;
   max-width: 190px;
-  left: 1.5rem;
 }
 
 .search-style {
@@ -77,7 +75,6 @@ button:-webkit-details-marker {
   background-color: transparent;
   color: #0d0c22;
   transition: 0.3s ease;
- float: left;
 }
 
 .search-style::placeholder {
