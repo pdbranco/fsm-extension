@@ -596,7 +596,7 @@ function validateForm(name, startDateTime, endDateTime, quantity, options1Select
     if (options1Selected.length === 0) return 'At least one option must be selected under Activity Status Affected';
     if (options2Selected.length === 0) return 'At least one option must be selected under MAT Code(s) Affected';
     if (!description) return 'CrewHQ Affected is mandatory';
-    if (endDateTime <= endDateTime) return 'The end date must be greater than the start date';
+    if (endDateTime <= startDateTime) return 'The end date must be greater than the start date';
     return null;
 }
 
