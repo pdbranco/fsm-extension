@@ -610,7 +610,7 @@ async function deletePushEvent(cloudHost, account, company, id) {
   };
 
   try {
-    const response = await fetch(`https://${cloudHost}/api/data/v4/UdoValue/{{id}}?forceDelete=true&account=${account}&company=${company}`, {
+    const response = await fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?forceDelete=true&account=${account}&company=${company}`, {
       method: 'DELETE',
       headers,
       body: ''
