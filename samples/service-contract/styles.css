@@ -55,7 +55,7 @@ button:-webkit-details-marker {
  display: none;
 }
 
-.input-style {
+.search-style {
   padding: 10px;
   border: 2px solid #ccc;
   border-radius: 5px;
@@ -64,7 +64,7 @@ button:-webkit-details-marker {
   outline: none;
 }
 
-.input-style:focus {
+.search-style:focus {
   border-color: #007bff;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
