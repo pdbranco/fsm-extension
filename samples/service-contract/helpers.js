@@ -491,7 +491,8 @@ async function submitPushEventBrancoAsync(cloudHost, account, company, id, docum
     // Execute validation of mandatory fields
     const validationError = validateForm(name, startDateTime, endDateTime, quantity, options1Selected, options2Selected, description);
     if (validationError) {
-		alert(validationError); // Displays the error message
+	    	updateMsgError(validationError);
+		// alert(validationError); // Displays the error message
 		return; // Prevents form submission
     }
 
@@ -627,3 +628,6 @@ async function deletePushEvent(cloudHost, account, company, id) {
     console.error('Failed to fetch push event details:', error);
   }
 }
+
+const updateMsgError = (text) =>
+  (document.querySelectorAll('#infoError')[0].innerText = text);
