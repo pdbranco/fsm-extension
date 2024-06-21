@@ -91,9 +91,12 @@
           getOptionMatCodeAndStatus(cloudHost, account, company);
           
           var id = getParameters();          
-          if(id != 'new')
+          if(id != 'new'){
             getPushEventDetails2(cloudHost, account, company, id);
-          
+          }
+          else{
+            document.getElementById("deletePushEvent").style.visibility = "hidden";
+          }
           const form = document.querySelector('form'); // Get the form element
 
           form.addEventListener('submit', function(event) {
