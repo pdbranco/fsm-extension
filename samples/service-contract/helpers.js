@@ -598,3 +598,29 @@ function validateForm(name, startDateTime, endDateTime, quantity, options1Select
     if (!description) return 'CrewHQ Affected is mandatory';
     return null;
 }
+
+// DELETE PUSHEVENT ASSYNC
+async function deletePushEvent(cloudHost, account, company, id) {
+  
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Client-ID': 'fsm-extension-sample',
+    'X-Client-Version': '1.0.0',
+    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+  };
+
+  try {
+    const response = await fetch(`https://${cloudHost}/api/data/v4/UdoValue/{{id}}?forceDelete=true&account=${account}&company=${company}`, {
+      method: 'DELETE',
+      headers,
+      body: ''
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+	
+  } catch (error) {
+    console.error('Failed to fetch push event details:', error);
+  }
+}
