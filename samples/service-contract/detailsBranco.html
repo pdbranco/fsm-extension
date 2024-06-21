@@ -40,8 +40,9 @@
             <input type="checkbox" id="UnassignFlag" name="flag2" value="true">
             <br>
         
-            <button type="submit">Submit</button>
+            <button type="submit" id="createOrUpdatePushEvent">Submit</button>
             <button type="button" onclick="window.history.back()">Cancel</button>
+            <button type="submit" id="deletePushEvent">Delete</button>
           </form>
       </body>
     </div>
@@ -96,12 +97,14 @@
           const form = document.querySelector('form'); // Get the form element
 
           form.addEventListener('submit', function(event) {
-               // Prevent default form submission behavior
-              event.preventDefault();
-
-              // Call function to save pushevent
-              submitPushEventBrancoAsync(cloudHost, account, company, id, document);
-      
+        	  const buttonId = event.target.id; // Gets the ID of the button
+          	event.preventDefault(); // Prevent default form submission behavior
+              
+          	if (buttonId === 'createOrUpdatePushEvent') {
+          		submitPushEventBrancoAsync(cloudHost, account, company, id, document); // Call function to save Push Event
+          	} else if (buttonId === 'deletePushEvent') {
+          		deletePushEvent(cloudHost, account, company, id, document); // Call function to delete Push Event
+          	}
           });          
     });
      
