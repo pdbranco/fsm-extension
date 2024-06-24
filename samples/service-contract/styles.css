@@ -125,7 +125,18 @@ input:hover {
  font-size: 12px;
 }
 
-#myForm textarea, select, input[type=datetime-local], input[type=number] {
+#myForm textarea, input[type=datetime-local], input[type=number] {
+  width: 100%;
+  padding: 5px 10px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+
+#myForm select {
   width: 100%;
   padding: 5px 10px;
   margin: 8px 0;
