@@ -288,35 +288,8 @@ function displayDataTableBranco(data) {
     document.body.appendChild(table);
 }
 
-// GET PUSHEVENT DETAILS
-function getPushEventDetails(cloudHost, account, company, id) {
-  
-  const headers = {
-    'Content-Type': 'application/json',
-    'X-Client-ID': 'fsm-extension-sample',
-    'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
-  };
-
-  return new Promise(resolve => {
-
-          // Fetch the Push Event entry
-          fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoValue.10`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({"query":`select pe.id, pe.udfValues from UdoValue pe where pe.id = '${id}'`})
-            })
-              .then(response => response.json())
-              .then(function(json) {
-                    updateUI(json.data[0].pe.udfValues[0].value);
-                    
-                    resolve();
-              });
-        });
-}
-
 // GET PUSHEVENT DETAILS ASSYNC
-async function getPushEventDetails2(cloudHost, account, company, id) {
+async function getPushEventDetails(cloudHost, account, company, id) {
   
   const headers = {
     'Content-Type': 'application/json',
