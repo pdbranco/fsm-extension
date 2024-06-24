@@ -133,4 +133,5 @@ input:hover {
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box;
+  font-size: 12px;
 }
