@@ -109,17 +109,16 @@ input:hover {
   width: 100%;
   font-family: "72", "72full", Arial, Helvetica, sans-serif;
   font-size: 12px;
-  border-radius: 5px;
 }
 
 #itemList td {
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   padding: 8px;
 }
 
 #itemList tr:nth-child(even){background-color: #f2f2f2;}
 
-#itemList tr:hover {background-color: #ddd;}
+#itemList tr:hover {background-color: #ccc;}
 
 #myForm {
  font-family: "72", "72full", Arial, Helvetica, sans-serif;
