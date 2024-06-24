@@ -118,7 +118,7 @@ input:hover {
 
 #itemList tr:hover {background-color: #ddd;}
 
-input[type=text], select {
+#myForm textarea, select {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
