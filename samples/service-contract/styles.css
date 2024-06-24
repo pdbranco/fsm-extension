@@ -146,3 +146,9 @@ input:hover {
   box-sizing: border-box;
   font-size: 12px;
 }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+}
