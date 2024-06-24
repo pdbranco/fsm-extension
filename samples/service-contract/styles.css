@@ -97,4 +97,6 @@ input:hover {
   height: 1rem;
 }
 
-
+#infoError {
+ color: red;
+}
