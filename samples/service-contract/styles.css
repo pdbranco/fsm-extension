@@ -87,9 +87,9 @@ button:-webkit-details-marker {
 .search-style:focus,
 input:hover {
   outline: none;
-  border-color: rgba(234, 226, 183, 0.4);
+  border-color: rgba(212, 212, 212, 0.4);
   background-color: #fff;
-  box-shadow: 0 0 0 4px rgb(234 226 183 / 10%);
+  box-shadow: 0 0 0 2px rgb(206 206 206 / 10%);
 }
 
 .search-style-icon {
