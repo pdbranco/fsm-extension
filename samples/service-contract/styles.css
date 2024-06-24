@@ -8,7 +8,7 @@ button {
  color: #24292E;
  cursor: pointer;
  display: inline-block;
- font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+ font-family: "72", "72full", Arial, Helvetica, sans-serif;
  font-size: 14px;
  font-weight: 500;
  line-height: 20px;
@@ -118,7 +118,12 @@ input:hover {
 
 #itemList tr:hover {background-color: #ddd;}
 
-#myForm textarea, select {
+#myForm {
+ font-family: "72", "72full", Arial, Helvetica, sans-serif;
+ font-size: 12px;
+}
+
+#myForm textarea, select, input[type=datetime-local], input[type=number] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
