@@ -184,9 +184,9 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
 	const method = id === 'new' ? 'POST' : 'PATCH';
 
     const name = document.getElementById('name').value;
-    const pwaIdEAM = document.getElementById('start_datetime').value;
-    const listPolygons = Array.from(document.getElementById('options1').selectedOptions).map(option => option.value);
-    const pwa_Description = Array.from(document.getElementById('options2').selectedOptions).map(option => option.value);
+    const pwaIdEAM = document.getElementById('pwaIdEAM').value;
+    const listPolygons = Array.from(document.getElementById('listPolygons').selectedOptions).map(option => option.value);
+    const pwa_Description = document.getElementById('pwadescription').value;
 
     // Execute validation of mandatory fields
     const validationError = validateForm(name, pwaIdEAM, listPolygons);
@@ -199,14 +199,14 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
 		"meta": `${sessionStorage.getItem('idMeta')}`,
         "udfValues": [
             {"meta": {"externalId": "pwa_Name"}, "value": `${name}`},
-			{"meta": {"externalId": "pwa_Name"}, "value": `${pwaIdEAM}`},
+	    {"meta": {"externalId": "pwa_Name"}, "value": `${pwaIdEAM}`},
             {"meta": {"externalId": "pwa_Status"}, "value": `${listPolygons}`},
-			{"meta": {"externalId": "pwa_CrewHQ"}, "value": `${pwa_Description}`}
+	    {"meta": {"externalId": "pwa_CrewHQ"}, "value": `${pwa_Description}`}
         ]
     };
 
 	try {
-		const response = await fetch(url, {
+	    const response = await fetch(url, {
             method,
             headers,
             body: JSON.stringify(data),
