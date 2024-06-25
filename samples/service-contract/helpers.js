@@ -493,12 +493,11 @@ async function submitPushEventBrancoAsync(cloudHost, account, company, id, docum
 		if (!response.ok) {
 		  throw new Error(`Error ${id === 'new' ? 'submitting' : 'updating'} form:`, error);
 		}
-		
-		history.back();
-
 	  } catch (error) {
 		console.error('Failed to fetch push event details:', error);
 	  }
+
+	history.back();
 }
 
 function populateSelect(selectId, options) {
