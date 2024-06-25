@@ -469,7 +469,7 @@ async function submitPushEventBrancoAsync(cloudHost, account, company, id, docum
     }
 
     const data = {
-		"meta": `${sessionStorage.getItem('idMeta')}`,
+	"meta": `${sessionStorage.getItem('idMeta')}`,
         "udfValues": [
             {"meta": {"externalId": "pushEvent_Name"}, "value": `${name}`},
             {"meta": {"externalId": "pushEvent_StartTime"}, "value": `${startDateTime}`},
@@ -477,7 +477,7 @@ async function submitPushEventBrancoAsync(cloudHost, account, company, id, docum
             {"meta": {"externalId": "pushEvent_PushInterval"}, "value": `${quantity}`},
             {"meta": {"externalId": "pushEvent_Status"}, "value": `${options1Selected}`},
             {"meta": {"externalId": "pushEvent_WorkType"}, "value": `${options2Selected}`},
-			{"meta": {"externalId": "pushEvent_CrewHQ"}, "value": `${description}`},
+	    {"meta": {"externalId": "pushEvent_CrewHQ"}, "value": `${description}`},
             {"meta": {"externalId": "pushEvent_MajorStorm"}, "value": `${flagMajor}`},
             {"meta": {"externalId": "pushEvent_Unassign"}, "value": `${flagUnassign}`}
         ]
@@ -485,17 +485,15 @@ async function submitPushEventBrancoAsync(cloudHost, account, company, id, docum
 
 	try {
 		const response = await fetch(url, {
-            method,
-            headers,
-            body: JSON.stringify(data),
-        });
+            	method,
+            	headers,
+           	body: JSON.stringify(data),
+        	});
 
 		if (!response.ok) {
 		  throw new Error(`Error ${id === 'new' ? 'submitting' : 'updating'} form:`, error);
 		}
-
-		const json = await response.json();
-		alert(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
+		
 		history.back();
 
 	  } catch (error) {
