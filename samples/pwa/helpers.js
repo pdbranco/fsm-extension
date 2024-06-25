@@ -280,10 +280,10 @@ async function getOptionPolygons(cloudHost, account, company) {
 }
 
 // VALIDATION OF MANDATORY FIELDS
-function validateForm(name, pwaIdEAM, ListPolygons) {
+function validateForm(name, pwaIdEAM, listPolygons) {
     if (!name) return '* Name is mandatory';
     if (!pwaIdEAM) return '* EAM ID is mandatory';
-    if (options1Selected.length === 0) return '* At least one of the polygons must be selected';
+    if (listPolygons.length === 0) return '* At least one of the polygons must be selected';
 
     return null;
 }
