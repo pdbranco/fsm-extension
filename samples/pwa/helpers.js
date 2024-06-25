@@ -24,45 +24,6 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
   setTimeout(() => fetchToken(), (auth.expires_in * 1000) - 5000);
 }
 
-// 
-// Request context with activity ID to return serviceContract assigned
-//
-function getServiceContract(cloudHost, account, company, activity_id) {
-  
-  const headers = {
-    'Content-Type': 'application/json',
-    'X-Client-ID': 'fsm-extension-sample',
-    'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
-  };
-
-  return new Promise(resolve => {
-
-    fetch(`https://${cloudHost}/api/data/v4/Activity/${activity_id}?dtos=Activity.37&account=${account}&company=${company}`, {
-      headers
-      })
-        .then(response => response.json())
-        .then(function(json) {
-
-          const activity = json.data[0].activity;
-          // Fetch all ServiceContractEquipment
-          fetch(`https://${cloudHost}/api/data/v4/Equipment?dtos=Equipment.22&account=${account}&company=${company}`, {
-            headers
-            })
-              .then(response => response.json())
-              .then(function(json) {
-                    //resolve(json.data[0].equipment);
-
-                    // Assuming you have your data in an array named 'myData'
-                    displayDataTable(json.data);
-                    resolve();
-              });
-
-        });
-
-  });
-}
-
 //GET OBJECT PWAS
 function getPWAs(cloudHost, account, company) {
   
