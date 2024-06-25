@@ -505,7 +505,7 @@ async function submitPushEventBrancoAsync(cloudHost, account, company, id, docum
 
 function populateSelect(selectId, options) {
     const selectElement = document.getElementById(selectId);
-    var optionCount = options.length;
+    var optionCount = Object.keys(options).length;
     selectElement.innerHTML = ''; // Clear any existing options
 	
     for (const key in options) {
