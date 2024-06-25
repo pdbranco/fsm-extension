@@ -493,9 +493,14 @@ async function submitPushEventBrancoAsync(cloudHost, account, company, id, docum
 		if (!response.ok) {
 		  throw new Error(`Error ${id === 'new' ? 'submitting' : 'updating'} form:`, error);
 		}
+		
+		updateMsgError(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
+		setTimeout(() => history.back(), 2000);
+		
 	  } catch (error) {
 		console.error('Failed to fetch push event details:', error);
 	  }
+
 }
 
 function populateSelect(selectId, options) {
@@ -600,3 +605,6 @@ async function deletePushEvent(cloudHost, account, company, id) {
 
 const updateMsgError = (text) =>
   (document.querySelectorAll('#infoError')[0].innerText = text);
+
+const updateMsgSuccess = (text) =>
+  (document.querySelectorAll('#infoSuccess')[0].innerText = text);
