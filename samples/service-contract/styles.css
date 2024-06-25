@@ -147,7 +147,7 @@ input:hover {
   flex-direction: column;
 }
 
-#options1, options2 {
+#options1, #options2 {
  height: auto;
  overflow: hidden;
 }
