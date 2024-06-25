@@ -24,175 +24,41 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
   setTimeout(() => fetchToken(), (auth.expires_in * 1000) - 5000);
 }
 
-// 
-// Request context with activity ID to return serviceContract assigned
-//
-function getServiceContract(cloudHost, account, company, activity_id) {
-  
-  const headers = {
-    'Content-Type': 'application/json',
-    'X-Client-ID': 'fsm-extension-sample',
-    'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
-  };
-
-  return new Promise(resolve => {
-
-    fetch(`https://${cloudHost}/api/data/v4/Activity/${activity_id}?dtos=Activity.37&account=${account}&company=${company}`, {
-      headers
-      })
-        .then(response => response.json())
-        .then(function(json) {
-
-          const activity = json.data[0].activity;
-          // Fetch all ServiceContractEquipment
-          fetch(`https://${cloudHost}/api/data/v4/Equipment?dtos=Equipment.22&account=${account}&company=${company}`, {
-            headers
-            })
-              .then(response => response.json())
-              .then(function(json) {
-                    //resolve(json.data[0].equipment);
-
-                    // Assuming you have your data in an array named 'myData'
-                    displayDataTable(json.data);
-                    resolve();
-              });
-
-        });
-
-  });
-}
-
-// GET ALL EQUIPMENTS
-function getEquipments(cloudHost, account, company) {
-  
-  const headers = {
-    'Content-Type': 'application/json',
-    'X-Client-ID': 'fsm-extension-sample',
-    'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
-  };
-
-  return new Promise(resolve => {
-
-    // Fetch Equipments object
-   
-  
-          // Fetch all ServiceContractEquipment
-          fetch(`https://${cloudHost}/api/data/v4/Equipment?dtos=Equipment.22&account=${account}&company=${company}`, {
-            headers
-            })
-              .then(response => response.json())
-              .then(function(json) {
-                    // Assuming you have your data in an array named 'myData'
-                    displayDataTable(json.data);
-                    resolve();
-
-
-
-              });
-
-        });
-
-  
-}
-
-
-// GET EQUIPMENT DETAILS
-function getEquipmentDetails(cloudHost, account, company, id) {
-  
-  const headers = {
-    'Content-Type': 'application/json',
-    'X-Client-ID': 'fsm-extension-sample',
-    'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
-  };
-
-  return new Promise(resolve => {
-
-          // Fetch all ServiceContractEquipment
-          fetch(`https://${cloudHost}/api/data/v4/Equipment/externalId/${id}?dtos=Equipment.22&account=${account}&company=${company}`, {
-            headers
-            })
-              .then(response => response.json())
-              .then(function(json) {
-                    updateUI(json.data[0].equipment.name);
-                    
-                    resolve();
-
-              });
-
-        });
-
-  
-}
-
-//FAZER PATCH
-function submitPushEvent(cloudHost, account, company) {
-  
-  const headers = {
-    'Content-Type': 'application/json',
-    'X-Client-ID': 'fsm-extension-sample',
-    'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
-  };
-
-  return new Promise(resolve => {
-
-          // Patch PushEvent
-          fetch(`https://${cloudHost}/api/data/v4/Item/1895331C49C6448B860E2FB316122BF2?dtos=Item.24&account=${account}&company=${company}&forceUpdate=true`, {
-            method: 'PATCH',
-            headers,
-            body: JSON.stringify({ name: 'agorafoi' }),
-            })
-              .then(response => response.json())
-              .then(function(json) {
-                    console.log(`ya`); 
-                    resolve();
-
-              });
-
-        });
-
-  
-}
-
-// BUILD TABLE 
+// BUILD TABLE
 function displayDataTable(data) {
-                      // Create the table element
-                      const table = document.createElement('table')
-                      table.setAttribute("id","itemList");
-                      
-                      // Create table header row
-                      /*const headerRow = document.createElement('tr');
-                      for (const key in data[0]) {
-                        const headerCell = document.createElement('th');
-                        headerCell.textContent = key;
-                        headerRow.appendChild(headerCell);
-                      }
-                      table.appendChild(headerRow);*/
-                    
-                      // Loop through data and create table rows
-                      for (const row of data) {
-                        const tableRow = document.createElement('tr');
-                        for (const value in row) {
-                          const cell = document.createElement('td');
-                          cell.textContent = row[value].name;
-                          tableRow.appendChild(cell);
-                        }
-                        
-                        // Add click event listener to each row for redirection
-                        tableRow.addEventListener('click', () => {
-                          window.location.href = `details.html?id=${row.equipment.externalId}`; // Replace "id" with your unique identifier
-                        });
-                        
-                        table.appendChild(tableRow);
-                      }
-                      
-                      // Add the table to the document body
-                      document.body.appendChild(table);
-}
+    // Create the table element
+    const table = document.createElement('table')
+        table.setAttribute("id", "itemList");
 
+    // Create table header row
+    /*const headerRow = document.createElement('tr');
+    for (const key in data[0]) {
+    const headerCell = document.createElement('th');
+    headerCell.textContent = key;
+    headerRow.appendChild(headerCell);
+    }
+    table.appendChild(headerRow);*/
+
+    // Loop through data and create table rows
+    for (const row of data) {
+        const tableRow = document.createElement('tr');
+        for (const value in row) {
+            const cell = document.createElement('td');
+            cell.textContent = row[value].name;
+            tableRow.appendChild(cell);
+        }
+
+        // Add click event listener to each row for redirection
+        tableRow.addEventListener('click', () => {
+            window.location.href = `details.html?id=${row.equipment.externalId}`; // Replace "id" with your unique identifier
+        });
+
+        table.appendChild(tableRow);
+    }
+
+    // Add the table to the document body
+    document.body.appendChild(table);
+}
 
 // GET URL PARAMETERS
 function getParameters() {
