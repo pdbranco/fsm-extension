@@ -494,7 +494,7 @@ async function submitPushEventBrancoAsync(cloudHost, account, company, id, docum
 		  throw new Error(`Error ${id === 'new' ? 'submitting' : 'updating'} form:`, error);
 		}
 		
-		updateMsgError(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
+		updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
 		setTimeout(() => history.back(), 2000);
 		
 	  } catch (error) {
