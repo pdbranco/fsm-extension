@@ -493,7 +493,8 @@ async function submitPushEventBrancoAsync(cloudHost, account, company, id, docum
 		if (!response.ok) {
 		  throw new Error(`Error ${id === 'new' ? 'submitting' : 'updating'} form:`, error);
 		}
-		
+
+		// Displays success message and redirects to main page after 2 seconds
 		updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
 		setTimeout(() => history.back(), 2000);
 		
