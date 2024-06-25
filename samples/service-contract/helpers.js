@@ -505,8 +505,9 @@ async function submitPushEventBrancoAsync(cloudHost, account, company, id, docum
 
 function populateSelect(selectId, options) {
     const selectElement = document.getElementById(selectId);
+    var optionCount = options.length;
     selectElement.innerHTML = ''; // Clear any existing options
-
+	
     for (const key in options) {
         if (options.hasOwnProperty(key)) {
             const option = document.createElement('option');
@@ -515,6 +516,7 @@ function populateSelect(selectId, options) {
             selectElement.appendChild(option);
         }
     }
+    selectElement.size = optionCount;
 }
 
 function populateComboBox(response) {
