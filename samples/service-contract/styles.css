@@ -108,6 +108,10 @@ input:hover {
  color: red;
 }
 
+#infoSuccess {
+ color: green;
+}
+
 #itemList {
   border-collapse: collapse;
   width: 90%;
