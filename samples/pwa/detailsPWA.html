@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PWA - Preferable Working Area</title>
+    <link href="styles.css" rel="stylesheet">
+  </head>
+  <body>
+    <div>
+      <body>
+        <form id="myForm">
+            <div class="form-group">
+            <label for="name">Name *</span></label>
+            <textarea id="name" name="name" rows="1"></textarea>
+
+	    <label for="pwaIdEAM">EAM ID *</span></label>
+            <textarea id="pwaIdEAM" name="pwaIdEAM" rows="1"></textarea>
+
+	    <label for="listPolygons">Polygon(s) *</label>
+            <select id="listPolygons" name="listPolygons[]" multiple></select>
+            
+	    <label for="pwadescription">Description</label>
+            <textarea id="pwadescription" name="pwadescription" rows="3"></textarea>
+
+	    <br><br>
+            <label id="infoError"></label>
+            <br><br>
+
+            <button type="submit" id="createOrUpdatePWA">Submit</button>
+            <button type="button" onclick="window.history.back()">Cancel</button>
+            <button type="submit" id="deletePWA">Delete</button>
+          </form>
+      </body>
+    </div>
+    <script src="https://unpkg.com/fsm-shell"></script>
+    <script src="helpers.js"></script>
+    <script>
+      // Import ShellSDK and events list from FSMShell global variable
+      // see https://github.com/SAP/fsm-shell for more details.
+      const { ShellSdk, SHELL_EVENTS } = FSMShell;
+
+        const shellSdk = ShellSdk.init(parent, '*');
+
+        // Initialise the extension by requesting the fsm context
+        shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_CONTEXT, {
+          clientIdentifier: 'service-contract',
+          auth: {
+            response_type: 'token'  // request a user token within the context
+          }
+        });
+
+        // Callback on fsm context response
+        shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_CONTEXT, (event) => {
+
+          const {
+            // extract required context from event content
+            cloudHost,
+            account,
+            company,
+            user,
+            // extract authentication data from event content
+            auth
+          } = JSON.parse(event);
+
+          /**
+           * Access_token has a short life span and needs to be refreshed before expiring. Each
+           * extension needs to implement its own strategy to fresh it.
+           * 
+           * IMPORTANT: You only receive a new token in case the current token's validation period
+           * is less than one minute. If a new token is requested and the validation period is one
+           * minute or more, you receive the current token again with an updated validation period.
+           * A token's validation period is provided via the property expires_in, which contains
+           * the time left in seconds.
+           */
+          initializeRefreshTokenStrategy(shellSdk, auth);
+
+          getOptionPolygons(cloudHost, account, company);
+          
+          var id = getParameters();          
+          if(id != 'new'){
+            getPWADetails(cloudHost, account, company, id);
+          }
+          else{
+            document.getElementById("deletePWA").style.visibility = "hidden";
+          }
+          const form = document.querySelector('form'); // Get the form element
+
+          form.addEventListener('submit', function(event) {
+        	  const buttonId = event.submitter.id; // Gets the ID of the button
+          	event.preventDefault(); // Prevent default form submission behavior
+              
+          	if (buttonId === 'createOrUpdatePWA') {
+          		submitPWAAsync(cloudHost, account, company, id, document); // Call function to save PWA
+          	} else if (buttonId === 'deletePWA') {
+          		deletePWA(cloudHost, account, company, id, document); // Call function to delete PWA
+          	}
+          });          
+    });
+     
+    </script>
+  </body>
+</html>
