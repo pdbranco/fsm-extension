@@ -496,8 +496,6 @@ async function submitPushEventBrancoAsync(cloudHost, account, company, id, docum
 	  } catch (error) {
 		console.error('Failed to fetch push event details:', error);
 	  }
-
-	history.back();
 }
 
 function populateSelect(selectId, options) {
