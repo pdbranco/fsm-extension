@@ -79,7 +79,7 @@ function filterTable() {
 function displayDataTable(data) {
     if (data.length === 0) return;
 	
-    sessionStorage.setItem('idMeta', data[0].ud.id);
+    sessionStorage.setItem('idMetaPWA', data[0].ud.id);
 
     // Create the table element
     const table = document.createElement('table');
@@ -196,7 +196,7 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
     }
 
     const data = {
-		"meta": `${sessionStorage.getItem('idMeta')}`,
+		"meta": `${sessionStorage.getItem('idMetaPWA')}`,
         "udfValues": [
             {"meta": {"externalId": "pwa_Name"}, "value": `${name}`},
 	    {"meta": {"externalId": "pwa_Name"}, "value": `${pwaIdEAM}`},
