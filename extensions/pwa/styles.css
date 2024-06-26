@@ -67,7 +67,6 @@ button:-webkit-details-marker {
   align-items: center;
   position: relative;
   max-width: 190px;
-  float: left;
 }
 
 .search-style {
