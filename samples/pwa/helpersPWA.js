@@ -216,9 +216,10 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
 		  throw new Error(`Error ${id === 'new' ? 'submitting' : 'updating'} form:`, error);
 		}
 
-		const json = await response.json();
-		alert(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
-		history.back();
+		// Displays success message and redirects to main page after 2 seconds
+		updateMsgError("");
+		updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
+		setTimeout(() => history.back(), 2000);
 
 	  } catch (error) {
 		console.error('Failed to fetch pwa details:', error);
@@ -318,3 +319,6 @@ async function deletePWA(cloudHost, account, company, id) {
 
 const updateMsgError = (text) =>
   (document.querySelectorAll('#infoError')[0].innerText = text);
+
+const updateMsgSuccess = (text) =>
+  (document.querySelectorAll('#infoSuccess')[0].innerText = text);
