@@ -115,14 +115,14 @@ function getPushEvents(cloudHost, account, company) {
             })
               .then(response => response.json())
               .then(function(json) {
-                    displayDataTableBranco(json.data);
+                    displayDataTable(json.data);
                     resolve();
               });
         });
 }
 
 //CREATE TABLE
-function displayDataTableBranco(data) {
+function displayDataTable(data) {
     if (data.length === 0) return;
 	
     sessionStorage.setItem('idMeta', data[0].ud.id);
@@ -146,7 +146,7 @@ function displayDataTableBranco(data) {
             tableRow.appendChild(cell);
 
             // Add click event listener to each row for redirection
-            tableRow.addEventListener('click', () => {window.location.href = `detailsBranco.html?id=${row.id}`;});
+            tableRow.addEventListener('click', () => {window.location.href = `detailsPushEvent.html?id=${row.id}`;});
 
             table.appendChild(tableRow);
         }
@@ -239,7 +239,7 @@ function prefillForm(data) {
     });
 }
 
-function submitPushEventBranco(cloudHost, account, company, id, document) {
+function submitPushEvent(cloudHost, account, company, id, document) {
     const headers = {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-sample',
@@ -303,7 +303,7 @@ function submitPushEventBranco(cloudHost, account, company, id, document) {
     });
 }
 
-async function submitPushEventBrancoAsync(cloudHost, account, company, id, document) {
+async function submitPushEventAsync(cloudHost, account, company, id, document) {
     const headers = {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-sample',
