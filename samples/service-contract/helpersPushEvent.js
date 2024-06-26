@@ -125,7 +125,7 @@ function getPushEvents(cloudHost, account, company) {
 function displayDataTable(data) {
     if (data.length === 0) return;
 	
-    sessionStorage.setItem('idMeta', data[0].ud.id);
+    sessionStorage.setItem('idMetaPushEvent', data[0].ud.id);
 
     // Create the table element
     const table = document.createElement('table');
@@ -265,7 +265,7 @@ function submitPushEvent(cloudHost, account, company, id, document) {
     }
 
     const data = {
-	"meta": `${sessionStorage.getItem('idMeta')}`,
+	"meta": `${sessionStorage.getItem('idMetaPushEvent')}`,
         "udfValues": [
             {"meta": {"externalId": "pushEvent_Name"}, "value": `${name}`},
             {"meta": {"externalId": "pushEvent_StartTime"}, "value": `${startDateTime}`},
@@ -335,7 +335,7 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
     }
 
     const data = {
-	"meta": `${sessionStorage.getItem('idMeta')}`,
+	"meta": `${sessionStorage.getItem('idMetaPushEvent')}`,
         "udfValues": [
             {"meta": {"externalId": "pushEvent_Name"}, "value": `${name}`},
             {"meta": {"externalId": "pushEvent_StartTime"}, "value": `${startDateTime}`},
