@@ -361,6 +361,7 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
 		}
 
 		// Displays success message and redirects to main page after 2 seconds
+		updateMsgError("");
 		updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
 		setTimeout(() => history.back(), 2000);
 		
