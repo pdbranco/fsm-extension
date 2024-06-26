@@ -100,7 +100,7 @@
           	event.preventDefault(); // Prevent default form submission behavior
               
           	if (buttonId === 'createOrUpdatePushEvent') {
-          		submitPushEventBrancoAsync(cloudHost, account, company, id, document); // Call function to save Push Event
+          		submitPushEventAsync(cloudHost, account, company, id, document); // Call function to save Push Event
           	} else if (buttonId === 'deletePushEvent') {
           		deletePushEvent(cloudHost, account, company, id, document); // Call function to delete Push Event
           	}
