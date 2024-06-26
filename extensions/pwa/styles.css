@@ -147,3 +147,7 @@ input:hover {
   display: flex;
   flex-direction: column;
 }
+
+#infoSuccess {
+ color: green;
+}
