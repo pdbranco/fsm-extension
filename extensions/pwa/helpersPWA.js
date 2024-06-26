@@ -199,9 +199,9 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
 		"meta": `${sessionStorage.getItem('idMetaPWA')}`,
         "udfValues": [
             {"meta": {"externalId": "pwa_Name"}, "value": `${name}`},
-	    {"meta": {"externalId": "pwa_Name"}, "value": `${pwaIdEAM}`},
-            {"meta": {"externalId": "pwa_Status"}, "value": `${listPolygons}`},
-	    {"meta": {"externalId": "pwa_CrewHQ"}, "value": `${pwa_Description}`}
+	    {"meta": {"externalId": "pwa_PWAIdEAM"}, "value": `${pwaIdEAM}`},
+            {"meta": {"externalId": "pwa_PWAPolygons"}, "value": `${listPolygons}`},
+	    {"meta": {"externalId": "pwa_Description"}, "value": `${pwa_Description}`}
         ]
     };
 
