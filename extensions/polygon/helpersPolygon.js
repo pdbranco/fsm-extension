@@ -240,7 +240,7 @@ function populateComboBox(response) {
 // VALIDATION OF MANDATORY FIELDS
 function validateForm(name, polygonIdEAM) {
     if (!name) return '* Name is mandatory';
-    if (polygonIdEAM) return '* EAM ID is mandatory';
+    if (!polygonIdEAM) return '* EAM ID is mandatory';
 
     return null;
 }
