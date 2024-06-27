@@ -258,7 +258,7 @@ function submitPushEvent(cloudHost, account, company, id, document) {
     const flagUnassign = document.getElementById('UnassignFlag').checked;
 
     // EXECUTE VALIDATION OF MANDATORY FIELDS
-    const validationError = validateForm(name, startDateTime, endDateTime, quantity, options1Selected, options2Selected, description);
+    const validationError = validateForm(name, startDateTime, endDateTime, description);
     if (validationError) {
 	alert(validationError); // Displays the error message
 	return; // Prevents form submission
@@ -328,7 +328,7 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
     const flagUnassign = document.getElementById('UnassignFlag').checked;
 
     // Execute validation of mandatory fields
-    const validationError = validateForm(name, startDateTime, endDateTime, quantity, options1Selected, options2Selected, description);
+    const validationError = validateForm(name, startDateTime, endDateTime, description);
     if (validationError) {
 	    	updateMsgError(validationError);
 		return; // Prevents form submission
@@ -431,13 +431,10 @@ async function getOptionMatCodeAndStatus(cloudHost, account, company) {
 }
 
 // VALIDATION OF MANDATORY FIELDS
-function validateForm(name, startDateTime, endDateTime, quantity, options1Selected, options2Selected, description) {
+function validateForm(name, startDateTime, endDateTime, description) {
     if (!name) return '* Name is mandatory';
     if (!startDateTime) return '* Start Date & Time is mandatory';
     if (!endDateTime) return '+ End Date & Time is mandatory';
-    if (!quantity) return '* Days to Push Work Forward is mandatory';
-    if (options1Selected.length === 0) return '* At least one option must be selected under Activity Status Affected';
-    if (options2Selected.length === 0) return '* At least one option must be selected under MAT Code(s) Affected';
     if (!description) return '* CrewHQ Affected is mandatory';
     if (new Date(endDateTime) <= new Date(startDateTime)) return '* The end date must be greater than the start date';
     return null;
