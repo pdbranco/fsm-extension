@@ -194,23 +194,23 @@ async function submitPolygonAsync(cloudHost, account, company, id, document) {
 
 	try {
 	    const response = await fetch(url, {
-            method,
-            headers,
-            body: JSON.stringify(data),
-        });
-
-		if (!response.ok) {
-		  throw new Error(`Error ${id === 'new' ? 'submitting' : 'updating'} form:`, error);
-		}
-
-		// Displays success message and redirects to main page after 2 seconds
-		updateMsgError("");
-		updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
-		setTimeout(() => history.back(), 2000);
-
-	  } catch (error) {
-		console.error('Failed to fetch polygon details:', error);
-	  }
+	        method,
+	        headers,
+	        body: JSON.stringify(data),
+	    });
+	
+	    if (!response.ok) {
+	        throw new Error(`Error ${id === 'new' ? 'submitting' : 'updating'} form: ${response.statusText}`);
+	    }
+	
+	    // Displays success message and redirects to main page after 2 seconds
+	    updateMsgError("");
+	    updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
+	    setTimeout(() => history.back(), 2000);
+	
+	} catch (error) {
+	    console.error('Failed to fetch polygon details:', error);
+	}
 }
 
 function populateSelect(selectId, options) {
