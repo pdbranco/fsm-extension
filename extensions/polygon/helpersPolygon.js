@@ -246,7 +246,7 @@ function validateForm(name, polygonIdEAM) {
 }
 
 // DELETE polygon ASSYNC
-async function deletePoplygon(cloudHost, account, company, id) {
+async function deletePolygon(cloudHost, account, company, id) {
   
   const headers = {
     'Content-Type': 'application/json',
