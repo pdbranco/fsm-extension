@@ -29,9 +29,9 @@
       const { ShellSdk, SHELL_EVENTS } = FSMShell;
 
       // Display an error message if extension does not run within shell
-      //if (!ShellSdk.isInsideShell()) {
-      //  updateUI('Unable to reach shell eventAPI');
-      //} else {
+      if (!ShellSdk.isInsideShell()) {
+        updateUI('Unable to reach shell eventAPI');
+      } else {
         // Initialise ShellSDK to connect with parent shell library
         const shellSdk = ShellSdk.init(parent, '*');
 
@@ -68,20 +68,10 @@
            */
           initializeRefreshTokenStrategy(shellSdk, auth);
 
-          // Add a listener expecting activityID
-          //shellSdk.onViewState('activityID', async activityID => {
-
-          //  updateUI(`Loading ...`);
-
-           // let equipment = await getServiceContract(cloudHost, account, company, activityID);
-           //getEquipments(cloudHost, account, company);
           getPushEvents(cloudHost, account, company);
-
 
            //Filter Table
            const searchInput = document.getElementById('searchInput');
-           
-
            searchInput.addEventListener('keyup', filterTable); // Filter on every keyup
 
            const createNewPushEventButton = document.getElementById('createNewPushEvent');
@@ -89,10 +79,8 @@
               // Redirect to the details page for creating a new item
               window.location.href = "detailsPushEvent.html?id=new"; // Replace with your actual details page URL
             });
-            //updateUI(equipment.externalId);
-          //});
-        });
-      //}
+          });
+        }
     </script>
   </body>
 </html>
