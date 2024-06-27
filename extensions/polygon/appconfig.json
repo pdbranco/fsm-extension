@@ -1,0 +1,7 @@
+{
+  "name": "Polygon",
+  "provider": "SAP FSM",
+  "description": "Sample extension to demo data fetch using a frontend only architecture",   
+  "version": "1.0.0", 
+  "icon": "https://pdbranco.github.io/fsm-extension/extensions/polygon/icon.png"
+}
