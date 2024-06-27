@@ -357,7 +357,7 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
         	});
 
 		if (!response.ok) {
-		  throw new Error(`Error ${id === 'new' ? 'submitting' : 'updating'} form:`, error);
+		  throw new Error(`Error: ${response.status} ${response.statusText}`);
 		}
 
 		// Displays success message and redirects to main page after 2 seconds
