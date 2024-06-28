@@ -115,14 +115,14 @@ function getPushEvents(cloudHost, account, company) {
             })
               .then(response => response.json())
               .then(function(json) {
-                    displayDataTable(json.data);
+                    displayDataTable(json.data, cloudHost, account, company);
                     resolve();
               });
         });
 }
 
 //CREATE TABLE
-function displayDataTable(data) {
+function displayDataTable(data, cloudHost, account, company) {
 
     if(sessionStorage.getItem('idMetaPushEvent') == null) {
 	    getIdCustomObject(cloudHost, account, company, 'PushEvent')
