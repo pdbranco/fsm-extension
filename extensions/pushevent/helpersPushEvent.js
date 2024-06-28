@@ -335,7 +335,7 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
     }
 
     if(sessionStorage.getItem('idMetaPushEvent') == null) {
-	    getIdCustomObject(${cloudHost}, ${account}, ${company}, 'PushEvent')
+	    getIdCustomObject(cloudHost, account, company, 'PushEvent')
     }
 
     const data = {
