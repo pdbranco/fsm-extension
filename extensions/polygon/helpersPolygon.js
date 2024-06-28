@@ -43,7 +43,6 @@ function getPolygons(cloudHost, account, company) {
             })
               .then(response => response.json())
               .then(function(json) {
-		    if (json.data.length === 0){getIdCustomObject(${cloudHost}, ${account}, ${company}, 'Polygon')}
                     displayDataTable(json.data);
                     resolve();
               });
