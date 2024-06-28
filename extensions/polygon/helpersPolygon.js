@@ -43,7 +43,7 @@ function getPolygons(cloudHost, account, company) {
             })
               .then(response => response.json())
               .then(function(json) {
-                    displayDataTable(json.data);
+                    displayDataTable(json.data, cloudHost, account, company);
                     resolve();
               });
         });
@@ -76,7 +76,12 @@ function filterTable() {
 
 
 //CREATE TABLE
-function displayDataTable(data) {
+function displayDataTable(data, cloudHost, account, company) {
+    
+    if(sessionStorage.getItem('idMetaPolygon') == null) {
+	    getIdCustomObject(cloudHost, account, company, 'Polygon')
+    }
+	
     if (data.length === 0) return;
 	
     sessionStorage.setItem('idMetaPolygon', data[0].ud.id);
