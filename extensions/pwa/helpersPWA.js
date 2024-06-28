@@ -43,7 +43,7 @@ function getPWAs(cloudHost, account, company) {
             })
               .then(response => response.json())
               .then(function(json) {
-                    displayDataTable(json.data);
+                    displayDataTable(json.data, cloudHost, account, company);
                     resolve();
               });
         });
@@ -76,7 +76,12 @@ function filterTable() {
 
 
 //CREATE TABLE
-function displayDataTable(data) {
+function displayDataTable(data, cloudHost, account, company) {
+
+    if(sessionStorage.getItem('idMetaPushEvent') == null) {
+	    getIdCustomObject(cloudHost, account, company, 'PWA')
+    }
+	
     if (data.length === 0) return;
 	
     sessionStorage.setItem('idMetaPWA', data[0].ud.id);
@@ -322,3 +327,28 @@ const updateMsgError = (text) =>
 
 const updateMsgSuccess = (text) =>
   (document.querySelectorAll('#infoSuccess')[0].innerText = text);
+
+// GET ID CUSTOMOBJECT
+function getIdCustomObject(cloudHost, account, company, nameObject) {
+  
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Client-ID': 'fsm-extension',
+    'X-Client-Version': '1.0.0',
+    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+  };
+
+  return new Promise(resolve => {
+
+          fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({"query": `select ud.id from UdoMeta ud where ud.name = '${nameObject}'`}),
+            })
+              .then(response => response.json())
+              .then(function(json) {
+		    sessionStorage.setItem('idMetaPushEvent', json.data[0].ud.id);
+                    resolve();
+              });
+        });
+}
