@@ -78,7 +78,7 @@ function filterTable() {
 //CREATE TABLE
 function displayDataTable(data, cloudHost, account, company) {
 
-    if(sessionStorage.getItem('idMetaPushEvent') == null) {
+    if(sessionStorage.getItem('idMetaPWA') == null) {
 	    getIdCustomObject(cloudHost, account, company, 'PWA')
     }
 	
