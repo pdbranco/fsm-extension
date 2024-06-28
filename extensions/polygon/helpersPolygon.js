@@ -43,6 +43,7 @@ function getPolygons(cloudHost, account, company) {
             })
               .then(response => response.json())
               .then(function(json) {
+		    if (json.data.length === 0){getIdCustomObject(${cloudHost}, ${account}, ${company}, 'Polygon')}
                     displayDataTable(json.data);
                     resolve();
               });
@@ -278,3 +279,29 @@ const updateMsgError = (text) =>
 
 const updateMsgSuccess = (text) =>
   (document.querySelectorAll('#infoSuccess')[0].innerText = text);
+
+// GET ID CUSTOMOBJECT ASSYNC
+async function getIdCustomObject(cloudHost, account, company, nameObject) {
+  
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Client-ID': 'fsm-extension',
+    'X-Client-Version': '1.0.0',
+    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+  };
+
+  try {
+    const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({"query": `select ud.id from UdoMeta ud where ud.name = '${nameObject}'`})
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+  } catch (error) {
+    console.error('Failure to obtain the Id:', error);
+  }
+}
