@@ -123,6 +123,11 @@ function getPushEvents(cloudHost, account, company) {
 
 //CREATE TABLE
 function displayDataTable(data) {
+
+    if(sessionStorage.getItem('idMetaPushEvent') == null) {
+	    getIdCustomObject(cloudHost, account, company, 'PushEvent')
+    }
+
     if (data.length === 0) return;
 	
     sessionStorage.setItem('idMetaPushEvent', data[0].ud.id);
@@ -332,10 +337,6 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
     if (validationError) {
 	    	updateMsgError(validationError);
 		return; // Prevents form submission
-    }
-
-    if(sessionStorage.getItem('idMetaPushEvent') == null) {
-	    getIdCustomObject(cloudHost, account, company, 'PushEvent')
     }
 
     const data = {
