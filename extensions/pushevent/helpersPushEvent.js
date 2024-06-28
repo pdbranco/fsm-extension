@@ -499,7 +499,8 @@ async function getIdCustomObject(cloudHost, account, company, nameObject) {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
 	
-    sessionStorage.setItem('idMetaPushEvent', data[0].ud.id);
+    const json = await response.json();
+    sessionStorage.setItem('idMetaPushEvent', json.data[0].ud.id);
 
   } catch (error) {
     console.error('Failure to obtain the Id:', error);
