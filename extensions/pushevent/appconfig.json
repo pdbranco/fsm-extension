@@ -1,7 +1,7 @@
 {
   "name": "Push Event",
   "provider": "SAP FSM",
-  "description": "Sample extension to demo data fetch using a frontend only architecture",   
+  "description": "Extension for the management of Push Events",   
   "version": "1.0.0", 
-  "icon": "https://raw.githubusercontent.com/SAP-samples/fsm-extension-sample/refactor/samples/service-contract/icon.png"
+  "icon": "https://pdbranco.github.io/fsm-extension/extensions/pushevent/icon.png"
 }
