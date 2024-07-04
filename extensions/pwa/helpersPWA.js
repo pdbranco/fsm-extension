@@ -161,7 +161,7 @@ function prefillForm(data) {
 				const selectedValues = item.value.split(',');
 				selectedValues.forEach(selectedValue => {	
 	                ListPolygons.forEach(option => {
-	                    if (option.text.trim() === selectedValue.trim()) {
+	                    if (option.value.trim() === selectedValue.trim()) {
 	                        option.selected = true;
 	                    }
 	                });
