@@ -352,3 +352,21 @@ function getIdCustomObject(cloudHost, account, company, nameObject) {
               });
         });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('myForm');
+    const buttonSubmit = document.getElementById('createOrUpdatePWA');
+    let formChanged = false;
+
+    function checkChange() {
+        formChanged = true;
+        buttonSubmit.disabled = false;
+    }
+
+    const fields = form.querySelectorAll('input, select, textarea');
+    fields.forEach(field => {
+        field.addEventListener('change', checkChange);
+        field.addEventListener('input', checkChange);
+    });
+
+});
