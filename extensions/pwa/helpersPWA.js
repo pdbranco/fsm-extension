@@ -370,5 +370,10 @@ document.addEventListener('DOMContentLoaded', function() {
         field.addEventListener('input', checkChange);
     });
 
+    form.addEventListener('submit', function() {
+        formChanged = false;
+        buttonSubmit.disabled = true;
+    });
+
 });
 
