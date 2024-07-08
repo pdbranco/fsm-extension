@@ -129,6 +129,8 @@ function displayDataTable(data, cloudHost, account, company) {
     }
 
     if (data.length === 0) return;
+
+    data.sort(compareByNamePushEvent);
 	
     sessionStorage.setItem('idMetaPushEvent', data[0].ud.id);
 
@@ -526,3 +528,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 });
+
+function compareByNamePushEvent(a, b) {
+    const nomeA = a.pe.udfValues.find(udf => udf.name === "pushEvent_Name").value.toLowerCase();
+    const nomeB = b.pe.udfValues.find(udf => udf.name === "pushEvent_Name").value.toLowerCase();
+    
+    return nomeA.localeCompare(nomeB, undefined, { numeric: true, sensitivity: 'base' });
+}
