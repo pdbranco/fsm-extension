@@ -233,20 +233,6 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
 	  }
 }
 
-function populateSelect2(selectId, options) {
-    const selectElement = document.getElementById(selectId);
-    selectElement.innerHTML = ''; // Clear any existing options
-	
-    for (const key in options) {
-        if (options.hasOwnProperty(key)) {
-            const option = document.createElement('option');
-            option.value = key;
-            option.text = options[key];
-            selectElement.appendChild(option);
-        }
-    }
-}
-
 function populateSelect(selectId, options) {
     const selectElement = document.getElementById(selectId);
     selectElement.innerHTML = '';
