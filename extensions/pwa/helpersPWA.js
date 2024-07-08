@@ -236,8 +236,6 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
 function populateSelect(selectId, options) {
     const selectElement = document.getElementById(selectId);
     selectElement.innerHTML = ''; // Clear any existing options
-
-    options.sort(sortAlphanumerical);
 	
     for (const key in options) {
         if (options.hasOwnProperty(key)) {
@@ -386,8 +384,4 @@ function compareByPWAName(a, b) {
     const nomeB = b.pwa.udfValues.find(udf => udf.name === "pwa_Name").value.toLowerCase();
     
     return nomeA.localeCompare(nomeB, undefined, { numeric: true, sensitivity: 'base' });
-}
-
-function sortAlphanumerical(a, b) {
-  return a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'});
 }
