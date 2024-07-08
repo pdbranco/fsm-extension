@@ -84,7 +84,7 @@ function displayDataTable(data, cloudHost, account, company) {
 	
     if (data.length === 0) return;
 
-    data.sort(compararPorPWAName);
+    data.sort(compareByPWAName);
 	
     sessionStorage.setItem('idMetaPWA', data[0].ud.id);
 
@@ -379,7 +379,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-function compararPorPWAName(a, b) {
+function compareByPWAName(a, b) {
     const nomeA = a.pwa.udfValues.find(udf => udf.name === "pwa_Name").value.toLowerCase();
     const nomeB = b.pwa.udfValues.find(udf => udf.name === "pwa_Name").value.toLowerCase();
     
