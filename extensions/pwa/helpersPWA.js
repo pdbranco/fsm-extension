@@ -83,6 +83,8 @@ function displayDataTable(data, cloudHost, account, company) {
     }
 	
     if (data.length === 0) return;
+
+    seuArray.sort(data);
 	
     sessionStorage.setItem('idMetaPWA', data[0].ud.id);
 
@@ -377,3 +379,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+function compararPorPWAName(a, b) {
+    const nomeA = a.pwa.udfValues.find(udf => udf.name === "pwa_Name").value.toLowerCase();
+    const nomeB = b.pwa.udfValues.find(udf => udf.name === "pwa_Name").value.toLowerCase();
+    
+    return nomeA.localeCompare(nomeB, undefined, { numeric: true, sensitivity: 'base' });
+}
