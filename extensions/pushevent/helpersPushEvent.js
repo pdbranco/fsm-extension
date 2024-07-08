@@ -8,22 +8,20 @@ const updateUI = (text) =>
 // Loop before a token expire to fetch a new one
 //
 function initializeRefreshTokenStrategy(shellSdk, auth) {
-  let intervalId;
 
   shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
     sessionStorage.setItem('token', event.access_token);
-    clearInterval(intervalId);
-    intervalId = setInterval(fetchTokenPushEvent, (event.expires_in * 1000) - 60000);
+    setTimeout(() => fetchToken(), (event.expires_in * 1000) - 50000);
   });
 
-  function fetchTokenPushEvent() {
+  function fetchToken() {
     shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
       response_type: 'token'  // request a user token within the context
     });
   }
 
   sessionStorage.setItem('token', auth.access_token);
-  intervalId = setInterval(fetchTokenPushEvent, (auth.expires_in * 1000) - 60000);
+  setTimeout(() => fetchToken(), (auth.expires_in * 1000) - 50000);
 }
 
 // BUILD TABLE
