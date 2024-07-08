@@ -4,14 +4,17 @@
 const updateUI = (text) =>
   (document.querySelectorAll('#info')[0].innerText = text);
 
+//
+// Loop before a token expire to fetch a new one
+//
 function initializeRefreshTokenStrategy(shellSdk, auth) {
-  let tokenRefreshInterval;
+  let intervalId;
 
-  function updateTokenAndExpiry(tokenData) {
-    sessionStorage.setItem('token', tokenData.access_token);
-    const expiryDate = new Date(Date.now() + tokenData.expires_in * 1000);
-    sessionStorage.setItem('tokenExpiry', expiryDate.toISOString());
-  }
+  shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
+    sessionStorage.setItem('token', event.access_token);
+    clearInterval(intervalId);
+    intervalId = setInterval(fetchTokenPushEvent, (event.expires_in * 1000) - 40000);
+  });
 
   function fetchTokenPushEvent() {
     shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
@@ -19,28 +22,8 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     });
   }
 
-  function startTokenRefreshInterval(expiresIn) {
-    // Clear any existing interval
-    if (tokenRefreshInterval) {
-      clearInterval(tokenRefreshInterval);
-    }
-
-    // Set the interval to 90% of the expiration time to ensure we refresh before expiry
-    const refreshInterval = Math.floor(expiresIn * 900); // 90% of expires_in in milliseconds
-    
-    tokenRefreshInterval = setInterval(() => {
-      fetchTokenPushEvent();
-    }, refreshInterval);
-  }
-
-  shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
-    updateTokenAndExpiry(event);
-    startTokenRefreshInterval(event.expires_in);
-  });
-
-  // Initial setup with the provided auth
-  updateTokenAndExpiry(auth);
-  startTokenRefreshInterval(auth.expires_in);
+  sessionStorage.setItem('token', auth.access_token);
+  intervalId = setInterval(fetchTokenPushEvent, (auth.expires_in * 1000) - 40000);
 }
 
 // BUILD TABLE
