@@ -378,22 +378,6 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
 
 }
 
-function populateSelect2(selectId, options) {
-    const selectElement = document.getElementById(selectId);
-    var optionCount = Object.keys(options).length;
-    selectElement.innerHTML = ''; // Clear any existing options
-	
-    for (const key in options) {
-        if (options.hasOwnProperty(key)) {
-            const option = document.createElement('option');
-            option.value = key;
-            option.text = options[key];
-            selectElement.appendChild(option);
-        }
-    }
-    selectElement.size = optionCount;
-}
-
 function populateSelect(selectId, options) {
     const selectElement = document.getElementById(selectId);
     selectElement.innerHTML = '';
