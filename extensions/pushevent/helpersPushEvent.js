@@ -13,7 +13,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
   shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
     sessionStorage.setItem('token', event.access_token);
     clearInterval(intervalId);
-    intervalId = setInterval(fetchTokenPushEvent, (event.expires_in * 1000) - 40000);
+    intervalId = setInterval(fetchTokenPushEvent, (event.expires_in * 1000) - 60000);
   });
 
   function fetchTokenPushEvent() {
@@ -23,7 +23,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
   }
 
   sessionStorage.setItem('token', auth.access_token);
-  intervalId = setInterval(fetchTokenPushEvent, (auth.expires_in * 1000) - 40000);
+  intervalId = setInterval(fetchTokenPushEvent, (auth.expires_in * 1000) - 60000);
 }
 
 // BUILD TABLE
