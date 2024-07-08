@@ -84,7 +84,7 @@ function displayDataTable(data, cloudHost, account, company) {
 	
     if (data.length === 0) return;
 
-    seuArray.sort(data);
+    data.sort(compararPorPWAName);
 	
     sessionStorage.setItem('idMetaPWA', data[0].ud.id);
 
