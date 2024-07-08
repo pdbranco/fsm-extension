@@ -83,6 +83,8 @@ function displayDataTable(data, cloudHost, account, company) {
     }
 	
     if (data.length === 0) return;
+
+    data.sort(compareByPolygonName);
 	
     sessionStorage.setItem('idMetaPolygon', data[0].ud.id);
 
@@ -332,3 +334,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 });
+
+function compareByPolygonName(a, b) {
+    const nomeA = a.polygon.udfValues.find(udf => udf.name === "polygon_Name").value.toLowerCase();
+    const nomeB = b.polygon.udfValues.find(udf => udf.name === "polygon_Name").value.toLowerCase();
+    
+    return nomeA.localeCompare(nomeB, undefined, { numeric: true, sensitivity: 'base' });
+}
