@@ -378,7 +378,7 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
 
 }
 
-function populateSelect(selectId, options) {
+function populateSelect2(selectId, options) {
     const selectElement = document.getElementById(selectId);
     var optionCount = Object.keys(options).length;
     selectElement.innerHTML = ''; // Clear any existing options
@@ -392,6 +392,24 @@ function populateSelect(selectId, options) {
         }
     }
     selectElement.size = optionCount;
+}
+
+function populateSelect(selectId, options) {
+    const selectElement = document.getElementById(selectId);
+    selectElement.innerHTML = '';
+
+    function sortAlphanumeric(a, b) {
+        return a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'});
+    }
+
+    const sortedKeys = Object.keys(options).sort(sortAlphanumeric);
+
+    sortedKeys.forEach(key => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.text = options[key];
+        selectElement.appendChild(option);
+    });
 }
 
 function populateComboBox(response) {
