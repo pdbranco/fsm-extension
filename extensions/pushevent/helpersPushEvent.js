@@ -254,11 +254,11 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
         'Authorization': `bearer ${sessionStorage.getItem('token')}`,
     };
 	
-	const url = id === 'new' ? 
-	`https://${cloudHost}/api/data/v4/UdoValue?dtos=UdoValue.10&account=${account}&company=${company}` : 
-	`https://${cloudHost}/api/data/v4/UdoValue/${id}?dtos=UdoValue.10&account=${account}&company=${company}&forceUpdate=true`;
+    const url = id === 'new' ? 
+    `https://${cloudHost}/api/data/v4/UdoValue?dtos=UdoValue.10&account=${account}&company=${company}` : 
+    `https://${cloudHost}/api/data/v4/UdoValue/${id}?dtos=UdoValue.10&account=${account}&company=${company}&forceUpdate=true`;
 	
-	const method = id === 'new' ? 'POST' : 'PATCH';
+    const method = id === 'new' ? 'POST' : 'PATCH';
 
     const name = document.getElementById('name').value;
     const startDateTime = document.getElementById('start_datetime').value;
@@ -292,7 +292,7 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
         ]
     };
 
-	try {
+    try {
 	  const response = await fetch(url, {
 	    method,
 	    headers,
@@ -307,8 +307,8 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
 	    if (errorData && errorData.children && errorData.children.length > 0) {
 	      const specificError = errorData.children[0].values[0];
 	      if (specificError) {
-	        errorMessage += ` - ${specificError}`;
-		errorScreen += ` - ${specificError}`;
+		      errorMessage += ` - ${specificError}`;
+		      errorScreen += ` - ${specificError}`;
 	      }
 	    }
 	    console.error('Failed to fetch push event details:', errorMessage);
