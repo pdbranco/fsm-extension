@@ -101,7 +101,7 @@ function getPushEvents(cloudHost, account, company) {
   
   const headers = {
     'Content-Type': 'application/json',
-    'X-Client-ID': 'fsm-extension-sample',
+    'X-Client-ID': 'fsm-extension-pushevent',
     'X-Client-Version': '1.0.0',
     'Authorization': `bearer ${sessionStorage.getItem('token')}`,
   };
@@ -166,7 +166,7 @@ async function getPushEventDetails(cloudHost, account, company, id) {
   
   const headers = {
     'Content-Type': 'application/json',
-    'X-Client-ID': 'fsm-extension-sample',
+    'X-Client-ID': 'fsm-extension-pushevent',
     'X-Client-Version': '1.0.0',
     'Authorization': `bearer ${sessionStorage.getItem('token')}`,
   };
@@ -249,7 +249,7 @@ function prefillForm(data) {
 function submitPushEvent(cloudHost, account, company, id, document) {
     const headers = {
         'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-sample',
+        'X-Client-ID': 'fsm-extension-pushevent',
         'X-Client-Version': '1.0.0',
         'Authorization': `bearer ${sessionStorage.getItem('token')}`,
     };
@@ -313,7 +313,7 @@ function submitPushEvent(cloudHost, account, company, id, document) {
 async function submitPushEventAsync(cloudHost, account, company, id, document) {
     const headers = {
         'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-sample',
+        'X-Client-ID': 'fsm-extension-pushevent',
         'X-Client-Version': '1.0.0',
         'Authorization': `bearer ${sessionStorage.getItem('token')}`,
     };
@@ -414,7 +414,7 @@ async function getOptionMatCodeAndStatus(cloudHost, account, company) {
   
   const headers = {
     'Content-Type': 'application/json',
-    'X-Client-ID': 'fsm-extension-sample',
+    'X-Client-ID': 'fsm-extension-pushevent',
     'X-Client-Version': '1.0.0',
     'Authorization': `bearer ${sessionStorage.getItem('token')}`,
   };
@@ -454,7 +454,7 @@ async function deletePushEvent(cloudHost, account, company, id) {
   
   const headers = {
     'Content-Type': 'application/json',
-    'X-Client-ID': 'fsm-extension-sample',
+    'X-Client-ID': 'fsm-extension-pushevent',
     'X-Client-Version': '1.0.0',
     'Authorization': `bearer ${sessionStorage.getItem('token')}`,
   };
