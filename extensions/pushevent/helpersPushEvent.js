@@ -308,7 +308,7 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
 	      const specificError = errorData.children[0].values[0];
 	      if (specificError) {
 		      errorMessage += ` - ${specificError}`;
-		      errorScreen += ` - ${specificError}`;
+		      errorScreen += `${specificError}`;
 	      }
 	    }
 	    console.error('Failed to fetch push event details:', errorMessage);
