@@ -207,6 +207,7 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
 
     const data = {
         "meta": `${sessionStorage.getItem('idMetaPWA')}`,
+	"externalId": `${pwaIdEAM}`,
         "udfValues": [{
                 "meta": {
                     "externalId": "pwa_Name"
