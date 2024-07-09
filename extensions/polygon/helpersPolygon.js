@@ -10,8 +10,8 @@ const updateUI = (text) =>
 function initializeRefreshTokenStrategy(shellSdk, auth) {
 
   shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
-    sessionStorage.setItem('token', event.access_token);
-    setTimeout(() => fetchTokenPolygon(), (event.expires_in * 1000) - 50000);
+    sessionStorage.setItem('tokenPolygon', event.access_token);
+    setTimeout(() => fetchTokenPolygon(), (event.expires_in * 1000) - 180000);
   });
 
   function fetchTokenPolygon() {
@@ -20,8 +20,8 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     });
   }
 
-  sessionStorage.setItem('token', auth.access_token);
-  setTimeout(() => fetchTokenPolygon(), (auth.expires_in * 1000) - 50000);
+  sessionStorage.setItem('tokenPolygon', auth.access_token);
+  setTimeout(() => fetchTokenPolygon(), (auth.expires_in * 1000) - 180000);
 }
 
 //GET OBJECT POLYGONS
@@ -31,7 +31,7 @@ function getPolygons(cloudHost, account, company) {
     'Content-Type': 'application/json',
     'X-Client-ID': 'fsm-extension-sample',
     'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+    'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
   };
 
   return new Promise(resolve => {
@@ -122,7 +122,7 @@ async function getPolygonDetails(cloudHost, account, company, id) {
     'Content-Type': 'application/json',
     'X-Client-ID': 'fsm-extension-sample',
     'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+    'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
   };
 
   try {
@@ -170,7 +170,7 @@ async function submitPolygonAsync(cloudHost, account, company, id, document) {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-sample',
         'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+        'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
     };
 	
 	const url = id === 'new' ? 
@@ -259,7 +259,7 @@ async function deletePolygon(cloudHost, account, company, id) {
     'Content-Type': 'application/json',
     'X-Client-ID': 'fsm-extension-sample',
     'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+    'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
   };
 
   try {
@@ -293,7 +293,7 @@ async function getIdCustomObject(cloudHost, account, company, nameObject) {
     'Content-Type': 'application/json',
     'X-Client-ID': 'fsm-extension',
     'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+    'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
   };
 
   try {
