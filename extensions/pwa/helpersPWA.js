@@ -10,8 +10,8 @@ const updateUI = (text) =>
 function initializeRefreshTokenStrategy(shellSdk, auth) {
 
   shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
-    sessionStorage.setItem('token', event.access_token);
-    setTimeout(() => fetchTokenPWA(), (event.expires_in * 1000) - 30000);
+    sessionStorage.setItem('tokenPwa', event.access_token);
+    setTimeout(() => fetchTokenPWA(), (event.expires_in * 1000) - 20000);
   });
 
   function fetchTokenPWA() {
@@ -20,8 +20,8 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     });
   }
 
-  sessionStorage.setItem('token', auth.access_token);
-  setTimeout(() => fetchTokenPWA(), (auth.expires_in * 1000) - 30000);
+  sessionStorage.setItem('tokenPwa', auth.access_token);
+  setTimeout(() => fetchTokenPWA(), (auth.expires_in * 1000) - 20000);
 }
 
 //GET OBJECT PWAS
@@ -31,7 +31,7 @@ function getPWAs(cloudHost, account, company) {
     'Content-Type': 'application/json',
     'X-Client-ID': 'fsm-extension-sample',
     'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+    'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
   };
 
   return new Promise(resolve => {
@@ -122,7 +122,7 @@ async function getPWADetails(cloudHost, account, company, id) {
     'Content-Type': 'application/json',
     'X-Client-ID': 'fsm-extension-sample',
     'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+    'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
   };
 
   try {
@@ -181,7 +181,7 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-sample',
         'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+        'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
     };
 	
 	const url = id === 'new' ? 
@@ -268,7 +268,7 @@ async function getOptionPolygons(cloudHost, account, company) {
     'Content-Type': 'application/json',
     'X-Client-ID': 'fsm-extension-sample',
     'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+    'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
   };
 
   try {
@@ -307,7 +307,7 @@ async function deletePWA(cloudHost, account, company, id) {
     'Content-Type': 'application/json',
     'X-Client-ID': 'fsm-extension-sample',
     'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+    'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
   };
 
   try {
@@ -341,7 +341,7 @@ function getIdCustomObject(cloudHost, account, company, nameObject) {
     'Content-Type': 'application/json',
     'X-Client-ID': 'fsm-extension',
     'X-Client-Version': '1.0.0',
-    'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+    'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
   };
 
   return new Promise(resolve => {
