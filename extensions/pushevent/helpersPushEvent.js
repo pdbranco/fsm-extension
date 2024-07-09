@@ -168,7 +168,6 @@ async function getPushEventDetails(cloudHost, account, company, id) {
         const json = await response.json();
         // CALL THE FUNCTION TO FILL IN THE FORM
         prefillForm(json);
-        //updateUI(json.data[0].pe.udfValues[0].value);
 
     } catch (error) {
         console.error('Failed to fetch push event details:', error);
