@@ -18,7 +18,6 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
       response_type: 'token'  // request a user token within the context
     });
-    console.log("Novo token:", new Date().toLocaleString());
   }
 
   sessionStorage.setItem('token', auth.access_token);
