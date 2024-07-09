@@ -304,7 +304,7 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
 	    let errorMessage = `Error: ${response.status} ${response.statusText}`;
 	
 	    if (errorData && errorData.children && errorData.children.length > 0) {
-	      const specificError = errorData.children[0].message;
+	      const specificError = errorData.children[0].values[0];
 	      if (specificError) {
 	        errorMessage += ` - ${specificError}`;
 	      }
