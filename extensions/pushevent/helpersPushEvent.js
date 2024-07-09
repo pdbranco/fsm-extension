@@ -511,24 +511,26 @@ function getIdCustomObject(cloudHost, account, company, nameObject) {
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('myForm');
     const buttonSubmit = document.getElementById('createOrUpdatePushEvent');
-    let formChanged = false;
+    
+    if (form && buttonSubmit) {
+        let formChanged = false;
+        
+        function checkChange() {
+            formChanged = true;
+            buttonSubmit.disabled = false;
+        }
 
-    function checkChange() {
-        formChanged = true;
-        buttonSubmit.disabled = false;
+        const fields = form.querySelectorAll('input, select, textarea');
+        fields.forEach(field => {
+            field.addEventListener('change', checkChange);
+            field.addEventListener('input', checkChange);
+        });
+
+        form.addEventListener('submit', function() {
+            formChanged = false;
+            buttonSubmit.disabled = true;
+        });
     }
-
-    const fields = form.querySelectorAll('input, select, textarea');
-    fields.forEach(field => {
-        field.addEventListener('change', checkChange);
-        field.addEventListener('input', checkChange);
-    });
-
-    form.addEventListener('submit', function() {
-        formChanged = false;
-        buttonSubmit.disabled = true;
-    });
-
 });
 
 function compareByNamePushEvent(a, b) {
