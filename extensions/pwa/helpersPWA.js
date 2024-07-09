@@ -207,7 +207,7 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
 
     const data = {
         "meta": `${sessionStorage.getItem('idMetaPWA')}`,
-	"externalId": `${pwaIdEAM}`,
+        "externalId": `${pwaIdEAM}`,
         "udfValues": [{
                 "meta": {
                     "externalId": "pwa_Name"
@@ -243,20 +243,27 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
         });
 
         if (!response.ok) {
-			
-			const errorData = await response.json();
+
+            const errorData = await response.json();
             let errorMessage = `Error: ${response.status} ${response.statusText}`;
             let errorScreen = 'Error: ';
-			
-			if (errorData && errorData.children && errorData.children.length > 0) {
-                const specificError = errorData.children[0].message;
+            const specificError;
+
+            if (errorData && errorData.children && errorData.children.length > 0) {
+                specificError = errorData.children[0].message;
+                if (specificError) {
+                    errorMessage += ` - ${specificError}`;
+                    errorScreen += `${specificError}`;
+                }
+            } else if (errorData && errorData.message) {
+                specificError = errorData.message;
                 if (specificError) {
                     errorMessage += ` - ${specificError}`;
                     errorScreen += `${specificError}`;
                 }
             }
-			
-			console.error('Error: ', errorMessage);
+
+            console.error('Error: ', errorMessage);
             throw new Error(errorScreen);
         }
 
