@@ -302,15 +302,17 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
 	  if (!response.ok) {
 	    const errorData = await response.json();
 	    let errorMessage = `Error: ${response.status} ${response.statusText}`;
+	    let errorScreen = 'Error: ';
 	
 	    if (errorData && errorData.children && errorData.children.length > 0) {
 	      const specificError = errorData.children[0].values[0];
 	      if (specificError) {
 	        errorMessage += ` - ${specificError}`;
+		errorScreen += ` - ${specificError}`;
 	      }
 	    }
-	
-	    throw new Error(errorMessage);
+	    console.error('Failed to fetch push event details:', errorMessage);
+	    throw new Error(errorScreen);
 	  }
 	
 	  // Displays success message and redirects to main page after 2 seconds
@@ -319,7 +321,6 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
 	  setTimeout(() => history.back(), 2000);
 	
 	} catch (error) {
-	  console.error('Failed to fetch push event details:', error);
 	  updateMsgError(error.message);
 	}
 }
