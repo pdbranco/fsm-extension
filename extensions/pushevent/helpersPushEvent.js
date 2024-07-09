@@ -293,25 +293,35 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
     };
 
 	try {
-		const response = await fetch(url, {
-            	method,
-            	headers,
-           	body: JSON.stringify(data),
-        	});
-
-		if (!response.ok) {
-		  throw new Error(`Error: ${response.status} ${response.statusText}`);
-		}
-
-		// Displays success message and redirects to main page after 2 seconds
-		updateMsgError("");
-		updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
-		setTimeout(() => history.back(), 2000);
-		
-	  } catch (error) {
-		console.error('Failed to fetch push event details:', error);
+	  const response = await fetch(url, {
+	    method,
+	    headers,
+	    body: JSON.stringify(data),
+	  });
+	
+	  if (!response.ok) {
+	    const errorData = await response.json();
+	    let errorMessage = `Error: ${response.status} ${response.statusText}`;
+	
+	    if (errorData && errorData.children && errorData.children.length > 0) {
+	      const specificError = errorData.children[0].message;
+	      if (specificError) {
+	        errorMessage += ` - ${specificError}`;
+	      }
+	    }
+	
+	    throw new Error(errorMessage);
 	  }
-
+	
+	  // Displays success message and redirects to main page after 2 seconds
+	  updateMsgError("");
+	  updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
+	  setTimeout(() => history.back(), 2000);
+	
+	} catch (error) {
+	  console.error('Failed to fetch push event details:', error);
+	  updateMsgError(error.message);
+	}
 }
 
 function populateSelect(selectId, options) {
