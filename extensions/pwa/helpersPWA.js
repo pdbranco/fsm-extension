@@ -247,7 +247,7 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
             const errorData = await response.json();
             let errorMessage = `Error: ${response.status} ${response.statusText}`;
             let errorScreen = 'Error: ';
-            const specificError;
+            let specificError;
 
             if (errorData && errorData.children && errorData.children.length > 0) {
                 specificError = errorData.children[0].message;
