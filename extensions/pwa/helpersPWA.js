@@ -391,7 +391,7 @@ function getIdCustomObject(cloudHost, account, company, nameObject) {
 
     const headers = {
         'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension',
+        'X-Client-ID': 'fsm-extension-pwa',
         'X-Client-Version': '1.0.0',
         'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
     };
