@@ -320,15 +320,23 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
             const errorData = await response.json();
             let errorMessage = `Error: ${response.status} ${response.statusText}`;
             let errorScreen = 'Error: ';
+            let specificError;
 
             if (errorData && errorData.children && errorData.children.length > 0) {
-                const specificError = errorData.children[0].values[0];
+                specificError = errorData.children[0].message;
+                if (specificError) {
+                    errorMessage += ` - ${specificError}`;
+                    errorScreen += `${specificError}`;
+                }
+            } else if (errorData && errorData.message){
+                specificError = errorData.message;
                 if (specificError) {
                     errorMessage += ` - ${specificError}`;
                     errorScreen += `${specificError}`;
                 }
             }
-            console.error('Failed to fetch push event details:', errorMessage);
+            
+            console.error('Error: ', errorMessage);
             throw new Error(errorScreen);
         }
 
