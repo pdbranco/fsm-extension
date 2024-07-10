@@ -407,7 +407,7 @@ function getIdCustomObject(cloudHost, account, company, nameObject) {
             })
             .then(response => response.json())
             .then(function(json) {
-                sessionStorage.setItem('idMetaPushEvent', json.data[0].ud.id);
+                sessionStorage.setItem('idMetaPWA', json.data[0].ud.id);
                 resolve();
             });
     });
