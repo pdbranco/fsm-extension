@@ -29,7 +29,7 @@ function getPolygons(cloudHost, account, company) {
 
     const headers = {
         'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-sample',
+        'X-Client-ID': 'fsm-extension-polygon',
         'X-Client-Version': '1.0.0',
         'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
     };
@@ -124,7 +124,7 @@ async function getPolygonDetails(cloudHost, account, company, id) {
 
     const headers = {
         'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-sample',
+        'X-Client-ID': 'fsm-extension-polygon',
         'X-Client-Version': '1.0.0',
         'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
     };
@@ -174,7 +174,7 @@ function prefillForm(data) {
 async function submitPolygonAsync(cloudHost, account, company, id, document) {
     const headers = {
         'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-sample',
+        'X-Client-ID': 'fsm-extension-polygon',
         'X-Client-Version': '1.0.0',
         'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
     };
@@ -302,7 +302,7 @@ async function deletePolygon(cloudHost, account, company, id) {
 
     const headers = {
         'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-sample',
+        'X-Client-ID': 'fsm-extension-polygon',
         'X-Client-Version': '1.0.0',
         'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
     };
@@ -336,7 +336,7 @@ async function getIdCustomObject(cloudHost, account, company, nameObject) {
 
     const headers = {
         'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension',
+        'X-Client-ID': 'fsm-extension-polygon',
         'X-Client-Version': '1.0.0',
         'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
     };
