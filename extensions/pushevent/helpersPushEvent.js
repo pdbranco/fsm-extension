@@ -261,6 +261,7 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
 
     const data = {
         "meta": `${sessionStorage.getItem('idMetaPushEvent')}`,
+        "externalId": `${name}`,
         "udfValues": [{
             "meta": {
                 "externalId": "pushEvent_Name"
