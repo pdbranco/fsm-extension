@@ -11,13 +11,12 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
 
     shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
         sessionStorage.setItem('token', event.access_token);
-        sessionStorage.setItem('tokenExpiration', Date.now() + (event.expires_in * 1000));
+
+        console.log(`Data 1: ${new Date().toLocaleDateString()} - Hora: ${new Date().toLocaleTimeString()}`);
+        console.log("token 1: ", sessionStorage.getItem('token'));
+        console.log("expires_in 1: ", event.expires_in);
         
-        console.log("token 1 ", sessionStorage.getItem('token'));
-        console.log("tokenExpiration 1 ", sessionStorage.getItem('tokenExpiration'));
-        console.log("expires_in 1 ", event.expires_in);
-        
-        setTimeout(() => fetchToken(), (event.expires_in * 1000) - 30000);
+        setTimeout(() => fetchToken(), (event.expires_in * 1000) - 5000);
     });
 
     function fetchToken() {
@@ -27,11 +26,10 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     }
 
     sessionStorage.setItem('token', auth.access_token);
-    sessionStorage.setItem('tokenExpiration', Date.now() + (auth.expires_in * 1000));
-    
-    console.log("token 0 ", sessionStorage.getItem('token'));
-    console.log("tokenExpiration 0 ", sessionStorage.getItem('tokenExpiration'));
-    console.log("expires_in 0 ", auth.expires_in);
+
+    console.log(`Data 1: ${new Date().toLocaleDateString()} - Hora: ${new Date().toLocaleTimeString()}`);
+    console.log("token 0: ", sessionStorage.getItem('token'));
+    console.log("expires_in 0: ", auth.expires_in);
     
     setTimeout(() => fetchToken(), (auth.expires_in * 1000) - 30000);
 }
