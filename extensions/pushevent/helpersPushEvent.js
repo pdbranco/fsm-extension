@@ -16,7 +16,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
         console.log("token 1: ", sessionStorage.getItem('token'));
         console.log("expires_in 1: ", event.expires_in);
         
-        setTimeout(() => fetchToken(), (event.expires_in * 1000) - 5000);
+        setTimeout(() => fetchToken(), (event.expires_in * 1000) - (auth.expires_in * 500));
     });
 
     function fetchToken() {
@@ -31,7 +31,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     console.log("token 0: ", sessionStorage.getItem('token'));
     console.log("expires_in 0: ", auth.expires_in);
     
-    setTimeout(() => fetchToken(), (auth.expires_in * 1000) - 30000);
+    setTimeout(() => fetchToken(), (auth.expires_in * 1000) - (auth.expires_in * 500));
 }
 
 //
