@@ -16,7 +16,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
         console.log("token 1: ", sessionStorage.getItem('token'));
         console.log("expires_in 1: ", event.expires_in);
         const delay1 = (event.expires_in * 1000) - (event.expires_in * 500);
-        const scheduledTime1 = new Date(Date.now() + delay);
+        const scheduledTime1 = new Date(Date.now() + delay1);
         console.log(`setTimeout programado para executar em: ${scheduledTime1.toLocaleString()}`);
         
         setTimeout(() => fetchToken(), (event.expires_in * 1000) - (event.expires_in * 500));
@@ -34,7 +34,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     console.log("token 0: ", sessionStorage.getItem('token'));
     console.log("expires_in 0: ", auth.expires_in);
     const delay0 = (auth.expires_in * 1000) - (auth.expires_in * 500);
-    const scheduledTime0 = new Date(Date.now() + delay);
+    const scheduledTime0 = new Date(Date.now() + delay0);
     console.log(`setTimeout programado para executar em: ${scheduledTime0.toLocaleString()}`);
     
     setTimeout(() => fetchToken(), (auth.expires_in * 1000) - (auth.expires_in * 500));
