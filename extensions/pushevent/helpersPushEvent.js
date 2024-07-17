@@ -10,15 +10,7 @@ const updateUI = (text) =>
 function initializeRefreshTokenStrategy(shellSdk, auth) {
 
     shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
-        sessionStorage.setItem('token', event.access_token);
-        
-        console.log(`Data 1: ${new Date().toLocaleDateString()} - Hora: ${new Date().toLocaleTimeString()}`);
-        console.log("token 1: ", sessionStorage.getItem('token'));
-        console.log("expires_in 1: ", event.expires_in);
-        const delay1 = (event.expires_in * 1000) - (event.expires_in * 500);
-        const scheduledTime1 = new Date(Date.now() + delay1);
-        console.log(`setTimeout programado para executar em: ${scheduledTime1.toLocaleString()}`);
-        
+        sessionStorage.setItem('token', event.access_token);     
         setTimeout(() => fetchToken(), (event.expires_in * 1000) - (event.expires_in * 500));
     });
 
@@ -28,15 +20,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
         });
     }
 
-    sessionStorage.setItem('token', auth.access_token);
-    
-    console.log(`Data 0: ${new Date().toLocaleDateString()} - Hora: ${new Date().toLocaleTimeString()}`);
-    console.log("token 0: ", sessionStorage.getItem('token'));
-    console.log("expires_in 0: ", auth.expires_in);
-    const delay0 = (auth.expires_in * 1000) - (auth.expires_in * 500);
-    const scheduledTime0 = new Date(Date.now() + delay0);
-    console.log(`setTimeout programado para executar em: ${scheduledTime0.toLocaleString()}`);
-    
+    sessionStorage.setItem('token', auth.access_token);    
     setTimeout(() => fetchToken(), (auth.expires_in * 1000) - (auth.expires_in * 500));
 }
 
