@@ -21,7 +21,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     }
 
     sessionStorage.setItem('token', auth.access_token);
-    if (!event.expires_in || auth.expires_in < 60) {
+    if (!auth.expires_in || auth.expires_in < 60) {
         fetchToken();
     } else {
         setTimeout(() => fetchToken(), (auth.expires_in * 500));
