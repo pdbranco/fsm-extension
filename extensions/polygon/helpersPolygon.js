@@ -21,11 +21,8 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     }
 
     sessionStorage.setItem('tokenPolygon', auth.access_token);
-    if (!auth.expires_in || auth.expires_in < 60) {
-	    fetchTokenPolygon();
-    } else {
-	    setTimeout(() => fetchTokenPolygon(), (auth.expires_in * 500));
-    }
+    setTimeout(() => fetchTokenPolygon(), (auth.expires_in * 500));
+
 }
 
 //GET OBJECT POLYGONS
