@@ -24,41 +24,6 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     setTimeout(() => fetchToken(), (auth.expires_in * 1000) - (auth.expires_in * 500));
 }
 
-//
-// Function to validate and refresh the token
-//
-function validateAndRefreshToken() {
-    return new Promise((resolve, reject) => {
-        const currentToken = sessionStorage.getItem('token');
-        const tokenExpiration = sessionStorage.getItem('tokenExpiration');
-
-        if (currentToken && tokenExpiration && Date.now() < parseInt(tokenExpiration)) {
-            resolve(currentToken);
-        } else {
-            shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
-                response_type: 'token'
-            });
-
-            const timeoutId = setTimeout(() => {
-                shellSdk.off(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, authHandler);
-                reject(new Error('Timeout ao solicitar novo token'));
-            }, 10000);
-
-            const authHandler = (event) => {
-                clearTimeout(timeoutId);
-                shellSdk.off(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, authHandler);
-
-                sessionStorage.setItem('token', event.access_token);
-                sessionStorage.setItem('tokenExpiration', Date.now() + (event.expires_in * 1000));
-
-                resolve(event.access_token);
-            };
-
-            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, authHandler);
-        }
-    });
-}
-
 // BUILD TABLE
 function displayDataTable(data) {
     // Create the table element
