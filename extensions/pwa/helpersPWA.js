@@ -11,7 +11,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
 
     shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
         sessionStorage.setItem('tokenPwa', event.access_token);
-        setTimeout(() => fetchTokenPWA(), (event.expires_in * 1000) - (event.expires_in * 500));
+        setTimeout(() => fetchTokenPWA(), (event.expires_in * 500));
     });
 
     function fetchTokenPWA() {
@@ -21,7 +21,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     }
 
     sessionStorage.setItem('tokenPwa', auth.access_token);
-    setTimeout(() => fetchTokenPWA(), (auth.expires_in * 1000) - (auth.expires_in * 500));
+    setTimeout(() => fetchTokenPWA(), (auth.expires_in * 500));
 }
 
 //GET OBJECT PWAS
