@@ -22,7 +22,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
 
     sessionStorage.setItem('tokenPwa', auth.access_token);
     if (!auth.expires_in || auth.expires_in < 60) {
-	    fetchTokenPWA();
+	    await fetchTokenPWA();
     } else {
 	    setTimeout(() => fetchTokenPWA(), (auth.expires_in * 500));
     }
