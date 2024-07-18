@@ -25,30 +25,6 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
 }
 
 // BUILD TABLE
-function displayDataTable(data) {
-    // Create the table element
-    const table = document.createElement('table')
-    table.setAttribute("id", "itemList");
-
-    // Loop through data and create table rows
-    for (const row of data) {
-        const tableRow = document.createElement('tr');
-        for (const value in row) {
-            const cell = document.createElement('td');
-            cell.textContent = row[value].name;
-            tableRow.appendChild(cell);
-        }
-
-        // Add click event listener to each row for redirection
-        tableRow.addEventListener('click', () => {
-            window.location.href = `details.html?id=${row.equipment.externalId}`; // Replace "id" with your unique identifier
-        });
-        table.appendChild(tableRow);
-    }
-    // Add the table to the document body
-    document.body.appendChild(table);
-}
-
 // GET URL PARAMETERS
 function getParameters() {
     const queryString = window.location.search;
@@ -106,8 +82,8 @@ function displayDataTable(data, cloudHost, account, company) {
         getIdCustomObject(cloudHost, account, company, 'PushEvent')
     }
 
-    if (data.length === 0)
-        return;
+    if (data.length === 0) return;
+    if (document.getElementById('itemList')) return;
 
     data.sort(compareByNamePushEvent);
 
