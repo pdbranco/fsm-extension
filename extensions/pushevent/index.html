@@ -69,7 +69,7 @@
           initializeRefreshTokenStrategy(shellSdk, auth);
 
           shellSdk.emit(SHELL_EVENTS.Version3.GET_PERMISSIONS, {objectName: 'Activity'});
-          shellSdk.on(SHELL_EVENTS.Version3.GET_PERMISSIONS, (permission) => {const {objectName, permission} = JSON.parse(permission);});
+          shellSdk.on(SHELL_EVENTS.Version3.GET_PERMISSIONS, (authorization) => {const {objectName, permission} = JSON.parse(authorization)});
 
           getPushEvents(cloudHost, account, company);
 
