@@ -69,7 +69,7 @@
           initializeRefreshTokenStrategy(shellSdk, auth);
 
           shellSdk.emit(SHELL_EVENTS.Version3.GET_PERMISSIONS, {objectName: 'UdoMeta'});
-          shellSdk.on(SHELL_EVENTS.Version3.GET_PERMISSIONS, (authorization) => {const {objectName, permission} = JSON.parse(authorization)});
+          shellSdk.on(SHELL_EVENTS.Version3.GET_PERMISSIONS, (authorization) => {const {objectName, permission} = authorization});
 
           getPushEvents(cloudHost, account, company);
 
