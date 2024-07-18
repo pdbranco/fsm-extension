@@ -82,7 +82,7 @@ function displayDataTable(data, cloudHost, account, company) {
     }
 
     if (data.length === 0) return;
-    if (document.getElementById('createNewPushEvent')) return;
+    if (document.getElementById('itemList')) return;
 
     data.sort(compareByPWAName);
 
