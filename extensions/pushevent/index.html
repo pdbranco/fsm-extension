@@ -69,9 +69,8 @@
           initializeRefreshTokenStrategy(shellSdk, auth);
 
           shellSdk.emit(SHELL_EVENTS.Version3.GET_PERMISSIONS, {objectName: 'UdoMeta'});
-          shellSdk.on(SHELL_EVENTS.Version3.GET_PERMISSIONS, (response) => {const allowExtention =  response.permission.CREATE && response.permission.UPDATE && response.permission.DELETE;});
+          shellSdk.on(SHELL_EVENTS.Version3.GET_PERMISSIONS, (response) => {const allowExtention = response.permission.CREATE && response.permission.UPDATE && response.permission.DELETE; console.log("Imprimir permissão: ", allowExtention);});
 
-          console.log("Imprimir permissão: ", allowExtention);
           getPushEvents(cloudHost, account, company);
 
            //Filter Table
