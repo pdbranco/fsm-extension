@@ -173,9 +173,6 @@ function prefillForm(data) {
                     });
                 });
                 break;
-            case 'pwa_Description':
-                form.elements['pwadescription'].value = item.value;
-                break;
         }
     });
 }
@@ -197,7 +194,6 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
     const name = document.getElementById('name').value;
     const pwaIdEAM = document.getElementById('pwaIdEAM').value;
     const listPolygons = Array.from(document.getElementById('listPolygons').selectedOptions).map(option => option.value);
-    const pwa_Description = document.getElementById('pwadescription').value;
 
     // Execute validation of mandatory fields
     const validationError = validateForm(name, pwaIdEAM, listPolygons);
@@ -226,12 +222,6 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
                     "externalId": "pwa_PWAPolygons"
                 },
                 "value": `${listPolygons}`
-            },
-            {
-                "meta": {
-                    "externalId": "pwa_Description"
-                },
-                "value": `${pwa_Description}`
             }
         ]
     };
