@@ -9,16 +9,19 @@
   <div>
       <h2 id="info"></h2>
   </div>
-  <button id="createNewPushEvent">Create PWA</button>
-  <div class="search-style-group">
-    <svg viewBox="0 0 24 24" aria-hidden="true" class="search-style-icon">
-      <g>
-        <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
-      </g>
-    </svg>
-    <input type="text" id="searchInput" class="search-style" placeholder="Search PWA">
+  <div id="contentContainer">
+    <button id="createNewPushEvent">Create PWA</button>
+    <div class="search-style-group">
+      <svg viewBox="0 0 24 24" aria-hidden="true" class="search-style-icon">
+        <g>
+          <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+        </g>
+      </svg>
+      <input type="text" id="searchInput" class="search-style" placeholder="Search PWA">
+    </div>
   </div>
-  <br>
+  <p id="noPermissionLabel" style="display: none;">You don't have the necessary permissions to access this content.</p>
+  <br><br>
   <script src="https://unpkg.com/fsm-shell"></script>
   <script src="helpersPWA.js"></script>
   <script>
@@ -44,12 +47,10 @@
       // Callback on fsm context response
       shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_CONTEXT, (event) => {
         const {
-          // extract required context from event content
           cloudHost,
           account,
           company,
           user,
-          // extract authentication data from event content
           auth
         } = JSON.parse(event);
 
@@ -65,16 +66,32 @@
          */
         initializeRefreshTokenStrategy(shellSdk, auth);
 
-        getPWAs(cloudHost, account, company);
+        let allowExtension = false;
+        shellSdk.emit(SHELL_EVENTS.Version3.GET_PERMISSIONS, {objectName: 'UdoMeta'});
+        shellSdk.on(SHELL_EVENTS.Version3.GET_PERMISSIONS, (response) => {
+          allowExtension = response.permission.CREATE && response.permission.UPDATE && response.permission.DELETE;
 
-        // Filter Table
-        const searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('keyup', filterTable); // Filter on every keyup
+          if (allowExtension) {
+            // Show content and hide no permission label
+            document.getElementById('contentContainer').style.display = 'block';
+            document.getElementById('noPermissionLabel').style.display = 'none';
 
-        const createNewPushEventButton = document.getElementById('createNewPushEvent');
-        createNewPushEventButton.addEventListener('click', function() {
-          // Redirect to the details page for creating a new item (PWA)
-          window.location.href = "detailsPWA.html?id=new"; //Replace with your actual details page URL
+            getPWAs(cloudHost, account, company);
+
+            // Filter Table
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', filterTable); // Filter on every keyup
+            
+            const createNewPushEventButton = document.getElementById('createNewPushEvent');
+            createNewPushEventButton.addEventListener('click', function() {
+              // Redirect to the details page for creating a new item (PWA)
+              window.location.href = "detailsPWA.html?id=new"; //Replace with your actual details page URL
+            });
+          } else {
+            // Hide content and show no permission label
+            document.getElementById('contentContainer').style.display = 'none';
+            document.getElementById('noPermissionLabel').style.display = 'block';
+          }
         });
       });
     }
