@@ -83,14 +83,11 @@
            * the time left in seconds.
            */
           initializeRefreshTokenStrategy(shellSdk, auth);
+          var id = getParameters();
 
-          getOptionMatCodeAndStatus(cloudHost, account, company);
-          
-          var id = getParameters();          
-          if(id != 'new'){
-            getPushEventDetails(cloudHost, account, company, id);
-          }
-          else{
+          getOptionMatCodeAndStatus(cloudHost, account, company, id);
+                         
+          if(id == 'new'){
             document.getElementById("deletePushEvent").style.visibility = "hidden";
           }
           const form = document.querySelector('form'); // Get the form element
