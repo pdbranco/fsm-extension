@@ -118,7 +118,7 @@ function displayDataTable(data, cloudHost, account, company) {
 }
 
 // GET PWA DETAILS ASSYNC
-async function getPWADetails(cloudHost, account, company, id) {
+async function getPWADetailsOld(cloudHost, account, company, id) {
 
     const headers = {
         'Content-Type': 'application/json',
@@ -147,6 +147,37 @@ async function getPWADetails(cloudHost, account, company, id) {
     } catch (error) {
         console.error('Failed to fetch pwa details:', error);
     }
+}
+
+// GET PWA DETAILS
+function getPWADetails(cloudHost, account, company, id) {
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-Client-ID': 'fsm-extension-pwa',
+        'X-Client-Version': '1.0.0',
+        'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
+    };
+
+    fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoValue.10`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+            "query": `select pwa.id, pwa.udfValues from UdoValue pwa where pwa.id = '${id}'`
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(json => {
+        // CALL THE FUNCTION TO FILL IN THE FORM
+        prefillForm(json);
+    })
+    .catch(error => {
+        console.error('Failed to fetch pwa details:', error);
+    });
 }
 
 // FUNCTION TO PRE-FILL THE FORM
