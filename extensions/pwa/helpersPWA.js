@@ -118,7 +118,7 @@ function displayDataTable(data, cloudHost, account, company) {
 }
 
 // GET PWA DETAILS ASSYNC
-async function getPWADetailsOld(cloudHost, account, company, id) {
+async function getPWADetails(cloudHost, account, company, id) {
 
     const headers = {
         'Content-Type': 'application/json',
@@ -150,7 +150,7 @@ async function getPWADetailsOld(cloudHost, account, company, id) {
 }
 
 // GET PWA DETAILS
-function getPWADetails(cloudHost, account, company, id) {
+function getPWADetailsV2(cloudHost, account, company, id) {
     const headers = {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-pwa',
@@ -334,7 +334,7 @@ function populateComboBox(response) {
 }
 
 // GET OPTIONS POLYGONS ASSYNC
-async function getOptionPolygonsOld(cloudHost, account, company) {
+async function getOptionPolygons(cloudHost, account, company) {
 
     const headers = {
         'Content-Type': 'application/json',
@@ -358,14 +358,14 @@ async function getOptionPolygonsOld(cloudHost, account, company) {
 
         const json = await response.json();
         // CALL THE FUNCTION TO FILL IN THE COMBOBOX
-        populateComboBox(json);
+        await populateComboBox(json);
 
     } catch (error) {
         console.error('Failed to fetch pwa details:', error);
     }
 }
 
-function getOptionPolygons(cloudHost, account, company) {
+function getOptionPolygonsv2(cloudHost, account, company) {
     const headers = {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-pwa',
