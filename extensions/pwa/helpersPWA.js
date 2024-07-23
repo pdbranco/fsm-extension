@@ -149,37 +149,6 @@ async function getPWADetails(cloudHost, account, company, id) {
     }
 }
 
-// GET PWA DETAILS
-function getPWADetailsV2(cloudHost, account, company, id) {
-    const headers = {
-        'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-pwa',
-        'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
-    };
-
-    fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoValue.10`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-            "query": `select pwa.id, pwa.udfValues from UdoValue pwa where pwa.id = '${id}'`
-        })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
-        return response.json();
-    })
-    .then(json => {
-        // CALL THE FUNCTION TO FILL IN THE FORM
-        prefillForm(json);
-    })
-    .catch(error => {
-        console.error('Failed to fetch pwa details:', error);
-    });
-}
-
 // FUNCTION TO PRE-FILL THE FORM
 function prefillForm(data) {
     const form = document.getElementById('myForm');
@@ -359,41 +328,13 @@ async function getOptionPolygons(cloudHost, account, company, id) {
         const json = await response.json();
         // CALL THE FUNCTION TO FILL IN THE COMBOBOX
         populateComboBox(json);
-        getPWADetails(cloudHost, account, company, id);
+        if (id != 'new') {
+            getPWADetails(cloudHost, account, company, id);
+        }
 
     } catch (error) {
         console.error('Failed to fetch pwa details:', error);
     }
-}
-
-function getOptionPolygonsv2(cloudHost, account, company) {
-    const headers = {
-        'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-pwa',
-        'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
-    };
-
-    return fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdfMeta.20`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-            "query": "select meta.externalId, meta.selectionKeyValues from UdfMeta meta where meta.externalId = 'pwa_PWAPolygons'"
-        })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
-        return response.json();
-    })
-    .then(json => {
-        // CALL THE FUNCTION TO FILL IN THE COMBOBOX
-        populateComboBox(json);
-    })
-    .catch(error => {
-        console.error('Failed to fetch pwa details:', error);
-    });
 }
 
 // VALIDATION OF MANDATORY FIELDS
