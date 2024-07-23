@@ -371,7 +371,7 @@ async function getOptionPolygons(cloudHost, account, company, id) {
 }
 
 // GET OPTIONS POLYGONS ASSYNC
-async function getOptionPolygonsqV2(cloudHost, account, company, id, shellSdk) {
+function getOptionPolygonsqV2(cloudHost, account, company, id, shellSdk) {
 
     shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
         response_type: 'token'
@@ -387,29 +387,24 @@ async function getOptionPolygonsqV2(cloudHost, account, company, id, shellSdk) {
             'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
         };
 
-        try {
-            const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdfMeta.20`, {
-                method: 'POST',
-                headers,
-                body: JSON.stringify({
-                    "query": "select meta.externalId, meta.selectionKeyValues from UdfMeta meta where meta.externalId = 'pwa_PWAPolygons'"
+        return new Promise(resolve => {
+
+            fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdfMeta.20`, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify({
+                        "query": "select meta.externalId, meta.selectionKeyValues from UdfMeta meta where meta.externalId = 'pwa_PWAPolygons'"
+                    })
                 })
-            });
-
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status} ${response.statusText}`);
-            }
-
-            const json = await response.json();
-            // CALL THE FUNCTION TO FILL IN THE COMBOBOX
-            populateComboBox(json);
-            if (id != 'new') {
-                getPWADetails(cloudHost, account, company, id);
-            }
-
-        } catch (error) {
-            console.error('Failed to fetch pwa details:', error);
-        }
+                .then(response => response.json())
+                .then(function(json) {
+                    populateComboBox(json);
+                    if (id != 'new') {
+                        getPWADetails(cloudHost, account, company, id);
+                    }
+                    resolve();
+                });
+        });
     });
 }
 
