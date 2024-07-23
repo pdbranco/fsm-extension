@@ -334,7 +334,7 @@ function populateComboBox(response) {
 }
 
 // GET OPTIONS POLYGONS ASSYNC
-async function getOptionPolygons(cloudHost, account, company) {
+async function getOptionPolygons(cloudHost, account, company, id) {
 
     const headers = {
         'Content-Type': 'application/json',
@@ -359,6 +359,7 @@ async function getOptionPolygons(cloudHost, account, company) {
         const json = await response.json();
         // CALL THE FUNCTION TO FILL IN THE COMBOBOX
         await populateComboBox(json);
+        await getPWADetails(cloudHost, account, company, id);
 
     } catch (error) {
         console.error('Failed to fetch pwa details:', error);
