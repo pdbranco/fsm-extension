@@ -68,14 +68,11 @@
            * the time left in seconds.
            */
           initializeRefreshTokenStrategy(shellSdk, auth);
-
-          getOptionPolygons(cloudHost, account, company);
-          
-          var id = getParameters();          
-          if(id != 'new'){
-            getPWADetails(cloudHost, account, company, id);
-          }
-          else{
+	  var id = getParameters();
+		
+          getOptionPolygons(cloudHost, account, company, id);
+      
+          if(id == 'new'){
             document.getElementById("deletePWA").style.visibility = "hidden";
           }
           const form = document.querySelector('form'); // Get the form element
