@@ -70,7 +70,7 @@
           initializeRefreshTokenStrategy(shellSdk, auth);
 	  var id = getParameters();
 		
-          getOptionPolygons(cloudHost, account, company, id);
+          getOptionPolygonsV2(cloudHost, account, company, id, shellSdk);
       
           if(id == 'new'){
             document.getElementById("deletePWA").style.visibility = "hidden";
