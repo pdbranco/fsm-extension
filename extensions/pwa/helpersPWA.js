@@ -51,6 +51,39 @@ function getPWAs(cloudHost, account, company) {
     });
 }
 
+function getPWAsV2(cloudHost, account, company) {
+
+    shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
+        response_type: 'token'
+    });
+	
+    shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
+
+        sessionStorage.setItem('tokenPwa', event.access_token);
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-Client-ID': 'fsm-extension-pwa',
+            'X-Client-Version': '1.0.0',
+            'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
+        };
+        return new Promise(resolve => {
+
+            fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify({
+                        "query": "select pwa.id, pwa.udfValues, ud.id from UdoValue pwa join UdoMeta ud on ud.id = pwa.meta where ud.name = 'PWA'"
+                    }),
+                })
+                .then(response => response.json())
+                .then(function(json) {
+                    displayDataTable(json.data, cloudHost, account, company);
+                    resolve();
+                });
+        });
+    });
+}
+
 // GET URL PARAMETERS
 function getParameters() {
     const queryString = window.location.search;
