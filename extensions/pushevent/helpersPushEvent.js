@@ -390,7 +390,9 @@ async function getOptionMatCodeAndStatus(cloudHost, account, company, id) {
         const json = await response.json();
         // CALL THE FUNCTION TO FILL IN THE COMBOBOX
         populateComboBox(json);
-        getPushEventDetails(cloudHost, account, company, id);
+        if (id != 'new') {
+            getPushEventDetails(cloudHost, account, company, id);
+        }
 
     } catch (error) {
         console.error('Failed to fetch push event details:', error);
