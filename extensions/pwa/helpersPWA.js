@@ -371,7 +371,7 @@ async function getOptionPolygons(cloudHost, account, company, id) {
 }
 
 // GET OPTIONS POLYGONS ASSYNC
-function getOptionPolygonsqV2(cloudHost, account, company, id, shellSdk) {
+function getOptionPolygonsV2(cloudHost, account, company, id, shellSdk) {
 
     shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
         response_type: 'token'
