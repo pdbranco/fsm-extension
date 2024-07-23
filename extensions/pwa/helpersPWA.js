@@ -51,7 +51,7 @@ function getPWAs(cloudHost, account, company) {
     });
 }
 
-function getPWAsV2(cloudHost, account, company) {
+function getPWAsV2(cloudHost, account, company, shellSdk) {
 
     shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
         response_type: 'token'
