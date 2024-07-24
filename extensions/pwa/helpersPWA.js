@@ -301,6 +301,100 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
     }
 }
 
+function submitPWAAsyncV2(cloudHost, account, company, id, document) {
+    
+    shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
+        response_type: 'token'
+    });
+	
+    shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
+
+        sessionStorage.setItem('tokenPwa', event.access_token);
+		const headers = {
+			'Content-Type': 'application/json',
+			'X-Client-ID': 'fsm-extension-pwa',
+			'X-Client-Version': '1.0.0',
+			'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
+		};
+		const url = id === 'new' ?
+			`https://${cloudHost}/api/data/v4/UdoValue?dtos=UdoValue.10&account=${account}&company=${company}` :
+			`https://${cloudHost}/api/data/v4/UdoValue/${id}?dtos=UdoValue.10&account=${account}&company=${company}&forceUpdate=true`;
+		const method = id === 'new' ? 'POST' : 'PATCH';
+		const name = document.getElementById('name').value;
+		const pwaIdEAM = document.getElementById('pwaIdEAM').value;
+		const listPolygons = Array.from(document.getElementById('listPolygons').selectedOptions).map(option => option.value);
+
+		// Execute validation of mandatory fields
+		const validationError = validateForm(name, pwaIdEAM, listPolygons);
+		if (validationError) {
+			updateMsgError(validationError);
+			return Promise.reject(new Error(validationError)); // Prevents form submission
+		}
+
+		const data = {
+			"meta": `${sessionStorage.getItem('idMetaPWA')}`,
+			"externalId": `${pwaIdEAM}`,
+			"udfValues": [{
+					"meta": {
+						"externalId": "pwa_Name"
+					},
+					"value": `${name}`
+				},
+				{
+					"meta": {
+						"externalId": "pwa_PWAIdEAM"
+					},
+					"value": `${pwaIdEAM}`
+				},
+				{
+					"meta": {
+						"externalId": "pwa_PWAPolygons"
+					},
+					"value": `${listPolygons}`
+				}
+			]
+		};
+
+		return fetch(url, {
+			method,
+			headers,
+			body: JSON.stringify(data),
+		})
+		.then(response => {
+			if (!response.ok) {
+				return response.json().then(errorData => {
+					let errorMessage = `Error: ${response.status} ${response.statusText}`;
+					let errorScreen = 'Error: ';
+					let specificError;
+					if (errorData && errorData.children && errorData.children.length > 0) {
+						specificError = errorData.children[0].message;
+						if (specificError) {
+							errorMessage += ` - ${specificError}`;
+							errorScreen += `${specificError}`;
+						}
+					} else if (errorData && errorData.message) {
+						specificError = errorData.message;
+						if (specificError) {
+							errorMessage += ` - ${specificError}`;
+							errorScreen += `${specificError}`;
+						}
+					}
+					console.error('Error: ', errorMessage);
+					throw new Error(errorScreen);
+				});
+			}
+			// Displays success message and redirects to main page after 2 seconds
+			updateMsgError("");
+			updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
+			setTimeout(() => history.back(), 2000);
+		})
+		.catch(error => {
+			updateMsgError(error.message);
+			throw error; // Re-throw the error to be handled by the caller if needed
+		});
+	});
+}
+
 function populateSelect(selectId, options) {
     const selectElement = document.getElementById(selectId);
     selectElement.innerHTML = '';
