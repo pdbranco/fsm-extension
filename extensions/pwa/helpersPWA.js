@@ -447,28 +447,21 @@ async function deletePWA(cloudHost, account, company, id) {
 }
 
 // DELETE PWA
-async function deletePWAV2(cloudHost, account, company, id) {
+function deletePWAV2(cloudHost, account, company, id) {
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-Client-ID': 'fsm-extension-pwa',
+        'X-Client-Version': '1.0.0',
+        'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
+    };
 
-    shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
-        response_type: 'token'
-    });
-
-    shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
-
-        sessionStorage.setItem('tokenPwa', event.access_token);
-        const headers = {
-            'Content-Type': 'application/json',
-            'X-Client-ID': 'fsm-extension-pwa',
-            'X-Client-Version': '1.0.0',
-            'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
-        };
-        return new Promise(resolve => {
-
-            fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?forceDelete=true&account=${account}&company=${company}`, {
-                method: 'DELETE',
-                headers,
-                body: ''
-            }.then(response => {
+    return new Promise((resolve, reject) => {
+        fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?forceDelete=true&account=${account}&company=${company}`, {
+            method: 'DELETE',
+            headers,
+            body: ''
+        })
+        .then(response => {
             if (!response.ok) {
                 throw new Error(`Error: ${response.status} ${response.statusText}`);
             }
