@@ -82,7 +82,7 @@
           	event.preventDefault(); // Prevent default form submission behavior
               
           	if (buttonId === 'createOrUpdatePWA') {
-          		submitPWAAsync(cloudHost, account, company, id, document); // Call function to save PWA
+          		submitPWAAsyncV2(cloudHost, account, company, id, document); // Call function to save PWA
           	} else if (buttonId === 'deletePWA') {
           		deletePWAV2(cloudHost, account, company, id); // Call function to delete PWA
           	}
