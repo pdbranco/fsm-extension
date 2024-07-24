@@ -468,9 +468,16 @@ async function deletePWAV2(cloudHost, account, company, id) {
                 method: 'DELETE',
                 headers,
                 body: ''
-            });
-
+            }.then(response => {
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status} ${response.statusText}`);
+            }
             history.back();
+            resolve();
+        })
+        .catch(error => {
+            console.error('Failed to fetch pwa details:', error);
+            reject(error);
         });
     });
 }
