@@ -101,7 +101,7 @@ function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
 
     return new Promise(resolve => {
 
-        fetch(`https://${cloudHost}/api/user/v1/users?account=${account}&company=${company}&name=${user}`, {
+        fetch(`https://us.coresuite.com/api/user/v1/users?account=dominionenergy_T1&company=DE_FSM_DEV&name=pedro.d.branco`, {
                 method: 'GET',
                 headers
             })
