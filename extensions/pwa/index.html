@@ -54,6 +54,8 @@
           auth
         } = JSON.parse(event);
 
+        console.log("user: ", user);
+
         /**
          * Access_token has a short life span and needs to be refreshed before expiring. Each
          * extension needs to implement its own strategy to refresh it.
