@@ -51,10 +51,16 @@
           account,
           company,
           user,
+          userId,
+          erpType,
+          erpUserId,
           auth
         } = JSON.parse(event);
 
         console.log("user: ", user);
+        console.log("userId: ", userId);
+        console.log("erpType: ", erpType);
+        console.log("erpUserId: ", erpUserId);
 
         /**
          * Access_token has a short life span and needs to be refreshed before expiring. Each
