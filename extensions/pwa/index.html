@@ -51,16 +51,8 @@
           account,
           company,
           user,
-          userId,
-          erpType,
-          erpUserId,
           auth
         } = JSON.parse(event);
-
-        console.log("user: ", user);
-        console.log("userId: ", userId);
-        console.log("erpType: ", erpType);
-        console.log("erpUserId: ", erpUserId);
 
         /**
          * Access_token has a short life span and needs to be refreshed before expiring. Each
@@ -73,6 +65,11 @@
          * the time left in seconds.
          */
         initializeRefreshTokenStrategy(shellSdk, auth);
+
+        shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, settingKey);
+        shellSdk.on(SHELL_EVENTS.Version1.GET_SETTINGS, (response) => {
+          console.log('Configuração obtida:', response);
+        });
 
         let allowExtension = false;
         shellSdk.emit(SHELL_EVENTS.Version3.GET_PERMISSIONS, {objectName: 'UdoMeta'});
