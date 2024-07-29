@@ -106,7 +106,7 @@ function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
                 'Content-Type': 'application/json',
                 'X-Client-ID': 'fsm-extension-pwa',
                 'X-Client-Version': '1.0.0',
-                'Authorization': 'bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImNsb3VkLWF1dGhlbnRpY2F0aW9uLXNlcnZpY2UtdXMifQ.eyJjb21wYW5pZXMiOlt7ImlkIjoxMDY3MjksIm5hbWUiOiJERV9GU01fREVWIiwic3RyaWN0RW5jcnlwdGlvblBvbGljeSI6ZmFsc2UsInBlcm1pc3Npb25Hcm91cElkIjo0Njg1NX1dLCJhY2NvdW50X2lkIjo5NjU4NiwicGVybWlzc2lvbl9ncm91cF9pZCI6NDY4NTUsImV4cCI6MTcyMjMzNjEwNywiYXV0aG9yaXRpZXMiOlsiQUNDT1VOVCIsIkNMSUVOVCJdLCJqdGkiOiJJLU5RM24zM2FiSUdXVWw1c1R0SzhEQ0x3WnciLCJhY2NvdW50IjoiZG9taW5pb25lbmVyZ3lfVDEiLCJjbGllbnRfaWQiOiIwMDAxNzk0YS1ERV9TQVBGU01fREVWX0NsaWVudF8xIn0.NUmCZaX6DRc4jwyfHr5UIBIIVcUOyd1-c1BP4HmAOKDDdnVhp0Mu6DovFVY_gV7sx_WA0QyCZuaU964IOrnqB0ZZUJrAtC7Oeu23p5O277N1rjntXbY7SQ0h0BH8vbUkye8plntrY43LJTbK-PaQsHLk4fGVoG6QRvRdzM6kKHyUZpUpPebSv9Dep49P2oIq1PoO1oZumO-YtYOGYzRAG6l1YF76miMBB21uJ607DeX0Ll6jAZiQ9yjbf2SvBaa3de6DOtzY1fnHaExesGTFDQzbBLftNABOLMOY_Iu0jgBKZXCjl-bdFlUcM9pjAlAiw4qqnXkZN9cdYjefy4k8TQ',
+                'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
             };
             
             fetch(`https://${cloudHost}/api/user/v1/users?account=${account}&company=${company}&name=${user}`, {
