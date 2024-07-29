@@ -66,15 +66,16 @@
          */
         initializeRefreshTokenStrategy(shellSdk, auth);
 
+        let allowExtension = false;
         shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PushWorkProfile');
         shellSdk.on(SHELL_EVENTS.Version1.GET_SETTINGS, (response) => {
-          console.log('Configuração obtida:', response['value']);
-        });
+          
+          const policyGroups = response.value.split(';');
+          console.log("policyGroups", policyGroups);
+          
+          allowExtension = policyGroups.includes('11111');
 
-        let allowExtension = false;
-        shellSdk.emit(SHELL_EVENTS.Version3.GET_PERMISSIONS, {objectName: 'UdoMeta'});
-        shellSdk.on(SHELL_EVENTS.Version3.GET_PERMISSIONS, (response) => {
-          allowExtension = response.permission.CREATE && response.permission.UPDATE && response.permission.DELETE;
+          console.log("allowExtension", allowExtension);
 
           if (allowExtension) {
             // Show content and hide no permission label
