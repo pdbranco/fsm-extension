@@ -52,13 +52,11 @@ function getPWAs(cloudHost, account, company) {
 }
 
 function getPWAsV2(cloudHost, account, company, shellSdk) {
-
     shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
         response_type: 'token'
     });
 	
     shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
-
         sessionStorage.setItem('tokenPwa', event.access_token);
         const headers = {
             'Content-Type': 'application/json',
@@ -66,8 +64,7 @@ function getPWAsV2(cloudHost, account, company, shellSdk) {
             'X-Client-Version': '1.0.0',
             'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
         };
-        return new Promise(resolve => {
-
+        return new Promise((resolve, reject) => {
             fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
                     method: 'POST',
                     headers,
@@ -75,11 +72,63 @@ function getPWAsV2(cloudHost, account, company, shellSdk) {
                         "query": "select pwa.id, pwa.udfValues, ud.id from UdoValue pwa join UdoMeta ud on ud.id = pwa.meta where ud.name = 'PWA'"
                     }),
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(function(json) {
                     displayDataTable(json.data, cloudHost, account, company);
                     resolve();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    reject(error);
                 });
+        });
+    });
+}
+
+function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
+    return new Promise((resolve, reject) => {
+        shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
+            response_type: 'token'
+        });
+        
+        shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
+            const token = event.access_token;
+            sessionStorage.setItem('tokenPwa', token);
+            
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-Client-ID': 'fsm-extension-pwa',
+                'X-Client-Version': '1.0.0',
+                'Authorization': `Bearer ${token}`,
+            };
+            
+            fetch(`https://${cloudHost}/api/user/v1/users?account=${account}&company=${company}&name=${user}`, {
+                method: 'GET',
+                headers,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.content && data.content.length > 0 && data.content[0].companies && data.content[0].companies.length > 0) {
+                    const groupId = data.content[0].companies[0].groupId;
+                    resolve(groupId);
+                } else {
+                    throw new Error('GroupId not found in the response');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                reject(error);
+            });
         });
     });
 }
