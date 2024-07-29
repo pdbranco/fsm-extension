@@ -91,6 +91,28 @@ function getPWAsV2(cloudHost, account, company, shellSdk) {
 }
 
 function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-Client-ID': '0001794a-DE_SAPFSM_DEV_Client_1',
+        'X-Client-Version': '1.0',
+        'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
+    };
+
+    return new Promise(resolve => {
+
+        fetch(`https://${cloudHost}/api/user/v1/users?account=${account}&company=${company}&name=${user}`, {
+                method: 'GET',
+                headers
+            })
+            .then(response => response.json())
+            .then(function(json) {
+                resolve();
+            });
+    });
+}
+
+function getGroupPolicy2(cloudHost, account, company, shellSdk, user) {
     return new Promise((resolve, reject) => {
         shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
             response_type: 'token'
