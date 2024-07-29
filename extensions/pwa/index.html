@@ -67,13 +67,13 @@
         initializeRefreshTokenStrategy(shellSdk, auth);
 
         let allowExtension = false;
-        shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PushWorkProfile');
+        shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PWAProfile');
         shellSdk.on(SHELL_EVENTS.Version1.GET_SETTINGS, (response) => {
           
           const policyGroups = response.value.split(';');
           console.log("policyGroups", policyGroups);
-          
-          allowExtension = policyGroups.includes('11111');
+          const policyGroupUser = getGroupPolicy(cloudHost, account, company, shellSdk, user);
+          allowExtension = policyGroups.includes(policyGroupUser);
 
           console.log("allowExtension", allowExtension);
 
