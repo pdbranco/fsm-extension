@@ -109,8 +109,7 @@ function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             
             fetch(`https://${cloudHost}/api/user/v1/users?account=${account}&company=${company}&name=${user}`, {
                 method: 'GET',
-                headers,
-		body: ''
+                headers
             })
             .then(response => {
                 if (!response.ok) {
