@@ -68,7 +68,7 @@
 
         shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PushWorkProfile');
         shellSdk.on(SHELL_EVENTS.Version1.GET_SETTINGS, (response) => {
-          console.log('Configuração obtida:', response);
+          console.log('Configuração obtida:', response['value']);
         });
 
         let allowExtension = false;
