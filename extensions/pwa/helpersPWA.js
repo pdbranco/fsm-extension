@@ -29,7 +29,7 @@ function getPWAs(cloudHost, account, company) {
 
     const headers = {
         'Content-Type': 'application/json',
-        'X-Client-ID': '0001794a-DE_SAPFSM_DEV_Client_1',
+        'X-Client-ID': 'fsm-extension-pwa',
         'X-Client-Version': '1.0',
         'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
     };
@@ -102,7 +102,7 @@ function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             
             const headers = {
                 'Content-Type': 'application/json',
-                'X-Client-ID': 'fsm-extension-pwa',
+                'X-Client-ID': '0001794a-DE_SAPFSM_DEV_Client_1',
                 'X-Client-Version': '1.0.0',
                 'Authorization': `Bearer ${token}`,
             };
