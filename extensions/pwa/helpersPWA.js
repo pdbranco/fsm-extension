@@ -91,7 +91,7 @@ function getPWAsV2(cloudHost, account, company, shellSdk) {
 }
 
 function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
-            
+	return new Promise((resolve, reject) => {            
             const headers = {
                 'Content-Type': 'application/json',
                 'X-Client-ID': 'fsm-extension-pwa',
@@ -122,6 +122,7 @@ function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
                 console.error('Error:', error);
                 reject(error);
             });
+	});	
 }
 
 // GET URL PARAMETERS
