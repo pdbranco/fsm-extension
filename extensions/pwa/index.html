@@ -51,6 +51,7 @@
           account,
           company,
           user,
+          erpUserId,
           auth
         } = JSON.parse(event);
 
@@ -66,13 +67,16 @@
          */
         initializeRefreshTokenStrategy(shellSdk, auth);
 
+        console.log("erpUserId", erpUserId);
+        console.log("user", user);
+
         let allowExtension = false;
-        shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PWAProfile');
+        shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PWA_AllowedPoliciesGroup');
         shellSdk.on(SHELL_EVENTS.Version1.GET_SETTINGS, (response) => {
           
-          const policyGroups = response.value.split(';');
+          const policyGroups = response.value.split(';').map(group => group.toUpperCase());
           console.log("policyGroups", policyGroups);
-          const policyGroupUser = getGroupPolicy(cloudHost, account, company, shellSdk, user);
+          const policyGroupUser = 'Admin'
           allowExtension = policyGroups.includes(policyGroupUser);
 
           console.log("allowExtension", allowExtension);
