@@ -119,8 +119,8 @@ function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
                 return response.json();
             })
             .then(data => {
-                if (data.up && data.up.length > 0) {
-                    const policyGroup = data[0].up.udfValues[0].value;
+                if (data.data && data.data.length > 0 && data.data[0].up && data.data[0].up.udfValues && data.data[0].up.udfValues.length > 0) {
+                    const policyGroup = data.data[0].up.udfValues[0].value;
                     resolve(policyGroup);
                 } else {
                     throw new Error('Policy Group not found in the response');
