@@ -10,7 +10,7 @@
       <h2 id="info"></h2>
   </div>
   <div id="contentContainer">
-    <button id="createNewPushEvent">Create PWA</button>
+    <button id="createNewPWA">Create PWA</button>
     <div class="search-style-group">
       <svg viewBox="0 0 24 24" aria-hidden="true" class="search-style-icon">
         <g>
@@ -84,8 +84,8 @@
               const searchInput = document.getElementById('searchInput');
               searchInput.addEventListener('keyup', filterTable);
                 
-              const createNewPushEventButton = document.getElementById('createNewPushEvent');
-              createNewPushEventButton.addEventListener('click', function() {
+              const createNewPWAButton = document.getElementById('createNewPWA');
+              createNewPWAButton.addEventListener('click', function() {
                 window.location.href = "detailsPWA.html?id=new";
               });
             } else {
