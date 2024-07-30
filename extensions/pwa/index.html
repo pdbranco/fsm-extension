@@ -73,13 +73,7 @@
           const policyGroups = response.value.split(';').map(group => group.toUpperCase());
           console.log("policyGroups", policyGroups);
           
-          let policyGroupUser;
-          getGroupPolicy(cloudHost, account, company, shellSdk, user)
-            .then(result => {
-              console.log('Policy Group:', result);
-              policyGroupUser = result;
-              allowExtension = policyGroups.includes(policyGroupUser);
-              if (allowExtension) {
+          if (allowExtension) {
                 // Show content and hide no permission label
                 document.getElementById('contentContainer').style.display = 'block';
                 document.getElementById('noPermissionLabel').style.display = 'none';
@@ -100,10 +94,7 @@
                 document.getElementById('contentContainer').style.display = 'none';
                 document.getElementById('noPermissionLabel').style.display = 'block';
               }
-            })
-            .catch(erro => {
-              console.error('Error getting Policy Group: erro);
-            });
+          
         });
       });
     }
