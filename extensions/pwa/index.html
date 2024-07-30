@@ -70,41 +70,38 @@
         shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PWA_AllowedPoliciesGroup');
         shellSdk.on(SHELL_EVENTS.Version1.GET_SETTINGS, async (response) => {
           const policyGroups = response.value.split(';').map(group => group.toUpperCase());
-          console.log("policyGroups", policyGroups);
-          
+   
           try {
             const userPolicyGroup = await getGroupPolicy(cloudHost, account, company, shellSdk, user);
             console.log("User Policy Group:", userPolicyGroup);
-        
+          
             allowExtension = policyGroups.includes(userPolicyGroup.toUpperCase());
-        
+          
             if (allowExtension) {
               document.getElementById('contentContainer').style.display = 'block';
               document.getElementById('noPermissionLabel').style.display = 'none';
-              
+                
               getPWAsV2(cloudHost, account, company, shellSdk);
-              
+                
               const searchInput = document.getElementById('searchInput');
               searchInput.addEventListener('keyup', filterTable);
-              
+                
               const createNewPushEventButton = document.getElementById('createNewPushEvent');
               createNewPushEventButton.addEventListener('click', function() {
                 window.location.href = "detailsPWA.html?id=new";
               });
             } else {
-        
               document.getElementById('contentContainer').style.display = 'none';
               document.getElementById('noPermissionLabel').style.display = 'block';
             }
           } catch (error) {
-            console.error('Erro ao obter o grupo de política:', error);
-        
+            console.error('Error getting Policy Group:', error);
             document.getElementById('contentContainer').style.display = 'none';
             document.getElementById('noPermissionLabel').style.display = 'block';
           }
         });
-      });
-    }
-  </script>
+    });
+  }
+</script>
 </body>
 </html>
