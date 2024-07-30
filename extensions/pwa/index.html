@@ -72,32 +72,38 @@
           
           const policyGroups = response.value.split(';').map(group => group.toUpperCase());
           console.log("policyGroups", policyGroups);
-          const policyGroupUser = 'Admin'
-          allowExtension = policyGroups.includes(policyGroupUser);
-
-          console.log("allowExtension", allowExtension);
-
-          if (allowExtension) {
-            // Show content and hide no permission label
-            document.getElementById('contentContainer').style.display = 'block';
-            document.getElementById('noPermissionLabel').style.display = 'none';
-
-            getPWAsV2(cloudHost, account, company, shellSdk);
-
-            // Filter Table
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('keyup', filterTable); // Filter on every keyup
-            
-            const createNewPushEventButton = document.getElementById('createNewPushEvent');
-            createNewPushEventButton.addEventListener('click', function() {
-              // Redirect to the details page for creating a new item (PWA)
-              window.location.href = "detailsPWA.html?id=new"; //Replace with your actual details page URL
+          
+          let policyGroupUser;
+          getGroupPolicy(cloudHost, account, company, shellSdk, user)
+            .then(result => {
+              console.log('Policy Group:', result);
+              policyGroupUser = result;
+              allowExtension = policyGroups.includes(policyGroupUser);
+              if (allowExtension) {
+                // Show content and hide no permission label
+                document.getElementById('contentContainer').style.display = 'block';
+                document.getElementById('noPermissionLabel').style.display = 'none';
+                
+                getPWAsV2(cloudHost, account, company, shellSdk);
+                
+                // Filter Table
+                const searchInput = document.getElementById('searchInput');
+                searchInput.addEventListener('keyup', filterTable); // Filter on every keyup
+                
+                const createNewPushEventButton = document.getElementById('createNewPushEvent');
+                createNewPushEventButton.addEventListener('click', function() {
+                  // Redirect to the details page for creating a new item (PWA)
+                  window.location.href = "detailsPWA.html?id=new"; //Replace with your actual details page URL
+                });
+              } else {
+                // Hide content and show no permission label
+                document.getElementById('contentContainer').style.display = 'none';
+                document.getElementById('noPermissionLabel').style.display = 'block';
+              }
+            })
+            .catch(erro => {
+              console.error('Error getting Policy Group: erro);
             });
-          } else {
-            // Hide content and show no permission label
-            document.getElementById('contentContainer').style.display = 'none';
-            document.getElementById('noPermissionLabel').style.display = 'block';
-          }
         });
       });
     }
