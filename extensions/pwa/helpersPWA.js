@@ -91,14 +91,6 @@ function getPWAsV2(cloudHost, account, company, shellSdk) {
 }
 
 function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
-    return new Promise((resolve, reject) => {
-        shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
-            response_type: 'token'
-        });
-        
-        shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
-            const token = event.access_token;
-            sessionStorage.setItem('tokenPwa', token);
             
             const headers = {
                 'Content-Type': 'application/json',
@@ -130,8 +122,6 @@ function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
                 console.error('Error:', error);
                 reject(error);
             });
-        });
-    });
 }
 
 // GET URL PARAMETERS
