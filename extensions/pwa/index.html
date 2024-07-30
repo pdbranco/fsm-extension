@@ -74,7 +74,7 @@
           console.log("policyGroups", policyGroups);
 
           let policyGroupUser = getGroupPolicy(cloudHost, account, company, shellSdk, user);
-          
+          console.log("policyGroupUser ", policyGroupUser);
           if (allowExtension) {
                 // Show content and hide no permission label
                 document.getElementById('contentContainer').style.display = 'block';
