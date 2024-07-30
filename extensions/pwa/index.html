@@ -67,19 +67,19 @@
         initializeRefreshTokenStrategy(shellSdk, auth);
 
         let allowExtension = false;
-        shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PWA_AllowedPoliciesGroup');
+        shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PWA_AllowedPoliciesGroups');
         shellSdk.on(SHELL_EVENTS.Version1.GET_SETTINGS, async (response) => {
           const policyGroups = (response.value || '').split(';').map(group => group.toUpperCase());
    
           try {
-            const userPolicyGroup = await getGroupPolicy(cloudHost, account, company, shellSdk, user);         
+            const userPolicyGroup = await getGroupPolicyV2(cloudHost, account, company, shellSdk, user);         
             allowExtension = policyGroups.includes(userPolicyGroup.toUpperCase());
           
             if (allowExtension) {
               document.getElementById('contentContainer').style.display = 'block';
               document.getElementById('noPermissionLabel').style.display = 'none';
                 
-              getPWAsV2(cloudHost, account, company, shellSdk);
+              getPWAsV3(cloudHost, account, company, shellSdk);
                 
               const searchInput = document.getElementById('searchInput');
               searchInput.addEventListener('keyup', filterTable);
