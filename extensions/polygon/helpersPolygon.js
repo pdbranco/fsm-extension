@@ -52,6 +52,36 @@ function getPolygons(cloudHost, account, company) {
     });
 }
 
+//GET OBJECT POLYGONS
+function getPolygonsV2(cloudHost, account, company) {
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-Client-ID': 'fsm-extension-polygon',
+        'X-Client-Version': '1.0.0',
+        'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
+    };
+
+    return new Promise((resolve, reject) => {
+        fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
+		method: 'POST',
+                headers,
+                body: JSON.stringify({
+                    "query": "select polygon.id, polygon.udfValues, ud.id from UdoValue polygon join UdoMeta ud on ud.id = polygon.meta where ud.name = 'Polygon'"
+                }),
+            })
+            .then(response => {if (!response.ok) {throw new Error(`Error: ${response.status}`);}return response.json();})
+            .then(function(json) {
+                displayDataTable(json.data, cloudHost, account, company);
+                resolve();
+            })
+	    .catch(error => {
+		console.error('Error:', error);
+		reject(error);
+	    });
+    });
+}
+
 async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
     try {
         const authResponse = await new Promise((resolve) => {
