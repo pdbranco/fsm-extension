@@ -52,6 +52,47 @@ function getPolygons(cloudHost, account, company) {
     });
 }
 
+async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
+    try {
+        const authResponse = await new Promise((resolve) => {
+            shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
+                response_type: 'token'
+            });
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+        });
+
+        sessionStorage.setItem('tokenPolygon', authResponse.access_token);
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-Client-ID': 'fsm-extension-polygon',
+            'X-Client-Version': '1.0',
+            'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
+        };
+
+        const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UnifiedPerson.13`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({"query": `SELECT up.udf.UnifiedPerson_PolicyGroup FROM UnifiedPerson up WHERE up.userName = '${user}'`}),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.data && data.data.length > 0 && data.data[0].up && data.data[0].up.udfValues && data.data[0].up.udfValues.length > 0) {
+            return data.data[0].up.udfValues[0].value;
+        } else {
+            throw new Error('Policy Group not found in the response');
+        }
+    } catch (error) {
+        console.error('Error in getGroupPolicyV2:', error);
+        throw error;
+    }
+}
+
 // GET URL PARAMETERS
 function getParameters() {
     const queryString = window.location.search;
