@@ -95,11 +95,11 @@ function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             const headers = {
                 'Content-Type': 'application/json',
                 'X-Client-ID': 'fsm-extension-pwa',
-                'X-Client-Version': '1.0.0',
+                'X-Client-Version': '1.0',
                 'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
             };
             
-            fetch(`https://${cloudHost}/api/query/v1?&dtos=UnifiedPerson.13`, {
+            fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UnifiedPerson.13`, {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({"query": `SELECT up.udf.UnifiedPerson_PolicyGroup FROM UnifiedPerson up WHERE up.userName = '${user}'`}),
