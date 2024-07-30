@@ -119,7 +119,6 @@ function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
                 reject(error);
             });
 	});	
