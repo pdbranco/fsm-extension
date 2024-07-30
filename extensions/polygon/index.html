@@ -10,7 +10,7 @@
       <h2 id="info"></h2>
   </div>
   <div id="contentContainer">
-    <button id="createNewPushEvent">Create POLYGON</button>
+    <button id="createNewPolygon">Create POLYGON</button>
     <div class="search-style-group">
       <svg viewBox="0 0 24 24" aria-hidden="true" class="search-style-icon">
         <g>
@@ -69,28 +69,36 @@
         initializeRefreshTokenStrategy(shellSdk, auth);
 
         let allowExtension = false;
-        shellSdk.emit(SHELL_EVENTS.Version3.GET_PERMISSIONS, {objectName: 'UdoMeta'});
-        shellSdk.on(SHELL_EVENTS.Version3.GET_PERMISSIONS, (response) => {
-          allowExtension = response.permission.CREATE && response.permission.UPDATE && response.permission.DELETE;
+        shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'Polygon_AllowedPoliciesGroups');
+        shellSdk.on(SHELL_EVENTS.Version1.GET_SETTINGS, async (response) => {
+          const policyGroups = (response.value || '').split(';').map(group => group.toUpperCase());
 
-          if (allowExtension) {
-            // Show content and hide no permission label
-            document.getElementById('contentContainer').style.display = 'block';
-            document.getElementById('noPermissionLabel').style.display = 'none';
-
-            getPolygons(cloudHost, account, company);
+          try {
+            const userPolicyGroup = await getGroupPolicy(cloudHost, account, company, shellSdk, user);  
+            allowExtension = policyGroups.includes(userPolicyGroup.toUpperCase());
             
-            // Filter Table
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('keyup', filterTable); // Filter on every keyup
-            
-            const createNewPushEventButton = document.getElementById('createNewPushEvent');
-            createNewPushEventButton.addEventListener('click', function() {
-              // Redirect to the details page for creating a new item (POLYGON)
-              window.location.href = "detailsPolygon.html?id=new"; // Replace with your actual details page URL
-            });
-          } else {
-            // Hide content and show no permission label
+            if (allowExtension) {
+              // Show content and hide no permission label
+              document.getElementById('contentContainer').style.display = 'block';
+              document.getElementById('noPermissionLabel').style.display = 'none';
+              
+              getPolygonsV2(cloudHost, account, company, shellSdk);
+              
+              // Filter Table
+              const searchInput = document.getElementById('searchInput');
+              searchInput.addEventListener('keyup', filterTable);
+              
+              const createNewPolygonButton = document.getElementById('createNewPolygon');
+              createNewPolygonButton.addEventListener('click', function() {
+                window.location.href = "detailsPolygon.html?id=new";
+              });
+            } else {
+              // Hide content and show no permission label
+              document.getElementById('contentContainer').style.display = 'none';
+              document.getElementById('noPermissionLabel').style.display = 'block';
+            }
+          } catch (error) {
+            console.error('Error getting Policy Group:', error);
             document.getElementById('contentContainer').style.display = 'none';
             document.getElementById('noPermissionLabel').style.display = 'block';
           }
