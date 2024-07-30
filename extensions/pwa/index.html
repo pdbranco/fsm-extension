@@ -72,6 +72,17 @@
           
           const policyGroups = response.value.split(';').map(group => group.toUpperCase());
           console.log("policyGroups", policyGroups);
+
+          let policyGroupUser;
+          getGroupPolicy(cloudHost, account, company, shellSdk, user)
+            .then(result => {
+              console.log('Policy Group:', result);
+              policyGroupUser = result;
+              allowExtension = policyGroups.includes(policyGroupUser);
+            })
+            .catch(erro => {
+              console.error('Error getting Policy Group: erro);
+            });
           
           if (allowExtension) {
                 // Show content and hide no permission label
