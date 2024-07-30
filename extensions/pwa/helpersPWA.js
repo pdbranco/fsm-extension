@@ -90,6 +90,38 @@ function getPWAsV2(cloudHost, account, company, shellSdk) {
     });
 }
 
+function getPWAsV3(cloudHost, account, company, shellSdk) {	
+	const headers = {
+	    'Content-Type': 'application/json',
+	    'X-Client-ID': 'fsm-extension-pwa',
+	    'X-Client-Version': '1.0.0',
+	    'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
+	};
+	return new Promise((resolve, reject) => {
+	    fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
+		    method: 'POST',
+		    headers,
+		    body: JSON.stringify({
+			"query": "select pwa.id, pwa.udfValues, ud.id from UdoValue pwa join UdoMeta ud on ud.id = pwa.meta where ud.name = 'PWA'"
+		    }),
+		})
+		.then(response => {
+		    if (!response.ok) {
+			throw new Error(`Error: ${response.status}`);
+		    }
+		    return response.json();
+		})
+		.then(function(json) {
+		    displayDataTable(json.data, cloudHost, account, company);
+		    resolve();
+		})
+		.catch(error => {
+		    console.error('Error:', error);
+		    reject(error);
+		});
+	});
+}
+
 function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
 	return new Promise((resolve, reject) => {            
             const headers = {
@@ -122,6 +154,47 @@ function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
                 reject(error);
             });
 	});	
+}
+
+function getGroupPolicyV2(cloudHost, account, company, shellSdk, user) {
+	shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
+		response_type: 'token'
+	});
+
+	shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
+		sessionStorage.setItem('tokenPwa', event.access_token);
+		return new Promise((resolve, reject) => {            
+	            const headers = {
+	                'Content-Type': 'application/json',
+	                'X-Client-ID': 'fsm-extension-pwa',
+	                'X-Client-Version': '1.0',
+	                'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
+	            };
+	            
+	            fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UnifiedPerson.13`, {
+	                method: 'POST',
+	                headers,
+	                body: JSON.stringify({"query": `SELECT up.udf.UnifiedPerson_PolicyGroup FROM UnifiedPerson up WHERE up.userName = '${user}'`}),
+	            })
+	            .then(response => {
+	                if (!response.ok) {
+	                    throw new Error(`Error: ${response.status}`);
+	                }
+	                return response.json();
+	            })
+	            .then(data => {
+	                if (data.data && data.data.length > 0 && data.data[0].up && data.data[0].up.udfValues && data.data[0].up.udfValues.length > 0) {
+	                    const policyGroup = data.data[0].up.udfValues[0].value;
+	                    resolve(policyGroup);
+	                } else {
+	                    throw new Error('Policy Group not found in the response');
+	                }
+	            })
+	            .catch(error => {
+	                reject(error);
+	            });
+		});
+	});
 }
 
 // GET URL PARAMETERS
