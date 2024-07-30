@@ -69,7 +69,7 @@
         let allowExtension = false;
         shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PWA_AllowedPoliciesGroup');
         shellSdk.on(SHELL_EVENTS.Version1.GET_SETTINGS, async (response) => {
-          const policyGroups = response.value.split(';').map(group => group.toUpperCase());
+          const policyGroups = (response.value || '').split(';').map(group => group.toUpperCase());
    
           try {
             const userPolicyGroup = await getGroupPolicy(cloudHost, account, company, shellSdk, user);         
