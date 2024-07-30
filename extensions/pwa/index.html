@@ -66,9 +66,6 @@
          */
         initializeRefreshTokenStrategy(shellSdk, auth);
 
-        console.log("erpUserId", erpUserId);
-        console.log("user", user);
-
         let allowExtension = false;
         shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PWA_AllowedPoliciesGroup');
         shellSdk.on(SHELL_EVENTS.Version1.GET_SETTINGS, (response) => {
