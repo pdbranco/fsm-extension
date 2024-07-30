@@ -177,10 +177,7 @@ async function getGroupPolicyV2(cloudHost, account, company, shellSdk, user) {
         const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UnifiedPerson.13`, {
             method: 'POST',
             headers,
-            body: JSON.stringify({
-                "query": `SELECT up.udf.UnifiedPerson_PolicyGroup FROM UnifiedPerson up WHERE up.userName = ?`,
-                "parameters": [user]
-            }),
+            body: JSON.stringify({"query": `SELECT up.udf.UnifiedPerson_PolicyGroup FROM UnifiedPerson up WHERE up.userName = '${user}'`}),
         });
 
         if (!response.ok) {
