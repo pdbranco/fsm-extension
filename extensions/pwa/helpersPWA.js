@@ -90,8 +90,6 @@ function getPWAsV2(cloudHost, account, company, shellSdk) {
     });
 }
 
-
-
 function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
     return new Promise((resolve, reject) => {
         shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
@@ -109,22 +107,23 @@ function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
                 'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
             };
             
-            fetch(`https://${cloudHost}/api/user/v1/users?account=${account}&company=${company}&name=${user}`, {
-                method: 'GET',
-                headers
+            fetch(`https://${cloudHost}/api/query/v1?&dtos=UnifiedPerson.13`, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({"query": `SELECT up.udf.UnifiedPerson_PolicyGroup FROM UnifiedPerson up WHERE up.userName = '${user}'`}),
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`Error: ${response.status}`);
                 }
                 return response.json();
             })
             .then(data => {
-                if (data.content && data.content.length > 0 && data.content[0].companies && data.content[0].companies.length > 0) {
-                    const groupId = data.content[0].companies[0].groupId;
-                    resolve(groupId);
+                if (data.up && data.up.length > 0) {
+                    const policyGroup = data[0].up.udfValues[0].value;
+                    resolve(policyGroup);
                 } else {
-                    throw new Error('GroupId not found in the response');
+                    throw new Error('Policy Group not found in the response');
                 }
             })
             .catch(error => {
