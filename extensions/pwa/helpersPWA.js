@@ -192,7 +192,7 @@ async function getGroupPolicyV2(cloudHost, account, company, shellSdk, user) {
             throw new Error('Policy Group not found in the response');
         }
     } catch (error) {
-        console.error('Error in getGroupPolicyV2:', error);
+        console.error('Error:', error);
         throw error;
     }
 }
