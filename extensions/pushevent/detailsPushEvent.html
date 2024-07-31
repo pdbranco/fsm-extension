@@ -85,7 +85,7 @@
           initializeRefreshTokenStrategy(shellSdk, auth);
           var id = getParameters();
 
-          getOptionMatCodeAndStatus(cloudHost, account, company, id);
+          getOptionMatCodeAndStatusV2(cloudHost, account, company, id);
                          
           if(id == 'new'){
             document.getElementById("deletePushEvent").style.visibility = "hidden";
@@ -97,9 +97,9 @@
           	event.preventDefault(); // Prevent default form submission behavior
               
           	if (buttonId === 'createOrUpdatePushEvent') {
-          		submitPushEventAsync(cloudHost, account, company, id, document); // Call function to save Push Event
+          		submitPushEventAsyncV2(cloudHost, account, company, id, document); // Call function to save Push Event
           	} else if (buttonId === 'deletePushEvent') {
-          		deletePushEvent(cloudHost, account, company, id); // Call function to delete Push Event
+          		deletePushEventV2(cloudHost, account, company, id); // Call function to delete Push Event
           	}
           });          
     });
