@@ -90,7 +90,6 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             });
             shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
         });
-
         sessionStorage.setItem('tokenPolygon', authResponse.access_token);
 
         const headers = {
@@ -99,7 +98,6 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             'X-Client-Version': '1.0',
             'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
         };
-
         const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UnifiedPerson.13`, {
             method: 'POST',
             headers,
@@ -118,7 +116,7 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             throw new Error('Policy Group not found in the response');
         }
     } catch (error) {
-        console.error('Error in getGroupPolicyV2:', error);
+        console.error('Error:', error);
         throw error;
     }
 }
@@ -130,7 +128,6 @@ function getParameters() {
     const id = urlParams.get('id')
     return (id)
 }
-
 
 // Function to filter table rows based on search term
 function filterTable() {
@@ -147,8 +144,6 @@ function filterTable() {
     }
 }
 
-
-
 //CREATE TABLE
 function displayDataTable(data, cloudHost, account, company) {
 
@@ -160,7 +155,6 @@ function displayDataTable(data, cloudHost, account, company) {
     if (document.getElementById('itemList')) return;
 
     data.sort(compareByPolygonName);
-
     sessionStorage.setItem('idMetaPolygon', data[0].ud.id);
 
     // Create the table element
@@ -221,6 +215,44 @@ async function getPolygonDetails(cloudHost, account, company, id) {
 
     } catch (error) {
         console.error('Failed to fetch polygon details:', error);
+    }
+}
+
+// GET polygon DETAILS ASSYNC
+async function getPolygonDetailsV2(cloudHost, account, company, id, shellSdk) {
+    try {
+        const authResponse = await new Promise((resolve) => {
+            shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
+                response_type: 'token'
+            });
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+        });
+        sessionStorage.setItem('tokenPwa', authResponse.access_token);
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-Client-ID': 'fsm-extension-polygon',
+            'X-Client-Version': '1.0.0',
+            'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
+        };
+
+        const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoValue.10`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                "query": `select polygon.id, polygon.udfValues from UdoValue polygon where polygon.id = '${id}'`
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        const json = await response.json();
+        prefillForm(json);
+    } catch (error) {
+        console.error('Error in getGroupPolicyV2:', error);
+        throw error;
     }
 }
 
