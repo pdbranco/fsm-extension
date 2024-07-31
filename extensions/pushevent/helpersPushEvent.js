@@ -401,6 +401,140 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
     }
 }
 
+async function submitPushEventAsyncV2(cloudHost, account, company, id, document, shellSdk) {
+
+    try {
+        const authResponse = await new Promise((resolve) => {
+            shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
+                response_type: 'token'
+            });
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+        });
+
+        sessionStorage.setItem('token', authResponse.access_token);
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-Client-ID': 'fsm-extension-pushevent',
+            'X-Client-Version': '1.0.0',
+            'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+        };
+
+        const url = id === 'new' ?
+            `https://${cloudHost}/api/data/v4/UdoValue?dtos=UdoValue.10&account=${account}&company=${company}` :
+            `https://${cloudHost}/api/data/v4/UdoValue/${id}?dtos=UdoValue.10&account=${account}&company=${company}&forceUpdate=true`;
+
+        const method = id === 'new' ? 'POST' : 'PATCH';
+
+        const name = document.getElementById('name').value;
+        const startDateTime = document.getElementById('start_datetime').value;
+        const endDateTime = document.getElementById('end_datetime').value;
+        const quantity = document.getElementById('quantity').value;
+        const options1Selected = Array.from(document.getElementById('options1').selectedOptions).map(option => option.value);
+        const options2Selected = Array.from(document.getElementById('options2').selectedOptions).map(option => option.value);
+        const description = document.getElementById('description').value;
+        const flagMajor = document.getElementById('MajorFlag').checked;
+        const flagUnassign = document.getElementById('UnassignFlag').checked;
+
+        // Execute validation of mandatory fields
+        const validationError = validateForm(name, startDateTime, endDateTime, description);
+        if (validationError) {
+            updateMsgError(validationError);
+            return; // Prevents form submission
+        }
+
+        const data = {
+            "meta": `${sessionStorage.getItem('idMetaPushEvent')}`,
+            "externalId": `${name}`,
+            "udfValues": [{
+                "meta": {
+                    "externalId": "pushEvent_Name"
+                },
+                "value": `${name}`
+            }, {
+                "meta": {
+                    "externalId": "pushEvent_StartTime"
+                },
+                "value": `${startDateTime}`
+            }, {
+                "meta": {
+                    "externalId": "pushEvent_EndTime"
+                },
+                "value": `${endDateTime}`
+            }, {
+                "meta": {
+                    "externalId": "pushEvent_PushInterval"
+                },
+                "value": `${quantity}`
+            }, {
+                "meta": {
+                    "externalId": "pushEvent_Status"
+                },
+                "value": `${options1Selected}`
+            }, {
+                "meta": {
+                    "externalId": "pushEvent_WorkType"
+                },
+                "value": `${options2Selected}`
+            }, {
+                "meta": {
+                    "externalId": "pushEvent_CrewHQ"
+                },
+                "value": `${description}`
+            }, {
+                "meta": {
+                    "externalId": "pushEvent_MajorStorm"
+                },
+                "value": `${flagMajor}`
+            }, {
+                "meta": {
+                    "externalId": "pushEvent_Unassign"
+                },
+                "value": `${flagUnassign}`
+            }]
+        };
+
+        const response = await fetch(url, {
+            method,
+            headers,
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            let errorMessage = `Error: ${response.status} ${response.statusText}`;
+            let errorScreen = 'Error: ';
+            let specificError;
+
+            if (errorData && errorData.children && errorData.children.length > 0) {
+                specificError = errorData.children[0].message;
+                if (specificError) {
+                    errorMessage += ` - ${specificError}`;
+                    errorScreen += `${specificError}`;
+                }
+            } else if (errorData && errorData.message) {
+                specificError = errorData.message;
+                if (specificError) {
+                    errorMessage += ` - ${specificError}`;
+                    errorScreen += `${specificError}`;
+                }
+            }
+
+            console.error('Error: ', errorMessage);
+            throw new Error(errorScreen);
+        }
+
+        // Displays success message and redirects to main page after 2 seconds
+        updateMsgError("");
+        updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
+        setTimeout(() => history.back(), 2000);
+
+    } catch (error) {
+        updateMsgError(error.message);
+        throw error;
+    }
+}
+
 function populateSelect(selectId, options) {
     const selectElement = document.getElementById(selectId);
     selectElement.innerHTML = '';
@@ -470,6 +604,52 @@ async function getOptionMatCodeAndStatus(cloudHost, account, company, id) {
 
     } catch (error) {
         console.error('Failed to fetch push event details:', error);
+    }
+}
+
+
+// GET OPTIONS MATCODE AND ACTIVITY STATUS ASSYNC
+async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shellSdk) {
+
+    try {
+        const authResponse = await new Promise((resolve) => {
+            shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
+                response_type: 'token'
+            });
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+        });
+
+        sessionStorage.setItem('token', authResponse.access_token);
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-Client-ID': 'fsm-extension-pushevent',
+            'X-Client-Version': '1.0.0',
+            'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+        };
+
+        const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdfMeta.20`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                "query": "select meta.externalId, meta.selectionKeyValues from UdfMeta meta where meta.externalId in ('pushEvent_Status','pushEvent_WorkType')"
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        const json = await response.json();
+        // CALL THE FUNCTION TO FILL IN THE COMBOBOX
+        populateComboBox(json);
+        if (id != 'new') {
+            getPushEventDetails(cloudHost, account, company, id);
+        }
+
+    } catch (error) {
+        console.error('Failed to fetch push event details:', error);
+        throw error;
     }
 }
 
