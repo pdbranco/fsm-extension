@@ -414,7 +414,7 @@ async function submitPWAAsync(cloudHost, account, company, id, document) {
     }
 }
 
-function submitPWAAsyncV2(cloudHost, account, company, id, document) {
+function submitPWAAsyncV2(cloudHost, account, company, id, document, shellSdk) {
     
     shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
         response_type: 'token'
@@ -654,7 +654,7 @@ async function deletePWA(cloudHost, account, company, id) {
 }
 
 // DELETE PWA
-function deletePWAV2(cloudHost, account, company, id) {
+function deletePWAV2(cloudHost, account, company, id, shellSdk) {
     
 	shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
         response_type: 'token'
