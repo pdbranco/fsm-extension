@@ -367,6 +367,104 @@ async function submitPolygonAsync(cloudHost, account, company, id, document) {
     }
 }
 
+async function submitPolygonAsyncV2(cloudHost, account, company, id, document, shellSdk) {
+    try {
+        const authResponse = await new Promise((resolve) => {
+            shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
+                response_type: 'token'
+            });
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+        });
+	    
+        sessionStorage.setItem('tokenPolygon', authResponse.access_token);
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-Client-ID': 'fsm-extension-polygon',
+            'X-Client-Version': '1.0.0',
+            'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
+        };
+
+        const url = id === 'new' ?
+            `https://${cloudHost}/api/data/v4/UdoValue?dtos=UdoValue.10&account=${account}&company=${company}` :
+            `https://${cloudHost}/api/data/v4/UdoValue/${id}?dtos=UdoValue.10&account=${account}&company=${company}&forceUpdate=true`;
+
+        const method = id === 'new' ? 'POST' : 'PATCH';
+        const name = document.getElementById('name').value;
+        const polygonIdEAM = document.getElementById('polygonIdEAM').value;
+        const polygon_Description = document.getElementById('polygondescription').value;
+
+        // Execute validation of mandatory fields
+        const validationError = validateForm(name, polygonIdEAM);
+        if (validationError) {
+            updateMsgError(validationError);
+            return; // Prevents form submission
+        }
+
+        const data = {
+            "meta": `${sessionStorage.getItem('idMetaPolygon')}`,
+            "externalId": `${polygonIdEAM}`,
+            "udfValues": [{
+                    "meta": {
+                        "externalId": "polygon_Name"
+                    },
+                    "value": `${name}`
+                },
+                {
+                    "meta": {
+                        "externalId": "polygon_PolygonIdEam"
+                    },
+                    "value": `${polygonIdEAM}`
+                },
+                {
+                    "meta": {
+                        "externalId": "polygon_Description"
+                    },
+                    "value": `${polygon_Description}`
+                }
+            ]
+        };
+
+        const response = await fetch(url, {
+            method,
+            headers,
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            let errorMessage = `Error: ${response.status} ${response.statusText}`;
+            let errorScreen = 'Error: ';
+            let specificError;
+
+            if (errorData && errorData.children && errorData.children.length > 0) {
+                specificError = errorData.children[0].message;
+                if (specificError) {
+                    errorMessage += ` - ${specificError}`;
+                    errorScreen += `${specificError}`;
+                }
+            } else if (errorData && errorData.message) {
+                specificError = errorData.message;
+                if (specificError) {
+                    errorMessage += ` - ${specificError}`;
+                    errorScreen += `${specificError}`;
+                }
+            }
+            console.error('Error: ', errorMessage);
+            throw new Error(errorScreen);
+        }
+
+        // Displays success message and redirects to main page after 2 seconds
+        updateMsgError("");
+        updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
+        setTimeout(() => history.back(), 2000);
+
+    } catch (error) {
+        updateMsgError(error.message);
+        throw error;
+    }
+}
+
 function populateSelect(selectId, options) {
     const selectElement = document.getElementById(selectId);
     selectElement.innerHTML = ''; // Clear any existing options
@@ -426,6 +524,42 @@ async function deletePolygon(cloudHost, account, company, id) {
         history.back();
 
     } catch (error) {
+        console.error('Failed to fetch polygon details:', error);
+    }
+}
+
+async function deletePolygonV2(cloudHost, account, company, id, shellSdk) {
+
+    try {
+        const authResponse = await new Promise((resolve) => {
+            shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
+                response_type: 'token'
+            });
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+        });
+
+        sessionStorage.setItem('tokenPolygon', authResponse.access_token);
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-Client-ID': 'fsm-extension-polygon',
+            'X-Client-Version': '1.0.0',
+            'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
+        };
+
+        const response = await fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?forceDelete=true&account=${account}&company=${company}`, {
+            method: 'DELETE',
+            headers,
+            body: ''
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        history.back();
+
+    } catch (error) {
+        updateMsgError(error.message);
         console.error('Failed to fetch polygon details:', error);
     }
 }
