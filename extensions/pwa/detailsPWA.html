@@ -82,9 +82,9 @@
           	event.preventDefault(); // Prevent default form submission behavior
               
           	if (buttonId === 'createOrUpdatePWA') {
-          		submitPWAAsyncV2(cloudHost, account, company, id, document); // Call function to save PWA
+          		submitPWAAsyncV2(cloudHost, account, company, id, document, shellSdk); // Call function to save PWA
           	} else if (buttonId === 'deletePWA') {
-          		deletePWAV2(cloudHost, account, company, id); // Call function to delete PWA
+          		deletePWAV2(cloudHost, account, company, id, shellSdk); // Call function to delete PWA
           	}
           });          
     });
