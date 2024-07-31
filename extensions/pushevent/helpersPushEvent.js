@@ -48,6 +48,47 @@ function filterTable() {
     }
 }
 
+async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
+    try {
+        const authResponse = await new Promise((resolve) => {
+            shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
+                response_type: 'token'
+            });
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+        });
+
+        sessionStorage.setItem('token', authResponse.access_token);
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-Client-ID': 'fsm-extension-pwa',
+            'X-Client-Version': '1.0',
+            'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+        };
+
+        const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UnifiedPerson.13`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({"query": `SELECT up.udf.UnifiedPerson_PolicyGroup FROM UnifiedPerson up WHERE up.userName = '${user}'`}),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.data && data.data.length > 0 && data.data[0].up && data.data[0].up.udfValues && data.data[0].up.udfValues.length > 0) {
+            return data.data[0].up.udfValues[0].value;
+        } else {
+            throw new Error('Policy Group not found in the response');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
 //GET OBJECT PUSHEVENTS
 function getPushEvents(cloudHost, account, company) {
 
@@ -72,6 +113,39 @@ function getPushEvents(cloudHost, account, company) {
                 displayDataTable(json.data, cloudHost, account, company);
                 resolve();
             });
+    });
+}
+
+function getPushEventsV2(cloudHost, account, company) {
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-Client-ID': 'fsm-extension-pushevent',
+        'X-Client-Version': '1.0.0',
+        'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+    };
+
+    return new Promise((resolve, reject) => {
+            fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify({
+                        "query": "select pe.id, pe.udfValues, ud.id from UdoValue pe join UdoMeta ud on ud.id = pe.meta where ud.name = 'PushEvent'"
+                    }),
+                })
+                .then(response =>
+                    if (!response.ok) {
+                        throw new Error(`Error: ${response.status}`);
+                    }
+                    return response.json();
+                })
+        .then(function(json) {
+            displayDataTable(json.data, cloudHost, account, company);
+            resolve();
+        }).catch(error => {
+            console.error('Error:', error);
+            reject(error);
+        });
     });
 }
 
