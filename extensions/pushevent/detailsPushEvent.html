@@ -85,7 +85,7 @@
           initializeRefreshTokenStrategy(shellSdk, auth);
           var id = getParameters();
 
-          getOptionMatCodeAndStatusV2(cloudHost, account, company, id);
+          getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shellSdk);
                          
           if(id == 'new'){
             document.getElementById("deletePushEvent").style.visibility = "hidden";
