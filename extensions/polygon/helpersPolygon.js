@@ -529,7 +529,6 @@ async function deletePolygon(cloudHost, account, company, id) {
 }
 
 async function deletePolygonV2(cloudHost, account, company, id, shellSdk) {
-
     try {
         const authResponse = await new Promise((resolve) => {
             shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
