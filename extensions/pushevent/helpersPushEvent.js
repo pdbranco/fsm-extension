@@ -696,6 +696,40 @@ async function deletePushEvent(cloudHost, account, company, id) {
     }
 }
 
+// DELETE PUSHEVENT ASSYNC
+async function deletePushEventV2(cloudHost, account, company, id, shellSdk) {
+    try {
+        const authResponse = await new Promise((resolve) => {
+            shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
+                response_type: 'token'
+            });
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+        });
+
+        sessionStorage.setItem('token', authResponse.access_token);
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-Client-ID': 'fsm-extension-pushevent',
+            'X-Client-Version': '1.0.0',
+            'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+        };
+        const response = await fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?forceDelete=true&account=${account}&company=${company}`, {
+            method: 'DELETE',
+            headers,
+            body: ''
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        history.back();
+
+    } catch (error) {
+        console.error('Error on delete:', error);
+    }
+}
+
 const updateMsgError = (text) =>
     (document.querySelectorAll('#infoError')[0].innerText = text);
 
