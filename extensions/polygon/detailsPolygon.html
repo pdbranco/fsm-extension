@@ -71,7 +71,7 @@
           
           var id = getParameters();          
           if(id != 'new'){
-            getPolygonDetails(cloudHost, account, company, id);
+            getPolygonDetailsV2(cloudHost, account, company, id, shellSdk);
           }
           else{
             document.getElementById("deletePolygon").style.visibility = "hidden";
@@ -83,9 +83,9 @@
           	event.preventDefault(); // Prevent default form submission behavior
               
           	if (buttonId === 'createOrUpdatePolygon') {
-          		submitPolygonAsync(cloudHost, account, company, id, document); // Call function to save Polygon
+          		submitPolygonAsyncV2(cloudHost, account, company, id, document, shellSdk); // Call function to save Polygon
           	} else if (buttonId === 'deletePolygon') {
-          		deletePolygon(cloudHost, account, company, id); // Call function to delete Polygon
+          		deletePolygonV2(cloudHost, account, company, id, shellSdk); // Call function to delete Polygon
           	}
           });          
     });
