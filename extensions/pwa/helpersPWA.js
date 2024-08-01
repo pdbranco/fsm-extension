@@ -122,48 +122,29 @@ function getPWAsV3(cloudHost, account, company, shellSdk) {
 	});
 }
 
-function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
-	return new Promise((resolve, reject) => {            
-            const headers = {
-                'Content-Type': 'application/json',
-                'X-Client-ID': 'fsm-extension-pwa',
-                'X-Client-Version': '1.0',
-                'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
-            };
-            
-            fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UnifiedPerson.13`, {
-                method: 'POST',
-                headers,
-                body: JSON.stringify({"query": `SELECT up.udf.UnifiedPerson_PolicyGroup FROM UnifiedPerson up WHERE up.userName = '${user}'`}),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.data && data.data.length > 0 && data.data[0].up && data.data[0].up.udfValues && data.data[0].up.udfValues.length > 0) {
-                    const policyGroup = data.data[0].up.udfValues[0].value;
-                    resolve(policyGroup);
-                } else {
-                    throw new Error('Policy Group not found in the response');
-                }
-            })
-            .catch(error => {
-                reject(error);
-            });
-	});	
-}
-
-async function getGroupPolicyV2(cloudHost, account, company, shellSdk, user) {
+async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
     try {
-        const authResponse = await new Promise((resolve) => {
+        const authResponse = await new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                reject(new Error('Authentication timeout'));
+            }, 5000); // 5 sec timeout
+            
             shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
                 response_type: 'token'
             });
-            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (response) => {
+                clearTimeout(timeout);
+                if (response && response.access_token) {
+                    resolve(response);
+                } else {
+                    reject(new Error('Invalid authentication response'));
+                }
+            });
         });
+
+        if (!authResponse || !authResponse.access_token) {
+            throw new Error('Authentication failed');
+        }
 
         sessionStorage.setItem('tokenPwa', authResponse.access_token);
 
