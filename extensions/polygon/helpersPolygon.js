@@ -121,7 +121,7 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
         });
 
         if (!response.ok) {
-		if (response.status === 401) {location.reload(); return;}
+		if (response.status === 401) {window.location.reload(true); return;}
 		throw new Error(`Error: ${response.status}`);
         }
 
@@ -278,7 +278,7 @@ async function getPolygonDetailsV2(cloudHost, account, company, id, shellSdk) {
         });
 
         if (!response.ok) {
-		if (response.status === 401) {location.reload(); return;}
+		if (response.status === 401) {window.location.reload(true); return;}
 		throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
 
