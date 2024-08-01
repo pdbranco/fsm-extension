@@ -88,7 +88,8 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
         });
 
         if (!response.ok && response.status === 401) {
-            throw new Error(`Error: ${response.status}`);
+            location.reload();
+            //throw new Error(`Error: ${response.status}`);
         }
 
         const data = await response.json();
