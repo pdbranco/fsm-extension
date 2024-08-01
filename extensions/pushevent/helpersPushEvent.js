@@ -50,12 +50,27 @@ function filterTable() {
 
 async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
     try {
-        const authResponse = await new Promise((resolve) => {
+        const authResponse = await new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                reject(new Error('Authentication timeout'));
+            }, 30000); // 30 sec timeout
+            
             shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
                 response_type: 'token'
             });
-            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (response) => {
+                clearTimeout(timeout);
+                if (response && response.access_token) {
+                    resolve(response);
+                } else {
+                    reject(new Error('Invalid authentication response'));
+                }
+            });
         });
+
+        if (!authResponse || !authResponse.access_token) {
+            throw new Error('Authentication failed');
+        }
 
         sessionStorage.setItem('token', authResponse.access_token);
 
