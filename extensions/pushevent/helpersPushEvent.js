@@ -88,7 +88,7 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
         });
 
         if (!response.ok) {
-			if (response.status === 401) {location.reload();}
+			if (response.status === 401) {location.reload(); return;}
             throw new Error(`Error: ${response.status}`);
         }
 
@@ -682,7 +682,7 @@ async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shel
         });
 
         if (!response.ok) {
-		if (response.status === 401) {location.reload();}
+		if (response.status === 401) {location.reload(); return;}
 		throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
 
