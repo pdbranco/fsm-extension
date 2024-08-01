@@ -162,7 +162,8 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
         });
 
         if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
+		if (response.status === 401) {location.reload(); return;}
+		throw new Error(`Error: ${response.status}`);
         }
 
         const data = await response.json();
@@ -575,7 +576,7 @@ function getOptionPolygonsV2(cloudHost, account, company, id, shellSdk) {
             'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
         };
 
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
 
             fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdfMeta.20`, {
                     method: 'POST',
@@ -584,14 +585,24 @@ function getOptionPolygonsV2(cloudHost, account, company, id, shellSdk) {
                         "query": "select meta.externalId, meta.selectionKeyValues from UdfMeta meta where meta.externalId = 'pwa_PWAPolygons'"
                     })
                 })
-                .then(response => response.json())
+                .then(response => {
+			if (!response.ok) {
+				if (response.status === 401) {location.reload(); return;}
+				throw new Error(`Error: ${response.status}`);
+			}
+			return response.json();
+		})
                 .then(function(json) {
                     populateComboBox(json);
                     if (id != 'new') {
                         getPWADetails(cloudHost, account, company, id);
                     }
                     resolve();
-                });
+                })
+		.catch(error => {
+			console.error('Error:', error);
+			reject(error);
+		});
         });
     });
 }
