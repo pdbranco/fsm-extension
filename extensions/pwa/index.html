@@ -72,7 +72,7 @@
           const policyGroups = (response.value || '').split(';').map(group => group.toUpperCase());
    
           try {
-            const userPolicyGroup = await getGroupPolicyV2(cloudHost, account, company, shellSdk, user);         
+            const userPolicyGroup = await getGroupPolicy(cloudHost, account, company, shellSdk, user);         
             allowExtension = policyGroups.includes(userPolicyGroup.toUpperCase());
           
             if (allowExtension) {
