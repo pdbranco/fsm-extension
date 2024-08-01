@@ -87,9 +87,9 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             body: JSON.stringify({"query": `SELECT up.udf.UnifiedPerson_PolicyGroup FROM UnifiedPerson up WHERE up.userName = '${user}'`}),
         });
 
-        if (!response.ok && response.status === 401) {
-            location.reload();
-            //throw new Error(`Error: ${response.status}`);
+        if (!response.ok) {
+			if (response.status === 401) {location.reload(); return;}
+            throw new Error(`Error: ${response.status}`);
         }
 
         const data = await response.json();
