@@ -53,7 +53,7 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
         const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 reject(new Error('Authentication timeout'));
-            }, 30000); // 30 sec timeout
+            }, 5000); // 5 sec timeout
             
             shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
                 response_type: 'token'
