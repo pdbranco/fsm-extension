@@ -682,7 +682,8 @@ async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shel
         });
 
         if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);
+		if (response.status === 401) {location.reload(); return;}
+		throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
 
         const json = await response.json();
