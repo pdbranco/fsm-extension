@@ -84,12 +84,28 @@ function getPolygonsV2(cloudHost, account, company) {
 
 async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
     try {
-        const authResponse = await new Promise((resolve) => {
+        const authResponse = await new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                reject(new Error('Authentication timeout'));
+            }, 5000); // 5 sec timeout
+            
             shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
                 response_type: 'token'
             });
-            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (response) => {
+                clearTimeout(timeout);
+                if (response && response.access_token) {
+                    resolve(response);
+                } else {
+                    reject(new Error('Invalid authentication response'));
+                }
+            });
         });
+
+        if (!authResponse || !authResponse.access_token) {
+            throw new Error('Authentication failed');
+        }
+
         sessionStorage.setItem('tokenPolygon', authResponse.access_token);
 
         const headers = {
@@ -221,13 +237,29 @@ async function getPolygonDetails(cloudHost, account, company, id) {
 // GET polygon DETAILS ASSYNC
 async function getPolygonDetailsV2(cloudHost, account, company, id, shellSdk) {
     try {
-        const authResponse = await new Promise((resolve) => {
+        const authResponse = await new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                reject(new Error('Authentication timeout'));
+            }, 5000); // 5 sec timeout
+            
             shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
                 response_type: 'token'
             });
-            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (response) => {
+                clearTimeout(timeout);
+                if (response && response.access_token) {
+                    resolve(response);
+                } else {
+                    reject(new Error('Invalid authentication response'));
+                }
+            });
         });
-        sessionStorage.setItem('tokenPwa', authResponse.access_token);
+
+        if (!authResponse || !authResponse.access_token) {
+            throw new Error('Authentication failed');
+        }
+
+        sessionStorage.setItem('tokenPolygon', authResponse.access_token);
 
         const headers = {
             'Content-Type': 'application/json',
@@ -369,13 +401,28 @@ async function submitPolygonAsync(cloudHost, account, company, id, document) {
 
 async function submitPolygonAsyncV2(cloudHost, account, company, id, document, shellSdk) {
     try {
-        const authResponse = await new Promise((resolve) => {
+        const authResponse = await new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                reject(new Error('Authentication timeout'));
+            }, 5000); // 5 sec timeout
+            
             shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
                 response_type: 'token'
             });
-            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (response) => {
+                clearTimeout(timeout);
+                if (response && response.access_token) {
+                    resolve(response);
+                } else {
+                    reject(new Error('Invalid authentication response'));
+                }
+            });
         });
-	    
+
+        if (!authResponse || !authResponse.access_token) {
+            throw new Error('Authentication failed');
+        }
+
         sessionStorage.setItem('tokenPolygon', authResponse.access_token);
 
         const headers = {
@@ -530,14 +577,30 @@ async function deletePolygon(cloudHost, account, company, id) {
 
 async function deletePolygonV2(cloudHost, account, company, id, shellSdk) {
     try {
-        const authResponse = await new Promise((resolve) => {
+        const authResponse = await new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                reject(new Error('Authentication timeout'));
+            }, 5000); // 5 sec timeout
+            
             shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
                 response_type: 'token'
             });
-            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, resolve);
+            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (response) => {
+                clearTimeout(timeout);
+                if (response && response.access_token) {
+                    resolve(response);
+                } else {
+                    reject(new Error('Invalid authentication response'));
+                }
+            });
         });
 
+        if (!authResponse || !authResponse.access_token) {
+            throw new Error('Authentication failed');
+        }
+
         sessionStorage.setItem('tokenPolygon', authResponse.access_token);
+	    
         const headers = {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-polygon',
