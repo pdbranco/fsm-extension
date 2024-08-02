@@ -88,7 +88,11 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
         });
 
         if (!response.ok) {
-			if (response.status === 401) {location.reload(); return;}
+		if (response.status === 401) {
+			const newURL = 'https://pdbranco.github.io/fsm-extension/extensions/pushevent/';
+			location.href = newURL;
+			setTimeout(() => location.reload(true), 100);
+			return;}
             throw new Error(`Error: ${response.status}`);
         }
 
