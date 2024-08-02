@@ -682,7 +682,7 @@ async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shel
         });
 
         if (!response.ok) {
-		if (response.status === 401) {window.location.reload(true); return;}
+		if (response.status === 401) {location.reload(); return;}
 		throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
 
