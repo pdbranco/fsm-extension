@@ -50,6 +50,7 @@ function filterTable() {
 
 async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
     try {
+	/*
         const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 reject(new Error('Authentication timeout'));
@@ -72,13 +73,13 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             throw new Error('Authentication failed');
         }
 
-        sessionStorage.setItem('token', authResponse.access_token);
+        sessionStorage.setItem('token', authResponse.access_token);*/
 
         const headers = {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pwa',
             'X-Client-Version': '1.0',
-            'Authorization': `bearer ${authResponse.access_token}`,
+            'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
         };
 
         const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UnifiedPerson.13`, {
@@ -139,7 +140,7 @@ function getPushEventsV2(cloudHost, account, company) {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-pushevent',
         'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+        'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
     };
     return new Promise((resolve, reject) => {
         fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
@@ -216,7 +217,7 @@ async function getPushEventDetails(cloudHost, account, company, id) {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-pushevent',
         'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+        'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
     };
 
     try {
@@ -421,7 +422,7 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
 async function submitPushEventAsyncV2(cloudHost, account, company, id, document, shellSdk) {
 
     try {
-        const authResponse = await new Promise((resolve, reject) => {
+        /*const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 reject(new Error('Authentication timeout'));
             }, 5000); // 5 sec timeout
@@ -443,13 +444,13 @@ async function submitPushEventAsyncV2(cloudHost, account, company, id, document,
             throw new Error('Authentication failed');
         }
 
-        sessionStorage.setItem('token', authResponse.access_token);
+        sessionStorage.setItem('token', authResponse.access_token);*/
 
         const headers = {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pushevent',
             'X-Client-Version': '1.0.0',
-            'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+            'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
         };
 
         const url = id === 'new' ?
@@ -644,7 +645,7 @@ async function getOptionMatCodeAndStatus(cloudHost, account, company, id) {
 async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shellSdk) {
 
     try {
-        const authResponse = await new Promise((resolve, reject) => {
+        /*const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 reject(new Error('Authentication timeout'));
             }, 5000); // 5 sec timeout
@@ -666,13 +667,13 @@ async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shel
             throw new Error('Authentication failed');
         }
 
-        sessionStorage.setItem('token', authResponse.access_token);
+        sessionStorage.setItem('token', authResponse.access_token);*/
 
         const headers = {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pushevent',
             'X-Client-Version': '1.0.0',
-            'Authorization': `bearer ${authResponse.access_token}`,
+            'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
         };
 
         const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdfMeta.20`, {
@@ -747,7 +748,7 @@ async function deletePushEvent(cloudHost, account, company, id) {
 // DELETE PUSHEVENT ASSYNC
 async function deletePushEventV2(cloudHost, account, company, id, shellSdk) {
     try {
-        const authResponse = await new Promise((resolve, reject) => {
+        /*const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 reject(new Error('Authentication timeout'));
             }, 5000); // 5 sec timeout
@@ -769,12 +770,12 @@ async function deletePushEventV2(cloudHost, account, company, id, shellSdk) {
             throw new Error('Authentication failed');
         }
 
-        sessionStorage.setItem('token', authResponse.access_token);
+        sessionStorage.setItem('token', authResponse.access_token);*/
         const headers = {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pushevent',
             'X-Client-Version': '1.0.0',
-            'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+            'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
         };
         const response = await fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?forceDelete=true&account=${account}&company=${company}`, {
             method: 'DELETE',
@@ -806,7 +807,7 @@ function getIdCustomObject(cloudHost, account, company, nameObject) {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-pushevent',
         'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+        'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
     };
 
     return new Promise(resolve => {
