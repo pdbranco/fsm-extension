@@ -79,7 +79,7 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pwa',
             'X-Client-Version': '1.0',
-            'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
+            'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
         };
 
         const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UnifiedPerson.13`, {
@@ -137,7 +137,7 @@ function getPushEventsV2(cloudHost, account, company) {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-pushevent',
         'X-Client-Version': '1.0.0',
-        'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
+        'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
     };
     return new Promise((resolve, reject) => {
         fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
@@ -214,7 +214,7 @@ async function getPushEventDetails(cloudHost, account, company, id) {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-pushevent',
         'X-Client-Version': '1.0.0',
-        'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
+        'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
     };
 
     try {
@@ -447,7 +447,7 @@ async function submitPushEventAsyncV2(cloudHost, account, company, id, document,
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pushevent',
             'X-Client-Version': '1.0.0',
-            'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
+            'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
         };
 
         const url = id === 'new' ?
@@ -670,7 +670,7 @@ async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shel
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pushevent',
             'X-Client-Version': '1.0.0',
-            'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
+            'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
         };
 
         const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdfMeta.20`, {
@@ -771,7 +771,7 @@ async function deletePushEventV2(cloudHost, account, company, id, shellSdk) {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pushevent',
             'X-Client-Version': '1.0.0',
-            'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
+            'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
         };
         const response = await fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?forceDelete=true&account=${account}&company=${company}`, {
             method: 'DELETE',
@@ -803,7 +803,7 @@ function getIdCustomObject(cloudHost, account, company, nameObject) {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-pushevent',
         'X-Client-Version': '1.0.0',
-        'Authorization': `JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken`,
+        'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
     };
 
     return new Promise(resolve => {
