@@ -78,7 +78,7 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pwa',
             'X-Client-Version': '1.0',
-            'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+            'Authorization': `bearer ${authResponse.access_token}`,
         };
 
         const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UnifiedPerson.13`, {
@@ -89,9 +89,7 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
 
         if (!response.ok) {
 		if (response.status === 401) {
-			const newURL = 'https://pdbranco.github.io/fsm-extension/extensions/pushevent/';
-			location.href = newURL;
-			setTimeout(() => location.reload(true), 100);
+			location.reload();
 			return;}
             throw new Error(`Error: ${response.status}`);
         }
@@ -674,7 +672,7 @@ async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shel
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pushevent',
             'X-Client-Version': '1.0.0',
-            'Authorization': `bearer ${sessionStorage.getItem('token')}`,
+            'Authorization': `bearer ${authResponse.access_token}`,
         };
 
         const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdfMeta.20`, {
