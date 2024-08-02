@@ -91,6 +91,7 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
 
         if (!response.ok) {
             if (response.status === 401) {
+                window.location.href = 'index.html';
                 window.location.reload(true);
                 return;
             }
