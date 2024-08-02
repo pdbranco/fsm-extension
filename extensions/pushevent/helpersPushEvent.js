@@ -689,6 +689,7 @@ async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shel
 
         if (!response.ok) {
             if (response.status === 401) {
+                window.location.href = 'index.html';
                 window.location.reload(true);
                 return;
             }
