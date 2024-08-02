@@ -10,7 +10,7 @@ const updateUI = (text) =>
 function initializeRefreshTokenStrategy(shellSdk, auth) {
 
     shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
-        sessionStorage.setItem('token', event.access_token);     
+        sessionStorage.setItem('token', event.access_token);
         setTimeout(() => fetchToken(), (event.expires_in * 500));
     });
 
@@ -50,12 +50,11 @@ function filterTable() {
 
 async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
     try {
-	/*
         const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 reject(new Error('Authentication timeout'));
             }, 5000); // 5 sec timeout
-            
+
             shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
                 response_type: 'token'
             });
@@ -73,22 +72,28 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             throw new Error('Authentication failed');
         }
 
-        sessionStorage.setItem('token', authResponse.access_token);*/
+        sessionStorage.setItem('token', authResponse.access_token);
 
         const headers = {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pwa',
             'X-Client-Version': '1.0',
-            'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
+            'Authorization': `bearer ${sessionStorage.getItem('token')}`,
         };
 
         const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UnifiedPerson.13`, {
             method: 'POST',
             headers,
-            body: JSON.stringify({"query": `SELECT up.udf.UnifiedPerson_PolicyGroup FROM UnifiedPerson up WHERE up.userName = '${user}'`}),
+            body: JSON.stringify({
+                "query": `SELECT up.udf.UnifiedPerson_PolicyGroup FROM UnifiedPerson up WHERE up.userName = '${user}'`
+            }),
         });
 
         if (!response.ok) {
+            if (response.status === 401) {
+                window.location.reload(true);
+                return;
+            }
             throw new Error(`Error: ${response.status}`);
         }
 
@@ -137,30 +142,30 @@ function getPushEventsV2(cloudHost, account, company) {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-pushevent',
         'X-Client-Version': '1.0.0',
-        'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
+        'Authorization': `bearer ${sessionStorage.getItem('token')}`,
     };
     return new Promise((resolve, reject) => {
         fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({
-                "query": "select pe.id, pe.udfValues, ud.id from UdoValue pe join UdoMeta ud on ud.id = pe.meta where ud.name = 'PushEvent'"
-            }),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(function(json) {
-            displayDataTable(json.data, cloudHost, account, company);
-            resolve();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            reject(error);
-        });
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                    "query": "select pe.id, pe.udfValues, ud.id from UdoValue pe join UdoMeta ud on ud.id = pe.meta where ud.name = 'PushEvent'"
+                }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(function(json) {
+                displayDataTable(json.data, cloudHost, account, company);
+                resolve();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                reject(error);
+            });
     });
 }
 
@@ -214,7 +219,7 @@ async function getPushEventDetails(cloudHost, account, company, id) {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-pushevent',
         'X-Client-Version': '1.0.0',
-        'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
+        'Authorization': `bearer ${sessionStorage.getItem('token')}`,
     };
 
     try {
@@ -394,14 +399,14 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
                     errorMessage += ` - ${specificError}`;
                     errorScreen += `${specificError}`;
                 }
-            } else if (errorData && errorData.message){
+            } else if (errorData && errorData.message) {
                 specificError = errorData.message;
                 if (specificError) {
                     errorMessage += ` - ${specificError}`;
                     errorScreen += `${specificError}`;
                 }
             }
-            
+
             console.error('Error: ', errorMessage);
             throw new Error(errorScreen);
         }
@@ -419,11 +424,11 @@ async function submitPushEventAsync(cloudHost, account, company, id, document) {
 async function submitPushEventAsyncV2(cloudHost, account, company, id, document, shellSdk) {
 
     try {
-        /*const authResponse = await new Promise((resolve, reject) => {
+        const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 reject(new Error('Authentication timeout'));
             }, 5000); // 5 sec timeout
-            
+
             shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
                 response_type: 'token'
             });
@@ -441,13 +446,13 @@ async function submitPushEventAsyncV2(cloudHost, account, company, id, document,
             throw new Error('Authentication failed');
         }
 
-        sessionStorage.setItem('token', authResponse.access_token);*/
+        sessionStorage.setItem('token', authResponse.access_token);
 
         const headers = {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pushevent',
             'X-Client-Version': '1.0.0',
-            'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
+            'Authorization': `bearer ${sessionStorage.getItem('token')}`,
         };
 
         const url = id === 'new' ?
@@ -642,11 +647,11 @@ async function getOptionMatCodeAndStatus(cloudHost, account, company, id) {
 async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shellSdk) {
 
     try {
-        /*const authResponse = await new Promise((resolve, reject) => {
+        const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 reject(new Error('Authentication timeout'));
             }, 5000); // 5 sec timeout
-            
+
             shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
                 response_type: 'token'
             });
@@ -664,13 +669,13 @@ async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shel
             throw new Error('Authentication failed');
         }
 
-        sessionStorage.setItem('token', authResponse.access_token);*/
+        sessionStorage.setItem('token', authResponse.access_token);
 
         const headers = {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pushevent',
             'X-Client-Version': '1.0.0',
-            'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
+            'Authorization': `bearer ${sessionStorage.getItem('token')}`,
         };
 
         const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdfMeta.20`, {
@@ -682,7 +687,11 @@ async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shel
         });
 
         if (!response.ok) {
-		throw new Error(`Error: ${response.status} ${response.statusText}`);
+            if (response.status === 401) {
+                window.location.reload(true);
+                return;
+            }
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
 
         const json = await response.json();
@@ -744,11 +753,11 @@ async function deletePushEvent(cloudHost, account, company, id) {
 // DELETE PUSHEVENT ASSYNC
 async function deletePushEventV2(cloudHost, account, company, id, shellSdk) {
     try {
-        /*const authResponse = await new Promise((resolve, reject) => {
+        const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 reject(new Error('Authentication timeout'));
             }, 5000); // 5 sec timeout
-            
+
             shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
                 response_type: 'token'
             });
@@ -766,12 +775,12 @@ async function deletePushEventV2(cloudHost, account, company, id, shellSdk) {
             throw new Error('Authentication failed');
         }
 
-        sessionStorage.setItem('token', authResponse.access_token);*/
+        sessionStorage.setItem('token', authResponse.access_token);
         const headers = {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pushevent',
             'X-Client-Version': '1.0.0',
-            'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
+            'Authorization': `bearer ${sessionStorage.getItem('token')}`,
         };
         const response = await fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?forceDelete=true&account=${account}&company=${company}`, {
             method: 'DELETE',
@@ -803,7 +812,7 @@ function getIdCustomObject(cloudHost, account, company, nameObject) {
         'Content-Type': 'application/json',
         'X-Client-ID': 'fsm-extension-pushevent',
         'X-Client-Version': '1.0.0',
-        'Authorization': `${JSON.parse(localStorage.getItem('cs.components.auth.loginData')).formattedAuthToken}`,
+        'Authorization': `bearer ${sessionStorage.getItem('token')}`,
     };
 
     return new Promise(resolve => {
