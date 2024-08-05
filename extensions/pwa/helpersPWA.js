@@ -25,72 +25,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
 }
 
 //GET OBJECT PWAS
-function getPWAs(cloudHost, account, company) {
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-pwa',
-        'X-Client-Version': '1.0',
-        'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
-    };
-
-    return new Promise(resolve => {
-
-        fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
-                method: 'POST',
-                headers,
-                body: JSON.stringify({
-                    "query": "select pwa.id, pwa.udfValues, ud.id from UdoValue pwa join UdoMeta ud on ud.id = pwa.meta where ud.name = 'PWA'"
-                }),
-            })
-            .then(response => response.json())
-            .then(function(json) {
-                displayDataTable(json.data, cloudHost, account, company);
-                resolve();
-            });
-    });
-}
-
-function getPWAsV2(cloudHost, account, company, shellSdk) {
-    shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
-        response_type: 'token'
-    });
-	
-    shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
-        sessionStorage.setItem('tokenPwa', event.access_token);
-        const headers = {
-            'Content-Type': 'application/json',
-            'X-Client-ID': 'fsm-extension-pwa',
-            'X-Client-Version': '1.0.0',
-            'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
-        };
-        return new Promise((resolve, reject) => {
-            fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
-                    method: 'POST',
-                    headers,
-                    body: JSON.stringify({
-                        "query": "select pwa.id, pwa.udfValues, ud.id from UdoValue pwa join UdoMeta ud on ud.id = pwa.meta where ud.name = 'PWA'"
-                    }),
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Error: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(function(json) {
-                    displayDataTable(json.data, cloudHost, account, company);
-                    resolve();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    reject(error);
-                });
-        });
-    });
-}
-
-function getPWAsV3(cloudHost, account, company, shellSdk) {	
+function getPWAs(cloudHost, account, company, shellSdk) {	
 	const headers = {
 	    'Content-Type': 'application/json',
 	    'X-Client-ID': 'fsm-extension-pwa',
@@ -162,7 +97,10 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
         });
 
         if (!response.ok) {
-		if (response.status === 401) {window.location.reload(true); return;}
+		if (response.status === 401) {
+		    updateMsgErrorToken('The token has expired, please refresh the page to access it again');
+		    return;
+		}
 		throw new Error(`Error: ${response.status}`);
         }
 
@@ -305,98 +243,7 @@ function prefillForm(data) {
     });
 }
 
-async function submitPWAAsync(cloudHost, account, company, id, document) {
-    const headers = {
-        'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-pwa',
-        'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
-    };
-
-    const url = id === 'new' ?
-        `https://${cloudHost}/api/data/v4/UdoValue?dtos=UdoValue.10&account=${account}&company=${company}` :
-        `https://${cloudHost}/api/data/v4/UdoValue/${id}?dtos=UdoValue.10&account=${account}&company=${company}&forceUpdate=true`;
-
-    const method = id === 'new' ? 'POST' : 'PATCH';
-
-    const name = document.getElementById('name').value;
-    const pwaIdEAM = document.getElementById('pwaIdEAM').value;
-    const listPolygons = Array.from(document.getElementById('listPolygons').selectedOptions).map(option => option.value);
-
-    // Execute validation of mandatory fields
-    const validationError = validateForm(name, pwaIdEAM, listPolygons);
-    if (validationError) {
-        updateMsgError(validationError);
-        return; // Prevents form submission
-    }
-
-    const data = {
-        "meta": `${sessionStorage.getItem('idMetaPWA')}`,
-        "externalId": `${pwaIdEAM}`,
-        "udfValues": [{
-                "meta": {
-                    "externalId": "pwa_Name"
-                },
-                "value": `${name}`
-            },
-            {
-                "meta": {
-                    "externalId": "pwa_PWAIdEAM"
-                },
-                "value": `${pwaIdEAM}`
-            },
-            {
-                "meta": {
-                    "externalId": "pwa_PWAPolygons"
-                },
-                "value": `${listPolygons}`
-            }
-        ]
-    };
-
-    try {
-        const response = await fetch(url, {
-            method,
-            headers,
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-
-            const errorData = await response.json();
-            let errorMessage = `Error: ${response.status} ${response.statusText}`;
-            let errorScreen = 'Error: ';
-            let specificError;
-
-            if (errorData && errorData.children && errorData.children.length > 0) {
-                specificError = errorData.children[0].message;
-                if (specificError) {
-                    errorMessage += ` - ${specificError}`;
-                    errorScreen += `${specificError}`;
-                }
-            } else if (errorData && errorData.message) {
-                specificError = errorData.message;
-                if (specificError) {
-                    errorMessage += ` - ${specificError}`;
-                    errorScreen += `${specificError}`;
-                }
-            }
-
-            console.error('Error: ', errorMessage);
-            throw new Error(errorScreen);
-        }
-
-        // Displays success message and redirects to main page after 2 seconds
-        updateMsgError("");
-        updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
-        setTimeout(() => history.back(), 2000);
-
-    } catch (error) {
-        updateMsgError(error.message);
-    }
-}
-
-function submitPWAAsyncV2(cloudHost, account, company, id, document, shellSdk) {
+function submitPWAAsync(cloudHost, account, company, id, document, shellSdk) {
     
     shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
         response_type: 'token'
@@ -473,7 +320,10 @@ function submitPWAAsyncV2(cloudHost, account, company, id, document, shellSdk) {
 							errorMessage += ` - ${specificError}`;
 							errorScreen += `${specificError}`;
 						}
+					} else if (response.status === 401){
+						errorScreen += 'The token has expired, please refresh the page to access it again';
 					}
+					
 					console.error('Error: ', errorMessage);
 					throw new Error(errorScreen);
 				});
@@ -525,42 +375,7 @@ function populateComboBox(response) {
 }
 
 // GET OPTIONS POLYGONS ASSYNC
-async function getOptionPolygons(cloudHost, account, company, id) {
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-pwa',
-        'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
-    };
-
-    try {
-        const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdfMeta.20`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({
-                "query": "select meta.externalId, meta.selectionKeyValues from UdfMeta meta where meta.externalId = 'pwa_PWAPolygons'"
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
-
-        const json = await response.json();
-        // CALL THE FUNCTION TO FILL IN THE COMBOBOX
-        populateComboBox(json);
-        if (id != 'new') {
-            getPWADetails(cloudHost, account, company, id);
-        }
-
-    } catch (error) {
-        console.error('Failed to fetch pwa details:', error);
-    }
-}
-
-// GET OPTIONS POLYGONS ASSYNC
-function getOptionPolygonsV2(cloudHost, account, company, id, shellSdk) {
+function getOptionPolygons(cloudHost, account, company, id, shellSdk) {
 
     shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
         response_type: 'token'
@@ -587,7 +402,10 @@ function getOptionPolygonsV2(cloudHost, account, company, id, shellSdk) {
                 })
                 .then(response => {
 			if (!response.ok) {
-				if (response.status === 401) {window.location.reload(true); return;}
+				if (response.status === 401) {
+				    updateMsgError('The token has expired, please refresh the page to access it again'); 
+				    return;
+				}
 				throw new Error(`Error: ${response.status}`);
 			}
 			return response.json();
@@ -617,36 +435,8 @@ function validateForm(name, pwaIdEAM, listPolygons) {
     return null;
 }
 
-// DELETE PWA ASSYNC
-async function deletePWA(cloudHost, account, company, id) {
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-pwa',
-        'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('tokenPwa')}`,
-    };
-
-    try {
-        const response = await fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?forceDelete=true&account=${account}&company=${company}`, {
-            method: 'DELETE',
-            headers,
-            body: ''
-        });
-
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
-
-        history.back();
-
-    } catch (error) {
-        console.error('Failed to fetch pwa details:', error);
-    }
-}
-
 // DELETE PWA
-function deletePWAV2(cloudHost, account, company, id, shellSdk) {
+function deletePWA(cloudHost, account, company, id, shellSdk) {
     
 	shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
         response_type: 'token'
