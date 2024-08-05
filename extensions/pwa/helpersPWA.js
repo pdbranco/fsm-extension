@@ -473,6 +473,9 @@ function deletePWA(cloudHost, account, company, id, shellSdk) {
 	});
 }
 
+const updateMsgErrorToken = (text) =>
+    (document.querySelectorAll('#infoErrorToken')[0].innerText = text);
+
 const updateMsgError = (text) =>
     (document.querySelectorAll('#infoError')[0].innerText = text);
 
