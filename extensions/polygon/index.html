@@ -20,6 +20,7 @@
       <input type="text" id="searchInput" class="search-style" placeholder="Search Polygon">
     </div>
   </div>
+  <label id="infoErrorToken"></label>
   <p id="noPermissionLabel" style="display: none;">You don't have the necessary permissions to access this content.</p>
   <br><br>
   <script src="https://unpkg.com/fsm-shell"></script>
@@ -82,7 +83,7 @@
               document.getElementById('contentContainer').style.display = 'block';
               document.getElementById('noPermissionLabel').style.display = 'none';
               
-              getPolygonsV2(cloudHost, account, company);
+              getPolygons(cloudHost, account, company);
               
               // Filter Table
               const searchInput = document.getElementById('searchInput');
