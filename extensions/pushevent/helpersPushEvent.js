@@ -91,8 +91,7 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
 
         if (!response.ok) {
             if (response.status === 401) {
-                window.location.href = 'index.html';
-                window.location.reload(true);
+                updateMsgError('The token has expired, please refresh the page to access it again');
                 return;
             }
             throw new Error(`Error: ${response.status}`);
@@ -689,8 +688,7 @@ async function getOptionMatCodeAndStatusV2(cloudHost, account, company, id, shel
 
         if (!response.ok) {
             if (response.status === 401) {
-                window.location.href = 'index.html';
-                window.location.reload(true);
+                updateMsgError('The token has expired, please refresh the page to access it again');
                 return;
             }
             throw new Error(`Error: ${response.status} ${response.statusText}`);
