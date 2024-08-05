@@ -91,7 +91,7 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
 
         if (!response.ok) {
             if (response.status === 401) {
-                updateMsgError('The token has expired, please refresh the page to access it again');
+                updateMsgErrorToken('The token has expired, please refresh the page to access it again');
                 return;
             }
             throw new Error(`Error: ${response.status}`);
@@ -798,6 +798,9 @@ async function deletePushEventV2(cloudHost, account, company, id, shellSdk) {
         console.error('Error on delete:', error);
     }
 }
+
+const updateMsgErrorToken = (text) =>
+    (document.querySelectorAll('#infoErrorToken')[0].innerText = text);
 
 const updateMsgError = (text) =>
     (document.querySelectorAll('#infoError')[0].innerText = text);
