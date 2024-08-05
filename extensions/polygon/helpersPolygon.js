@@ -460,8 +460,7 @@ async function deletePolygon(cloudHost, account, company, id, shellSdk) {
         history.back();
 
     } catch (error) {
-        updateMsgError(error.message);
-        console.error('Failed to fetch polygon details:', error);
+        console.error('Error:', error);
     }
 }
 
