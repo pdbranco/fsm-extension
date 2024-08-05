@@ -402,8 +402,10 @@ async function submitPushEventAsync(cloudHost, account, company, id, document, s
                 specificError = errorData.message;
                 if (specificError) {
                     errorMessage += ` - ${specificError}`;
-                    errorScreen += `${specificError}`;
+                    errorData && errorData.message;
                 }
+            } else if (response.status === 401){
+                errorScreen += `${errorMessage}`;
             }
 
             console.error('Error: ', errorMessage);
