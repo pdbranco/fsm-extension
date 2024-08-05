@@ -35,33 +35,6 @@ function getPolygons(cloudHost, account, company) {
         'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
     };
 
-    return new Promise(resolve => {
-
-        fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
-                method: 'POST',
-                headers,
-                body: JSON.stringify({
-                    "query": "select polygon.id, polygon.udfValues, ud.id from UdoValue polygon join UdoMeta ud on ud.id = polygon.meta where ud.name = 'Polygon'"
-                }),
-            })
-            .then(response => response.json())
-            .then(function(json) {
-                displayDataTable(json.data, cloudHost, account, company);
-                resolve();
-            });
-    });
-}
-
-//GET OBJECT POLYGONS
-function getPolygonsV2(cloudHost, account, company) {
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-polygon',
-        'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
-    };
-
     return new Promise((resolve, reject) => {
         fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoMeta.10;UdoValue.10`, {
 		method: 'POST',
@@ -121,7 +94,10 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
         });
 
         if (!response.ok) {
-		if (response.status === 401) {window.location.reload(true); return;}
+		if (response.status === 401) {
+		    updateMsgErrorToken('The token has expired, please refresh the page to access it again');
+		    return;
+		}
 		throw new Error(`Error: ${response.status}`);
         }
 
@@ -204,39 +180,7 @@ function displayDataTable(data, cloudHost, account, company) {
 }
 
 // GET polygon DETAILS ASSYNC
-async function getPolygonDetails(cloudHost, account, company, id) {
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-polygon',
-        'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
-    };
-
-    try {
-        const response = await fetch(`https://${cloudHost}/api/query/v1?&account=${account}&company=${company}&dtos=UdoValue.10`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({
-                "query": `select polygon.id, polygon.udfValues from UdoValue polygon where polygon.id = '${id}'`
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
-
-        const json = await response.json();
-        // CALL THE FUNCTION TO FILL IN THE FORM
-        prefillForm(json);
-
-    } catch (error) {
-        console.error('Failed to fetch polygon details:', error);
-    }
-}
-
-// GET polygon DETAILS ASSYNC
-async function getPolygonDetailsV2(cloudHost, account, company, id, shellSdk) {
+async function getPolygonDetails(cloudHost, account, company, id, shellSdk) {
     try {
         const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
@@ -278,14 +222,17 @@ async function getPolygonDetailsV2(cloudHost, account, company, id, shellSdk) {
         });
 
         if (!response.ok) {
-		if (response.status === 401) {window.location.reload(true); return;}
+		if (response.status === 401) {
+		    updateMsgError('The token has expired, please refresh the page to access it again');
+		    return;
+		}
 		throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
 
         const json = await response.json();
         prefillForm(json);
     } catch (error) {
-        console.error('Error in getGroupPolicyV2:', error);
+        console.error('Error in getGroupPolicy:', error);
         throw error;
     }
 }
@@ -310,98 +257,7 @@ function prefillForm(data) {
     });
 }
 
-async function submitPolygonAsync(cloudHost, account, company, id, document) {
-    const headers = {
-        'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-polygon',
-        'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
-    };
-
-    const url = id === 'new' ?
-        `https://${cloudHost}/api/data/v4/UdoValue?dtos=UdoValue.10&account=${account}&company=${company}` :
-        `https://${cloudHost}/api/data/v4/UdoValue/${id}?dtos=UdoValue.10&account=${account}&company=${company}&forceUpdate=true`;
-
-    const method = id === 'new' ? 'POST' : 'PATCH';
-
-    const name = document.getElementById('name').value;
-    const polygonIdEAM = document.getElementById('polygonIdEAM').value;
-    const polygon_Description = document.getElementById('polygondescription').value;
-
-    // Execute validation of mandatory fields
-    const validationError = validateForm(name, polygonIdEAM);
-    if (validationError) {
-        updateMsgError(validationError);
-        return; // Prevents form submission
-    }
-
-    const data = {
-        "meta": `${sessionStorage.getItem('idMetaPolygon')}`,
-		"externalId": `${polygonIdEAM}`,
-        "udfValues": [{
-                "meta": {
-                    "externalId": "polygon_Name"
-                },
-                "value": `${name}`
-            },
-            {
-                "meta": {
-                    "externalId": "polygon_PolygonIdEam"
-                },
-                "value": `${polygonIdEAM}`
-            },
-            {
-                "meta": {
-                    "externalId": "polygon_Description"
-                },
-                "value": `${polygon_Description}`
-            }
-        ]
-    };
-
-    try {
-        const response = await fetch(url, {
-            method,
-            headers,
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-			
-			const errorData = await response.json();
-			let errorMessage = `Error: ${response.status} ${response.statusText}`;
-			let errorScreen = 'Error: ';
-			let specificError;
-			
-			if (errorData && errorData.children && errorData.children.length > 0) {
-				specificError = errorData.children[0].message;
-				if (specificError) {
-					errorMessage += ` - ${specificError}`;
-					errorScreen += `${specificError}`;
-				}
-			} else if (errorData && errorData.message) {
-				specificError = errorData.message;
-				if (specificError) {
-					errorMessage += ` - ${specificError}`;
-					errorScreen += `${specificError}`;
-				}
-			}
-			
-			console.error('Error: ', errorMessage);
-            throw new Error(errorScreen);
-        }
-
-        // Displays success message and redirects to main page after 2 seconds
-        updateMsgError("");
-        updateMsgSuccess(`Form ${id === 'new' ? 'submitted' : 'updated'} successfully!`);
-        setTimeout(() => history.back(), 2000);
-
-    } catch (error) {
-        updateMsgError(error.message);
-    }
-}
-
-async function submitPolygonAsyncV2(cloudHost, account, company, id, document, shellSdk) {
+async function submitPolygonAsync(cloudHost, account, company, id, document, shellSdk) {
     try {
         const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
@@ -498,7 +354,10 @@ async function submitPolygonAsyncV2(cloudHost, account, company, id, document, s
                     errorMessage += ` - ${specificError}`;
                     errorScreen += `${specificError}`;
                 }
+            } else if (response.status === 401){
+                errorScreen += 'The token has expired, please refresh the page to access it again';
             }
+		
             console.error('Error: ', errorMessage);
             throw new Error(errorScreen);
         }
@@ -549,35 +408,8 @@ function validateForm(name, polygonIdEAM) {
     return null;
 }
 
-// DELETE polygon ASSYNC
-async function deletePolygon(cloudHost, account, company, id) {
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'X-Client-ID': 'fsm-extension-polygon',
-        'X-Client-Version': '1.0.0',
-        'Authorization': `bearer ${sessionStorage.getItem('tokenPolygon')}`,
-    };
-
-    try {
-        const response = await fetch(`https://${cloudHost}/api/data/v4/UdoValue/${id}?forceDelete=true&account=${account}&company=${company}`, {
-            method: 'DELETE',
-            headers,
-            body: ''
-        });
-
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
-
-        history.back();
-
-    } catch (error) {
-        console.error('Failed to fetch polygon details:', error);
-    }
-}
-
-async function deletePolygonV2(cloudHost, account, company, id, shellSdk) {
+// DELETE polygon
+async function deletePolygon(cloudHost, account, company, id, shellSdk) {
     try {
         const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
@@ -627,6 +459,9 @@ async function deletePolygonV2(cloudHost, account, company, id, shellSdk) {
         console.error('Failed to fetch polygon details:', error);
     }
 }
+
+const updateMsgErrorToken = (text) =>
+    (document.querySelectorAll('#infoErrorToken')[0].innerText = text);
 
 const updateMsgError = (text) =>
     (document.querySelectorAll('#infoError')[0].innerText = text);
