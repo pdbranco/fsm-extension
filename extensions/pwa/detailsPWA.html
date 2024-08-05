@@ -70,7 +70,7 @@
           initializeRefreshTokenStrategy(shellSdk, auth);
 	  var id = getParameters();
 		
-          getOptionPolygonsV2(cloudHost, account, company, id, shellSdk);
+          getOptionPolygons(cloudHost, account, company, id, shellSdk);
       
           if(id == 'new'){
             document.getElementById("deletePWA").style.visibility = "hidden";
@@ -82,9 +82,9 @@
           	event.preventDefault(); // Prevent default form submission behavior
               
           	if (buttonId === 'createOrUpdatePWA') {
-          		submitPWAAsyncV2(cloudHost, account, company, id, document, shellSdk); // Call function to save PWA
+          		submitPWAAsync(cloudHost, account, company, id, document, shellSdk); // Call function to save PWA
           	} else if (buttonId === 'deletePWA') {
-          		deletePWAV2(cloudHost, account, company, id, shellSdk); // Call function to delete PWA
+          		deletePWA(cloudHost, account, company, id, shellSdk); // Call function to delete PWA
           	}
           });          
     });
