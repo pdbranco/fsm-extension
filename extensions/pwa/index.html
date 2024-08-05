@@ -20,6 +20,7 @@
       <input type="text" id="searchInput" class="search-style" placeholder="Search PWA">
     </div>
   </div>
+  <label id="infoErrorToken"></label>
   <p id="noPermissionLabel" style="display: none;">You don't have the necessary permissions to access this content.</p>
   <br><br>
   <script src="https://unpkg.com/fsm-shell"></script>
@@ -79,7 +80,7 @@
               document.getElementById('contentContainer').style.display = 'block';
               document.getElementById('noPermissionLabel').style.display = 'none';
                 
-              getPWAsV3(cloudHost, account, company, shellSdk);
+              getPWAs(cloudHost, account, company, shellSdk);
                 
               const searchInput = document.getElementById('searchInput');
               searchInput.addEventListener('keyup', filterTable);
