@@ -460,13 +460,18 @@ function deletePWA(cloudHost, account, company, id, shellSdk) {
 			})
 			.then(response => {
 				if (!response.ok) {
+					if (response.status === 401) {
+						updateMsgError('The token has expired, please refresh the page to access it again');
+					} else {
+						updateMsgError(`Error: ${response.status} ${response.statusText}`);
+					}
 					throw new Error(`Error: ${response.status} ${response.statusText}`);
 				}
 				history.back();
 				resolve();
 			})
 			.catch(error => {
-				console.error('Failed to fetch pwa details:', error);
+				console.error('Error:', error);
 				reject(error);
 			});
 		});
