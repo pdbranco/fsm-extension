@@ -578,6 +578,11 @@ async function deletePushEvent(cloudHost, account, company, id, shellSdk) {
         });
 
         if (!response.ok) {
+            if (response.status === 401) {
+                updateMsgError('The token has expired, please refresh the page to access it again');
+            } else {
+                updateMsgError(`Error: ${response.status} ${response.statusText}`);
+            }
             throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
 
