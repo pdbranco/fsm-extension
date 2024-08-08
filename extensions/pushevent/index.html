@@ -71,7 +71,7 @@
           initializeRefreshTokenStrategy(shellSdk, auth);
           
           let allowExtension = false;
-          shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PushWork_AllowedPoliciesGroups');
+          shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PushWork_AllowedPolicyGroups');
           shellSdk.on(SHELL_EVENTS.Version1.GET_SETTINGS, async (response) => {
           const policyGroups = (response.value || '').split(';').map(group => group.toUpperCase());
             
