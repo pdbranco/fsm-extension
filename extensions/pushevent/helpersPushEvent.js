@@ -407,7 +407,7 @@ async function submitPushEventAsync(cloudHost, account, company, id, document, s
             } else if (response.status === 401){
                 errorScreen += 'The token has expired, please refresh the page to access it again';
             } else {
-                errorScreen += ` - ${specificError}`
+                errorScreen += ` - ${response.status} ${response.statusText}`
             }
 
             console.error('Error: ', errorMessage);
