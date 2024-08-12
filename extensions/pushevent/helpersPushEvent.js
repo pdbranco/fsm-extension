@@ -402,12 +402,10 @@ async function submitPushEventAsync(cloudHost, account, company, id, document, s
                 specificError = errorData.message;
                 if (specificError) {
                     errorMessage += ` - ${specificError}`;
-                    errorData && errorData.message;
+                    errorScreen += `${specificError}`;
                 }
             } else if (response.status === 401){
                 errorScreen += 'The token has expired, please refresh the page to access it again';
-            } else {
-                errorScreen += ` - ${response.status} ${response.statusText}`
             }
 
             console.error('Error: ', errorMessage);
