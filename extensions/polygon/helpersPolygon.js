@@ -57,7 +57,7 @@ function getPolygons(cloudHost, account, company) {
 
 async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
     try {
-        const authResponse = await new Promise((resolve, reject) => {
+        /* const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 reject(new Error('Authentication timeout'));
             }, 5000); // 5 sec timeout
@@ -79,7 +79,7 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             throw new Error('Authentication failed');
         }
 
-        sessionStorage.setItem('tokenPolygon', authResponse.access_token);
+        sessionStorage.setItem('tokenPolygon', authResponse.access_token);*/
 
         const headers = {
             'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ function displayDataTable(data, cloudHost, account, company) {
 // GET polygon DETAILS ASSYNC
 async function getPolygonDetails(cloudHost, account, company, id, shellSdk) {
     try {
-        const authResponse = await new Promise((resolve, reject) => {
+        /*const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 reject(new Error('Authentication timeout'));
             }, 5000); // 5 sec timeout
@@ -204,7 +204,7 @@ async function getPolygonDetails(cloudHost, account, company, id, shellSdk) {
             throw new Error('Authentication failed');
         }
 
-        sessionStorage.setItem('tokenPolygon', authResponse.access_token);
+        sessionStorage.setItem('tokenPolygon', authResponse.access_token);*/
 
         const headers = {
             'Content-Type': 'application/json',
