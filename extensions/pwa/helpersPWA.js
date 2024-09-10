@@ -59,7 +59,7 @@ function getPWAs(cloudHost, account, company, shellSdk) {
 
 async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
     try {
-        const authResponse = await new Promise((resolve, reject) => {
+        /*const authResponse = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 reject(new Error('Authentication timeout'));
             }, 5000); // 5 sec timeout
@@ -81,7 +81,7 @@ async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
             throw new Error('Authentication failed');
         }
 
-        sessionStorage.setItem('tokenPwa', authResponse.access_token);
+        sessionStorage.setItem('tokenPwa', authResponse.access_token);*/
 
         const headers = {
             'Content-Type': 'application/json',
