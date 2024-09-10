@@ -59,30 +59,6 @@ function getPWAs(cloudHost, account, company, shellSdk) {
 
 async function getGroupPolicy(cloudHost, account, company, shellSdk, user) {
     try {
-        /*const authResponse = await new Promise((resolve, reject) => {
-            const timeout = setTimeout(() => {
-                reject(new Error('Authentication timeout'));
-            }, 5000); // 5 sec timeout
-            
-            shellSdk.emit(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, {
-                response_type: 'token'
-            });
-            shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (response) => {
-                clearTimeout(timeout);
-                if (response && response.access_token) {
-                    resolve(response);
-                } else {
-                    reject(new Error('Invalid authentication response'));
-                }
-            });
-        });
-
-        if (!authResponse || !authResponse.access_token) {
-            throw new Error('Authentication failed');
-        }
-
-        sessionStorage.setItem('tokenPwa', authResponse.access_token);*/
-
         const headers = {
             'Content-Type': 'application/json',
             'X-Client-ID': 'fsm-extension-pwa',
