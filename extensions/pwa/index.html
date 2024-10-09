@@ -66,7 +66,8 @@
          * A token's validation period is provided via the property expires_in, which contains
          * the time left in seconds.
          */
-        initializeRefreshTokenStrategy(shellSdk, auth);
+        
+        sessionStorage.setItem('tokenPwa', auth.access_token);
 
         let allowExtension = false;
         shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PWA_AllowedPolicyGroups');
