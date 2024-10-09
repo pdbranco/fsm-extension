@@ -11,7 +11,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
 
     shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_AUTHENTICATION, (event) => {
         sessionStorage.setItem('tokenPolygon', event.access_token);
-        setTimeout(() => fetchTokenPolygon(), (event.expires_in * 1000) - 5000);
+        setTimeout(() => fetchTokenPolygon(), (event.expires_in * 500));
     });
 
     function fetchTokenPolygon() {
