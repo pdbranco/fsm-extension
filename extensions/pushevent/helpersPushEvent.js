@@ -21,7 +21,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     }
 
     sessionStorage.setItem('token', auth.access_token);
-    setTimeout(() => fetchToken(), (auth.expires_in * 1000) - 5000);
+    setTimeout(() => fetchToken(), (auth.expires_in * 500));
 }
 
 // BUILD TABLE
