@@ -21,7 +21,7 @@ function initializeRefreshTokenStrategy(shellSdk, auth) {
     }
 
     sessionStorage.setItem('tokenPolygon', auth.access_token);
-    setTimeout(() => fetchTokenPolygon(), (auth.expires_in * 1000) - 5000);
+    setTimeout(() => fetchTokenPolygon(), (auth.expires_in * 500));
 
 }
 
