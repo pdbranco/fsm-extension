@@ -50,12 +50,10 @@
         shellSdk.on(SHELL_EVENTS.Version1.REQUIRE_CONTEXT, (event) => {
 
           const {
-            // extract required context from event content
             cloudHost,
             account,
             company,
             user,
-            // extract authentication data from event content
             auth
           } = JSON.parse(event);
 
@@ -69,7 +67,8 @@
            * A token's validation period is provided via the property expires_in, which contains
            * the time left in seconds.
            */
-          initializeRefreshTokenStrategy(shellSdk, auth);
+          
+          sessionStorage.setItem('token', auth.access_token);
           
           let allowExtension = false;
           shellSdk.emit(SHELL_EVENTS.Version1.GET_SETTINGS, 'PushWork_AllowedPolicyGroups');
